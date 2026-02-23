@@ -1,12 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ApiRequestError, apiJson, errorMessage } from '../../lib/api';
+import { previewNicheKeywords } from '../../lib/nicheKeywords';
 
 type Campaign = {
     id: string;
     niche: string;
     city: string;
     radius_km: number;
+    mode?: 'strict' | 'opportunity';
     created_at: string;
     lead_count: number;
 };
@@ -43,7 +45,7 @@ const Campaigns: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    const [form, setForm] = useState({ niche: '', city: '', radius: 10 });
+    const [form, setForm] = useState({ niche: '', city: '', radius: 10, mode: 'opportunity' as 'strict' | 'opportunity' });
     const [creating, setCreating] = useState(false);
     const [createError, setCreateError] = useState('');
     const [createSuccess, setCreateSuccess] = useState('');
@@ -57,12 +59,16 @@ const Campaigns: React.FC = () => {
     const [runProcessed, setRunProcessed] = useState<number | null>(null);
     const [recentRunLog, setRecentRunLog] = useState<string[]>([]);
     const [pollJobsActive, setPollJobsActive] = useState(false);
+    const [activeCampaignId, setActiveCampaignId] = useState<string | null>(null);
+    const [campaignSummary, setCampaignSummary] = useState<any | null>(null);
 
     const normalizedForm = useMemo(() => ({
         niche: normalizeText(form.niche),
         city: normalizeText(form.city),
-        radius: Number.isFinite(form.radius) ? form.radius : 10
+        radius: Number.isFinite(form.radius) ? form.radius : 10,
+        mode: form.mode === 'strict' ? 'strict' : 'opportunity'
     }), [form]);
+    const keywordPreview = useMemo(() => previewNicheKeywords(form.niche), [form.niche]);
     const nicheError = validateNiche(form.niche);
     const cityError = validateCity(form.city);
     const radiusError = Number.isFinite(form.radius) && form.radius >= 1 && form.radius <= 100 ? '' : 'Radius must be between 1 and 100 km';
@@ -127,6 +133,20 @@ const Campaigns: React.FC = () => {
         setPollJobsActive(true);
     };
 
+    const loadCampaignSummary = async (campaignId: string) => {
+        try {
+            const data = await apiJson<{ summary?: any }>(`/api/campaigns/${campaignId}/summary`, {
+                timeoutMs: 15000,
+                credentials: 'include'
+            });
+            setCampaignSummary(data.summary || null);
+            setActiveCampaignId(campaignId);
+        } catch {
+            setActiveCampaignId(campaignId);
+            setCampaignSummary(null);
+        }
+    };
+
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formValid) {
@@ -141,7 +161,12 @@ const Campaigns: React.FC = () => {
             const created = await apiJson<{ campaign_id?: string }>('/api/campaigns', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ niche: normalizedForm.niche, city: normalizedForm.city, radius_km: normalizedForm.radius }),
+                body: JSON.stringify({
+                    niche: normalizedForm.niche,
+                    city: normalizedForm.city,
+                    radius_km: normalizedForm.radius,
+                    mode: normalizedForm.mode
+                }),
                 credentials: 'include',
                 timeoutMs: 20000
             });
@@ -161,16 +186,17 @@ const Campaigns: React.FC = () => {
                 setCreateError(
                     `Campaign created${created.campaign_id ? ` (${created.campaign_id})` : ''}, but running discovery failed: ${errorMessage(runErr, 'Unable to run jobs.')}`
                 );
-                setForm({ niche: '', city: '', radius: 10 });
+                setForm({ niche: '', city: '', radius: 10, mode: 'opportunity' });
                 await loadCampaigns();
                 return;
             }
 
             applyRunResult(runRes, 'Discovery trigger sent');
+            if (created.campaign_id) await loadCampaignSummary(created.campaign_id);
             setCreateSuccess(
                 `Campaign created${created.campaign_id ? ` (${created.campaign_id})` : ''}. ${runRes?.msg || 'Queue executed.'} ${typeof runRes?.processed === 'number' ? `Processed: ${runRes.processed}.` : ''}`.trim()
             );
-            setForm({ niche: '', city: '', radius: 10 });
+            setForm({ niche: '', city: '', radius: 10, mode: 'opportunity' });
             await loadCampaigns();
         } catch (err) {
             if (err instanceof ApiRequestError && (err.status === 401 || err.status === 403)) {
@@ -196,6 +222,7 @@ const Campaigns: React.FC = () => {
                 timeoutMs: 30000
             });
             applyRunResult(runRes, `Rerun requested for ${campaign.city}`);
+            await loadCampaignSummary(campaign.id);
             await loadCampaigns();
         } catch (err) {
             if (err instanceof ApiRequestError && (err.status === 401 || err.status === 403)) {
@@ -315,6 +342,7 @@ const Campaigns: React.FC = () => {
                             <input type="text" placeholder="e.g. hvac, plumbing, roofing" required value={form.niche} onChange={e => setForm({ ...form, niche: e.target.value })} className="bg-[#070708] border border-white/10 text-primary text-[14px] p-3 focus-visible:border-accent/40 focus-visible:bg-[#0a0a0b] transition-colors rounded-[2px] outline-none" />
                             <p className="text-[10px] font-mono text-secondary/60">2–60 chars. Spaces are normalized automatically.</p>
                             {nicheError ? <p className="text-[10px] font-mono text-red-400">{nicheError}</p> : null}
+                            {keywordPreview.length > 0 ? <p className="text-[10px] font-mono text-secondary/70 break-words">Keyword preview: {keywordPreview.join(', ')}</p> : null}
                         </div>
                         <div className="flex flex-col gap-2">
                             <label className="text-[10px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Target City</label>
@@ -326,6 +354,14 @@ const Campaigns: React.FC = () => {
                             <label className="text-[10px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Radius (km)</label>
                             <input type="number" min="1" max="100" required value={form.radius} onChange={e => setForm({ ...form, radius: Number.parseInt(e.target.value || '0', 10) })} className="bg-[#070708] border border-white/10 text-primary text-[14px] p-3 focus-visible:border-accent/40 focus-visible:bg-[#0a0a0b] transition-colors rounded-[2px] outline-none" />
                             {radiusError ? <p className="text-[10px] font-mono text-red-400">{radiusError}</p> : null}
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Mode</label>
+                            <div className="grid grid-cols-2 gap-2">
+                                <button type="button" onClick={() => setForm({ ...form, mode: 'opportunity' })} className={`px-3 py-2 border rounded-sm text-[10px] font-mono uppercase tracking-widest ${form.mode === 'opportunity' ? 'border-accent/40 text-accent bg-accent/10' : 'border-white/10 text-secondary'}`}>Opportunity</button>
+                                <button type="button" onClick={() => setForm({ ...form, mode: 'strict' })} className={`px-3 py-2 border rounded-sm text-[10px] font-mono uppercase tracking-widest ${form.mode === 'strict' ? 'border-accent/40 text-accent bg-accent/10' : 'border-white/10 text-secondary'}`}>Strict</button>
+                            </div>
+                            <p className="text-[10px] font-mono text-secondary/60">{form.mode === 'strict' ? 'Prefer niche matches; fallback engages if results are low.' : 'Broad capture + opportunity scoring (recommended).'}</p>
                         </div>
 
                         <button disabled={creating || !formValid} type="submit" className="w-full py-4 mt-2 bg-white text-black hover:bg-[#e2e2e2] active:scale-[0.99] text-[12px] font-bold uppercase tracking-[0.05em] transition-all duration-300 rounded-[2px] disabled:opacity-50">
@@ -345,6 +381,24 @@ const Campaigns: React.FC = () => {
                                         <p key={`${idx}-${line}`} className="text-[10px] font-mono text-secondary break-words">{line}</p>
                                     ))}
                                 </div>
+                            </div>
+                        ) : null}
+                        {activeCampaignId ? (
+                            <div className="mt-4 border-t border-subtle pt-4">
+                                <div className="flex items-center justify-between mb-2">
+                                    <p className="text-[10px] font-mono uppercase tracking-widest text-secondary/70">Campaign Insights</p>
+                                    <a href={`/api/campaigns/${activeCampaignId}/export.csv`} className="text-[10px] font-mono uppercase tracking-widest text-accent hover:underline">Export CSV</a>
+                                </div>
+                                {campaignSummary ? (
+                                    <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-secondary">
+                                        <div>Total: <span className="text-primary">{campaignSummary.total_leads ?? 0}</span></div>
+                                        <div>High: <span className="text-primary">{campaignSummary.high_opportunity_count ?? 0}</span></div>
+                                        <div>No website: <span className="text-primary">{campaignSummary.no_website_count ?? 0}</span></div>
+                                        <div>Missing intake: <span className="text-primary">{campaignSummary.missing_intake_count ?? 0}</span></div>
+                                        <div>Missing booking: <span className="text-primary">{campaignSummary.missing_booking_count ?? 0}</span></div>
+                                        <div>Emails: <span className="text-primary">{campaignSummary.emails_found_count ?? 0}</span></div>
+                                    </div>
+                                ) : <p className="text-[10px] font-mono text-secondary/60">Summary unavailable.</p>}
                             </div>
                         ) : null}
                     </div>
@@ -367,11 +421,15 @@ const Campaigns: React.FC = () => {
                                     <div className="flex flex-col items-end">
                                         <span className="text-[18px] font-mono font-semibold text-primary leading-none">{c.lead_count}</span>
                                         <span className="text-[9px] font-mono text-secondary uppercase tracking-widest">Leads Gathered</span>
+                                        <span className="text-[9px] font-mono text-secondary/70 uppercase tracking-widest mt-1">{(c.mode || 'opportunity')}</span>
                                     </div>
                                     <div className="flex flex-col sm:flex-row gap-2">
                                         <Link to={`/leads?campaign_id=${c.id}`} className="px-4 py-2.5 bg-[#121417]/50 border border-white/10 hover:border-white/30 hover:bg-white/5 text-primary text-[10px] font-semibold tracking-[0.05em] uppercase transition-all duration-300 rounded-sm text-center">
                                             View Pipeline
                                         </Link>
+                                        <a href={`/api/campaigns/${c.id}/export.csv`} className="px-4 py-2.5 border border-white/10 text-secondary hover:text-white hover:border-white/30 text-[10px] font-semibold tracking-[0.05em] uppercase rounded-sm text-center">
+                                            Export CSV
+                                        </a>
                                         <button
                                             type="button"
                                             disabled={actionBusyId !== null}

@@ -7,6 +7,8 @@ const Leads: React.FC = () => {
     const [leads, setLeads] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [sortBy, setSortBy] = useState<'opportunity' | 'newest' | 'status'>('opportunity');
+    const [quickFilter, setQuickFilter] = useState<'all' | 'no-website' | 'missing-intake' | 'missing-booking' | 'high-opportunity'>('all');
 
     const campaignId = searchParams.get('campaign_id');
     const statusFilter = searchParams.get('status');
@@ -28,16 +30,53 @@ const Leads: React.FC = () => {
             });
     }, [campaignId, statusFilter]);
 
+    const filteredLeads = leads.filter(lead => {
+        if (quickFilter === 'no-website') return !lead.canonical_url;
+        if (quickFilter === 'missing-intake') return Number(lead.intake_present || 0) === 0;
+        if (quickFilter === 'missing-booking') return Number(lead.booking_present || 0) === 0;
+        if (quickFilter === 'high-opportunity') return Number(lead.opportunity_score || 0) >= 15;
+        return true;
+    });
+
+    const sortedLeads = [...filteredLeads].sort((a, b) => {
+        if (sortBy === 'status') return String(a.status || '').localeCompare(String(b.status || ''));
+        if (sortBy === 'newest') return String(b.last_audit_at || b.created_at || '').localeCompare(String(a.last_audit_at || a.created_at || ''));
+        return Number(b.opportunity_score || 0) - Number(a.opportunity_score || 0);
+    });
+
     return (
         <div className="pt-32 pb-24 px-6 max-w-[1200px] mx-auto w-full">
             <div className="flex justify-between items-end mb-10 border-b border-subtle pb-6">
                 <div>
                     <h1 className="text-3xl font-semibold text-primary tracking-tight">Lead Intelligence Pipeline</h1>
-                    <p className="text-[13px] text-secondary font-mono uppercase tracking-widest mt-2">{leads.length} Targets Found</p>
+                    <p className="text-[13px] text-secondary font-mono uppercase tracking-widest mt-2">{sortedLeads.length} Targets Found</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 flex-wrap justify-end">
+                    <select value={sortBy} onChange={e => setSortBy(e.target.value as any)} className="bg-[#070708] border border-white/10 text-primary text-[11px] p-2 rounded-[2px] font-mono">
+                        <option value="opportunity">Sort: Opportunity</option>
+                        <option value="newest">Sort: Newest</option>
+                        <option value="status">Sort: Status</option>
+                    </select>
                     <Link to="/campaigns" className="text-[11px] font-mono text-secondary hover:text-white uppercase tracking-widest transition-colors">← Back to Campaigns</Link>
                 </div>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-6">
+                {[
+                    ['all', 'All'],
+                    ['no-website', 'No Website'],
+                    ['missing-intake', 'Missing Intake'],
+                    ['missing-booking', 'Missing Booking'],
+                    ['high-opportunity', 'High Opportunity (>=15)']
+                ].map(([value, label]) => (
+                    <button
+                        key={value}
+                        type="button"
+                        onClick={() => setQuickFilter(value as any)}
+                        className={`px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest border rounded-sm ${quickFilter === value ? 'border-accent/40 text-accent bg-accent/10' : 'border-white/10 text-secondary'}`}
+                    >
+                        {label}
+                    </button>
+                ))}
             </div>
 
             {error ? <p className="text-red-400 font-mono text-[12px] mb-4">{error}</p> : null}
@@ -54,12 +93,16 @@ const Leads: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-subtle">
-                            {leads.map(lead => (
+                            {sortedLeads.map(lead => (
                                 <tr key={lead.id} className="hover:bg-white/[0.02] transition-colors">
                                     <td className="p-4 font-medium text-primary">
                                         {lead.name}
                                         <div className="text-[11px] text-secondary mt-1 font-normal break-words max-w-[300px] leading-tight">
                                             {[lead.address, lead.phone].filter(Boolean).join(' • ')}
+                                        </div>
+                                        <div className="text-[10px] text-secondary/70 font-mono mt-1">
+                                            Opp: {lead.opportunity_score ?? 0}
+                                            {lead.detected_email ? ` • ${lead.detected_email}` : ''}
                                         </div>
                                     </td>
                                     <td className="p-4 text-secondary">
@@ -73,6 +116,7 @@ const Leads: React.FC = () => {
                                                 {lead.score}
                                             </span>
                                         ) : <span className="text-secondary/40 font-mono text-[10px] uppercase">Pending</span>}
+                                        <div className="text-[10px] font-mono text-secondary mt-1">Opp {lead.opportunity_score ?? 0}</div>
                                     </td>
                                     <td className="p-4">
                                         <span className={`text-[10px] font-mono px-2 py-1 rounded-sm uppercase tracking-wide border ${lead.status === 'qualified' ? 'border-accent/40 text-accent bg-accent/10' : lead.status === 'rejected' ? 'border-red-500/30 text-red-500/80 bg-red-500/10' : 'border-subtle text-secondary'}`}>
