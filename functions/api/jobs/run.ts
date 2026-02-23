@@ -5,6 +5,48 @@ import { logEvent } from '../_utils/log';
 import { ensureDiscoverySchema } from '../_utils/schema';
 import { auditLiteWebsite, expandNicheKeywords, fuzzyBusinessKey, normalizeDomain, normalizePhone, scoreLeadQuality, scoreOpportunity } from '../_utils/discovery';
 
+async function beginTx(env: any) {
+    await env.DB.prepare(`BEGIN IMMEDIATE`).run();
+}
+
+async function rollbackTx(env: any) {
+    await env.DB.prepare(`ROLLBACK`).run().catch(() => null);
+}
+
+async function commitTx(env: any) {
+    await env.DB.prepare(`COMMIT`).run();
+}
+
+async function resolveLeadIdByKeys(env: any, input: { dedupeKey?: string | null; businessId?: string | null; name?: string | null; address?: string | null; city?: string | null }) {
+    const dedupeKey = String(input.dedupeKey || '').trim();
+    if (dedupeKey) {
+        const { results } = await env.DB.prepare(`SELECT id FROM leads WHERE dedupe_key = ? LIMIT 1`).bind(dedupeKey).all();
+        if (results.length) return String(results[0].id);
+    }
+
+    const businessId = String(input.businessId || '').trim();
+    if (businessId) {
+        const { results } = await env.DB.prepare(`SELECT id FROM leads WHERE business_id = ? LIMIT 1`).bind(businessId).all();
+        if (results.length) return String(results[0].id);
+    }
+
+    const name = String(input.name || '').trim();
+    const address = String(input.address || '').trim();
+    if (name) {
+        const { results } = await env.DB.prepare(`
+            SELECT l.id
+            FROM leads l
+            JOIN businesses b ON b.osm_id = l.business_id
+            WHERE lower(trim(b.name)) = lower(trim(?))
+              AND COALESCE(lower(trim(b.address)), '') = COALESCE(lower(trim(?)), '')
+            LIMIT 1
+        `).bind(name, address).all();
+        if (results.length) return String(results[0].id);
+    }
+
+    return '';
+}
+
 export async function onRequestPost(context: any) {
     const { env, request } = context;
     let jobsProcessed = 0;
@@ -107,6 +149,10 @@ export async function onRequestPost(context: any) {
                     const nicheKeywords = expandNicheKeywords(String(niche || ''));
 
                     if (!campaignId || !niche || !city) throw new Error('Invalid DISCOVERY payload');
+                    const { results: campaignCheckRows } = await env.DB.prepare(
+                        `SELECT id FROM campaigns WHERE id = ? LIMIT 1`
+                    ).bind(campaignId).all();
+                    if (campaignCheckRows.length === 0) throw new Error(`Campaign not found for discovery: ${campaignId}`);
 
                     const discoveryRes = await fetchOsmBusinesses(niche, city, Number(radius_km) || 10, env, mode);
                     const businesses = discoveryRes.businesses || [];
@@ -118,18 +164,28 @@ export async function onRequestPost(context: any) {
                         log.push(`strict_fallback_triggered city=${city}`);
                         logEvent('info', 'discovery.strict_fallback_triggered', { campaignId, city });
                     }
+                    if (discoveryRes.meta?.overpass_degraded) {
+                        log.push(`overpass_degraded partial=${businesses.length}`);
+                        logEvent('warn', 'overpass.degraded', {
+                            campaignId,
+                            city,
+                            mode,
+                            partial_results: businesses.length,
+                            requests_used: discoveryRes.meta?.overpass_requests_used || 0,
+                            errors: Array.isArray(discoveryRes.meta?.overpass_errors) ? discoveryRes.meta.overpass_errors.slice(0, 3) : []
+                        });
+                    }
                     log.push(`Found ${businesses.length} businesses`);
 
                     let scoredCount = 0;
                     let emailsFoundCount = 0;
                     let websitesVerifiedCount = 0;
+                    let leadsInsertedCount = 0;
+                    let leadsLinkedCount = 0;
+                    let fkFailuresCount = 0;
+                    let skippedCount = 0;
                     for (const b of businesses) {
                         try {
-                            await env.DB.prepare(`
-                                INSERT OR IGNORE INTO businesses (osm_id, name, lat, lon, address, phone, website_raw)
-                                VALUES (?, ?, ?, ?, ?, ?, ?)
-                            `).bind(b.osm_id, b.name, b.lat, b.lon, b.address, b.phone, b.website).run();
-
                             const websiteEnriched = await enrichWebsiteForBusiness({ ...b, city_hint: city }, env);
                             if (websiteEnriched.error) {
                                 log.push(`Website enrichment skipped (${b.osm_type || 'node'}:${b.osm_id}): ${websiteEnriched.error}`);
@@ -150,39 +206,8 @@ export async function onRequestPost(context: any) {
 
                             const domain = normalizeDomain(resolvedWebsite || b.website);
                             const phoneDigits = normalizePhone(b.phone);
-                            const dedupeKey = domain ? `domain:${domain}` : (phoneDigits ? `phone:${phoneDigits}` : null);
-
-                            let existingLead: any = null;
-                            if (dedupeKey) {
-                                const { results: dedupeRows } = await env.DB.prepare(
-                                    `SELECT id, campaign_id, canonical_url FROM leads WHERE dedupe_key = ? LIMIT 1`
-                                ).bind(dedupeKey).all();
-                                if (dedupeRows.length > 0) existingLead = dedupeRows[0];
-                            }
-                            if (!existingLead) {
-                                const fuzzyKey = fuzzyBusinessKey(b.name, b.address);
-                                if (fuzzyKey) {
-                                    const { results: fuzzyRows } = await env.DB.prepare(
-                                        `SELECT l.id, l.campaign_id, l.canonical_url
-                                         FROM leads l
-                                         JOIN businesses b2 ON b2.osm_id = l.business_id
-                                         WHERE lower(trim(b2.name)) = lower(trim(?))
-                                           AND COALESCE(lower(trim(b2.address)), '') = COALESCE(lower(trim(?)), '')
-                                         LIMIT 1`
-                                    ).bind(b.name, b.address || '').all();
-                                    if (fuzzyRows.length > 0) existingLead = fuzzyRows[0];
-                                }
-                            }
-
-                            if (!existingLead) {
-                                const { results: businessRows } = await env.DB.prepare(
-                                    `SELECT id, campaign_id, canonical_url FROM leads WHERE business_id = ? LIMIT 1`
-                                ).bind(b.osm_id).all();
-                                if (businessRows.length > 0) existingLead = businessRows[0];
-                            }
-
-                            const candidateLeadId = crypto.randomUUID();
-                            let leadId = candidateLeadId;
+                            const fingerprintSeed = fuzzyBusinessKey(b.name, [b.address, city].filter(Boolean).join(' '));
+                            const dedupeKey = domain ? `domain:${domain}` : (phoneDigits ? `phone:${phoneDigits}` : (fingerprintSeed ? `fingerprint:${fingerprintSeed}` : null));
 
                             let intakePresent = 0;
                             let bookingPresent = 0;
@@ -229,14 +254,88 @@ export async function onRequestPost(context: any) {
                                 businesses.length < 20 ||
                                 scored.score >= 8;
                             if (!shouldKeepByStrict) {
+                                skippedCount++;
                                 continue;
                             }
 
-                            if (existingLead) {
-                                leadId = String(existingLead.id);
+                            const candidateLeadId = crypto.randomUUID();
+                            let leadId = '';
+                            let insertedLead = false;
+                            let txOpen = false;
+                            let linkInsertChanges = 0;
+                            try {
+                                await beginTx(env);
+                                txOpen = true;
+
                                 await env.DB.prepare(`
-                                    INSERT OR IGNORE INTO lead_campaigns (lead_id, campaign_id) VALUES (?, ?)
-                                `).bind(leadId, campaignId).run();
+                                    INSERT OR IGNORE INTO businesses (osm_id, name, lat, lon, address, phone, website_raw)
+                                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                                `).bind(b.osm_id, b.name, b.lat, b.lon, b.address, b.phone, b.website).run();
+
+                                leadId = await resolveLeadIdByKeys(env, {
+                                    dedupeKey,
+                                    businessId: b.osm_id,
+                                    name: b.name,
+                                    address: b.address,
+                                    city
+                                });
+
+                                if (!leadId) {
+                                    try {
+                                        const { results: insertedRows } = await env.DB.prepare(`
+                                            INSERT OR IGNORE INTO leads (
+                                                id, campaign_id, business_id, canonical_url,
+                                                website_status, website_source,
+                                                website_verified, website_last_checked_at,
+                                                lead_quality_score, lead_quality_reasons,
+                                                opportunity_score, opportunity_reasons, intake_present, booking_present, detected_email, dedupe_key
+                                            )
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                            RETURNING id
+                                        `).bind(
+                                            candidateLeadId, campaignId, b.osm_id, finalUrl,
+                                            websiteStatus, websiteSource,
+                                            websiteVerified, websiteLastCheckedAt,
+                                            quality.score, JSON.stringify(quality.reasons),
+                                            scored.score, JSON.stringify(scored.reasons), intakePresent, bookingPresent, detectedEmail, dedupeKey
+                                        ).all();
+                                        if (insertedRows.length > 0) {
+                                            leadId = String(insertedRows[0].id);
+                                            insertedLead = true;
+                                        }
+                                    } catch {
+                                        await env.DB.prepare(`
+                                            INSERT OR IGNORE INTO leads (
+                                                id, campaign_id, business_id, canonical_url,
+                                                website_status, website_source,
+                                                website_verified, website_last_checked_at,
+                                                lead_quality_score, lead_quality_reasons,
+                                                opportunity_score, opportunity_reasons, intake_present, booking_present, detected_email, dedupe_key
+                                            )
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                        `).bind(
+                                            candidateLeadId, campaignId, b.osm_id, finalUrl,
+                                            websiteStatus, websiteSource,
+                                            websiteVerified, websiteLastCheckedAt,
+                                            quality.score, JSON.stringify(quality.reasons),
+                                            scored.score, JSON.stringify(scored.reasons), intakePresent, bookingPresent, detectedEmail, dedupeKey
+                                        ).run();
+                                    }
+
+                                    if (!leadId) {
+                                        leadId = await resolveLeadIdByKeys(env, {
+                                            dedupeKey,
+                                            businessId: b.osm_id,
+                                            name: b.name,
+                                            address: b.address,
+                                            city
+                                        });
+                                    }
+                                    if (!leadId) {
+                                        throw new Error(`Lead insert unresolved for business ${b.osm_id}`);
+                                    }
+                                }
+
                                 await env.DB.prepare(`
                                     UPDATE leads
                                     SET canonical_url = COALESCE(canonical_url, ?),
@@ -262,36 +361,27 @@ export async function onRequestPost(context: any) {
                                     scored.score, scored.score,
                                     scored.score, JSON.stringify(scored.reasons),
                                     intakePresent, bookingPresent, detectedEmail, dedupeKey, leadId
-                                ).run().catch(() => null);
-                            } else {
-                                await env.DB.prepare(`
-                                    INSERT OR IGNORE INTO leads (
-                                        id, campaign_id, business_id, canonical_url,
-                                        website_status, website_source,
-                                        website_verified, website_last_checked_at,
-                                        lead_quality_score, lead_quality_reasons,
-                                        opportunity_score, opportunity_reasons, intake_present, booking_present, detected_email, dedupe_key
-                                    )
-                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                                `).bind(
-                                    candidateLeadId, campaignId, b.osm_id, finalUrl,
-                                    websiteStatus, websiteSource,
-                                    websiteVerified, websiteLastCheckedAt,
-                                    quality.score, JSON.stringify(quality.reasons),
-                                    scored.score, JSON.stringify(scored.reasons), intakePresent, bookingPresent, detectedEmail, dedupeKey
                                 ).run();
-                                await env.DB.prepare(`
-                                    INSERT OR IGNORE INTO lead_campaigns (lead_id, campaign_id) VALUES (?, ?)
-                                `).bind(candidateLeadId, campaignId).run().catch(() => null);
 
-                                const { results: leadRows } = await env.DB.prepare(`
-                                    SELECT id FROM leads WHERE id = ? LIMIT 1
-                                `).bind(candidateLeadId).all();
-                                if (leadRows.length === 0) {
-                                    throw new Error(`Lead insert missing for business ${b.osm_id}`);
-                                }
-                                leadId = String(leadRows[0].id);
+                                const linkRes = await env.DB.prepare(`
+                                    INSERT OR IGNORE INTO lead_campaigns (lead_id, campaign_id) VALUES (?, ?)
+                                `).bind(leadId, campaignId).run();
+                                linkInsertChanges = Number(linkRes.meta?.changes || 0);
+
+                                await commitTx(env);
+                                txOpen = false;
+                            } catch (persistE: any) {
+                                if (txOpen) await rollbackTx(env);
+                                throw Object.assign(persistE || new Error('persist failed'), {
+                                    _persistFailed: true,
+                                    _dedupeKey: dedupeKey || '',
+                                    _candidateLeadId: candidateLeadId,
+                                    _businessId: b.osm_id
+                                });
                             }
+
+                            if (insertedLead) leadsInsertedCount++;
+                            if (linkInsertChanges > 0) leadsLinkedCount++;
 
                             if (resolvedWebsite && resolvedWebsite.length > 5) {
                                 const { results: existingAudits } = await env.DB.prepare(
@@ -307,15 +397,35 @@ export async function onRequestPost(context: any) {
                             }
                         } catch (insertE: any) {
                             const insertMsg = (insertE?.message || 'discovery insert error').substring(0, 300);
+                            if (String(insertE?.message || '').includes('FOREIGN KEY constraint failed')) {
+                                fkFailuresCount++;
+                            }
+                            skippedCount++;
+                            logEvent('error', 'discovery.persist_failed', {
+                                campaign_id: campaignId,
+                                business_id: String(b?.osm_id || ''),
+                                dedupe_key: String(insertE?._dedupeKey || ''),
+                                error_code: String(insertE?.code || insertE?.cause?.code || ''),
+                                error: insertMsg
+                            });
                             log.push(`Discovery item skipped (${b.osm_id}): ${insertMsg}`);
                         }
                     }
                     log.push(`leads_scored=${scoredCount}`);
                     log.push(`emails_found_count=${emailsFoundCount}`);
                     log.push(`websites_verified_live=${websitesVerifiedCount}`);
+                    log.push(`discovery_summary leads_found=${businesses.length} leads_inserted=${leadsInsertedCount} leads_linked=${leadsLinkedCount} fk_failures_count=${fkFailuresCount} skipped_count=${skippedCount}`);
                     logEvent('info', 'discovery.leads_scored', { campaignId, count: scoredCount });
                     logEvent('info', 'discovery.emails_found_count', { campaignId, count: emailsFoundCount });
                     logEvent('info', 'discovery.websites_verified_live', { campaignId, count: websitesVerifiedCount });
+                    logEvent('info', 'discovery.summary', {
+                        campaignId,
+                        leads_found: businesses.length,
+                        leads_inserted: leadsInsertedCount,
+                        leads_linked: leadsLinkedCount,
+                        fk_failures_count: fkFailuresCount,
+                        skipped_count: skippedCount
+                    });
 
                 } else if (job.type === 'AUDIT') {
                     const payload = JSON.parse(job.payload_json);

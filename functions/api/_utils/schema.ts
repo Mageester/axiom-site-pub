@@ -97,6 +97,9 @@ export async function ensureDiscoverySchema(env: any) {
         CREATE INDEX IF NOT EXISTS idx_lead_campaigns_campaign_id ON lead_campaigns(campaign_id)
     `).run().catch(() => null);
     await env.DB.prepare(`
+        CREATE INDEX IF NOT EXISTS idx_lead_campaigns_lead_id ON lead_campaigns(lead_id)
+    `).run().catch(() => null);
+    await env.DB.prepare(`
         CREATE INDEX IF NOT EXISTS idx_leads_duplicate_of ON leads(duplicate_of_lead_id)
     `).run().catch(() => null);
     await env.DB.prepare(`
