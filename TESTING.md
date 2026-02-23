@@ -140,6 +140,46 @@ Use this when leads are incorrectly shown as having no website because OSM omitt
    - Verify badge: `Live`, `Unreachable`, or `Unknown`
 6. Re-run discovery and confirm website verification status persists/improves (cached for 30 days via `website_verify_cache`).
 
+## Pipeline Operator Controls (Bulk / Tags / DNC / Quality)
+
+1. Open `/leads?campaign_id=<id>` for a campaign with multiple rows.
+2. Confirm new filters/chips work:
+   - `Ready To Contact`
+   - `No Website`
+   - `Website Unreachable`
+   - `Verified Live`
+   - `High Opportunity`
+   - `High Quality`
+3. Select multiple rows and test bulk actions:
+   - `Bulk Status` -> verify rows update
+   - `Bulk Add Tag` -> verify tag badges appear
+   - `Bulk Mark DNC` -> verify DNC badge appears and rows are excluded from ready-to-contact filter
+   - `Export Selection` -> downloaded CSV contains selected rows only
+4. Toggle `Show Duplicates` and confirm duplicate rows can be shown/hidden without errors.
+
+## Lead Detail Enhancements (Tags / Notes History / DNC / Outreach)
+
+1. Open `/leads/<leadId>`.
+2. Verify website source + verify badges render in the detail panel.
+3. Toggle DNC + set DNC reason -> Save -> refresh -> values persist.
+4. Add a tag and remove a tag -> changes persist.
+5. Add a timestamped note entry in Notes History -> entry appears with timestamp.
+6. Confirm Outreach Assistant shows:
+   - 3 (or fewer) angle suggestions
+   - email template
+   - SMS template
+
+## Campaign Export Upgrades
+
+1. On `/campaigns`, use both export buttons:
+   - `Export CSV`
+   - `Outreach CSV`
+2. Standard CSV should include:
+   - `website_status`, `website_verified`, `opportunity_score`, `quality_score`, `tags`, `last_contacted_at`, `status`, `notes_summary`
+3. Outreach CSV should include:
+   - `name,email,phone,website,city,niche,angle_reason`
+4. DNC leads should be excluded by default from exports unless endpoint is called with `?include_dnc=1`.
+
 ## Login 500 Triage (Cloudflare Pages)
 
 Use this when `POST /api/auth/login` returns `500` in production.

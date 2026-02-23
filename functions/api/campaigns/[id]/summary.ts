@@ -24,9 +24,13 @@ export async function onRequestGet(context: any) {
                 SELECT
                     COUNT(*) as total_leads,
                     SUM(CASE WHEN COALESCE(l.opportunity_score, 0) >= 15 THEN 1 ELSE 0 END) as high_opportunity_count,
+                    SUM(CASE WHEN COALESCE(l.lead_quality_score, 0) >= 40 THEN 1 ELSE 0 END) as high_quality_count,
                     SUM(CASE WHEN l.canonical_url IS NULL OR l.canonical_url = '' THEN 1 ELSE 0 END) as no_website_count,
+                    SUM(CASE WHEN COALESCE(l.website_verified, 'unknown') = 'confirmed_live' THEN 1 ELSE 0 END) as website_verified_live_count,
+                    SUM(CASE WHEN COALESCE(l.website_verified, 'unknown') = 'unreachable' THEN 1 ELSE 0 END) as website_unreachable_count,
                     SUM(CASE WHEN COALESCE(l.intake_present, 0) = 0 THEN 1 ELSE 0 END) as missing_intake_count,
-                    SUM(CASE WHEN COALESCE(l.booking_present, 0) = 0 THEN 1 ELSE 0 END) as missing_booking_count
+                    SUM(CASE WHEN COALESCE(l.booking_present, 0) = 0 THEN 1 ELSE 0 END) as missing_booking_count,
+                    SUM(CASE WHEN COALESCE(l.dnc, 0) = 1 THEN 1 ELSE 0 END) as dnc_count
                     ${baseFilter}
             `).bind(campaignId, campaignId).all(),
             env.DB.prepare(`
@@ -41,9 +45,13 @@ export async function onRequestGet(context: any) {
             summary: {
                 total_leads: Number(totals?.[0]?.total_leads || 0),
                 high_opportunity_count: Number(totals?.[0]?.high_opportunity_count || 0),
+                high_quality_count: Number(totals?.[0]?.high_quality_count || 0),
                 no_website_count: Number(totals?.[0]?.no_website_count || 0),
+                website_verified_live_count: Number(totals?.[0]?.website_verified_live_count || 0),
+                website_unreachable_count: Number(totals?.[0]?.website_unreachable_count || 0),
                 missing_intake_count: Number(totals?.[0]?.missing_intake_count || 0),
                 missing_booking_count: Number(totals?.[0]?.missing_booking_count || 0),
+                dnc_count: Number(totals?.[0]?.dnc_count || 0),
                 emails_found_count: Number(emails?.[0]?.emails_found_count || 0)
             }
         });

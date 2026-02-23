@@ -388,15 +388,20 @@ const Campaigns: React.FC = () => {
                                 <div className="flex items-center justify-between mb-2">
                                     <p className="text-[10px] font-mono uppercase tracking-widest text-secondary/70">Campaign Insights</p>
                                     <a href={`/api/campaigns/${activeCampaignId}/export.csv`} className="text-[10px] font-mono uppercase tracking-widest text-accent hover:underline">Export CSV</a>
+                                    <a href={`/api/campaigns/${activeCampaignId}/export.outreach.csv`} className="text-[10px] font-mono uppercase tracking-widest text-secondary hover:text-accent hover:underline ml-3">Outreach CSV</a>
                                 </div>
                                 {campaignSummary ? (
                                     <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-secondary">
                                         <div>Total: <span className="text-primary">{campaignSummary.total_leads ?? 0}</span></div>
                                         <div>High: <span className="text-primary">{campaignSummary.high_opportunity_count ?? 0}</span></div>
+                                        <div>High quality: <span className="text-primary">{campaignSummary.high_quality_count ?? 0}</span></div>
                                         <div>No website: <span className="text-primary">{campaignSummary.no_website_count ?? 0}</span></div>
+                                        <div>Verified live: <span className="text-primary">{campaignSummary.website_verified_live_count ?? 0}</span></div>
+                                        <div>Unreachable: <span className="text-primary">{campaignSummary.website_unreachable_count ?? 0}</span></div>
                                         <div>Missing intake: <span className="text-primary">{campaignSummary.missing_intake_count ?? 0}</span></div>
                                         <div>Missing booking: <span className="text-primary">{campaignSummary.missing_booking_count ?? 0}</span></div>
                                         <div>Emails: <span className="text-primary">{campaignSummary.emails_found_count ?? 0}</span></div>
+                                        <div>DNC: <span className="text-primary">{campaignSummary.dnc_count ?? 0}</span></div>
                                     </div>
                                 ) : <p className="text-[10px] font-mono text-secondary/60">Summary unavailable.</p>}
                             </div>
@@ -429,6 +434,9 @@ const Campaigns: React.FC = () => {
                                         </Link>
                                         <a href={`/api/campaigns/${c.id}/export.csv`} className="px-4 py-2.5 border border-white/10 text-secondary hover:text-white hover:border-white/30 text-[10px] font-semibold tracking-[0.05em] uppercase rounded-sm text-center">
                                             Export CSV
+                                        </a>
+                                        <a href={`/api/campaigns/${c.id}/export.outreach.csv`} className="px-4 py-2.5 border border-white/10 text-secondary hover:text-white hover:border-white/30 text-[10px] font-semibold tracking-[0.05em] uppercase rounded-sm text-center">
+                                            Outreach CSV
                                         </a>
                                         <button
                                             type="button"
