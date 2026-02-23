@@ -135,6 +135,10 @@ Use this when leads are incorrectly shown as having no website because OSM omitt
 4. Run discovery again for the same area/campaign and check `/api/jobs/run` logs / timing:
    - Nominatim lookup volume should drop due to D1 `website_enrich_cache` hits (30-day TTL).
    - The app should still return leads and should not regress to `0` results.
+5. For rows with a website, verify badges in `/leads`:
+   - Source badge: `OSM`, `Nominatim`, or `Email`
+   - Verify badge: `Live`, `Unreachable`, or `Unknown`
+6. Re-run discovery and confirm website verification status persists/improves (cached for 30 days via `website_verify_cache`).
 
 ## Login 500 Triage (Cloudflare Pages)
 

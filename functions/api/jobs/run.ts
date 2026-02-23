@@ -1,4 +1,4 @@
-import { enrichWebsiteForBusiness, fetchOsmBusinesses } from '../_utils/osm';
+import { enrichWebsiteForBusiness, fetchOsmBusinesses, verifyWebsiteCandidate } from '../_utils/osm';
 import { performAudit } from '../_utils/audit';
 import { apiError, d1ErrorMessage, json } from '../_utils/http';
 import { logEvent } from '../_utils/log';
@@ -122,6 +122,7 @@ export async function onRequestPost(context: any) {
 
                     let scoredCount = 0;
                     let emailsFoundCount = 0;
+                    let websitesVerifiedCount = 0;
                     for (const b of businesses) {
                         try {
                             await env.DB.prepare(`
@@ -129,13 +130,23 @@ export async function onRequestPost(context: any) {
                                 VALUES (?, ?, ?, ?, ?, ?, ?)
                             `).bind(b.osm_id, b.name, b.lat, b.lon, b.address, b.phone, b.website).run();
 
-                            const websiteEnriched = await enrichWebsiteForBusiness(b, env);
+                            const websiteEnriched = await enrichWebsiteForBusiness({ ...b, city_hint: city }, env);
                             if (websiteEnriched.error) {
                                 log.push(`Website enrichment skipped (${b.osm_type || 'node'}:${b.osm_id}): ${websiteEnriched.error}`);
                             }
-                            const resolvedWebsite = websiteEnriched.website || null;
+                            let resolvedWebsite = websiteEnriched.website || null;
                             const websiteStatus = websiteEnriched.website_status || 'unknown';
                             const websiteSource = websiteEnriched.website_source || null;
+                            let websiteVerified = 'unknown';
+                            let websiteLastCheckedAt: string | null = null;
+
+                            if (resolvedWebsite) {
+                                const verified = await verifyWebsiteCandidate(String(resolvedWebsite), env);
+                                if (verified.website) resolvedWebsite = verified.website;
+                                websiteVerified = verified.website_verified || 'unknown';
+                                websiteLastCheckedAt = verified.website_last_checked_at || null;
+                                if (websiteVerified === 'confirmed_live') websitesVerifiedCount++;
+                            }
 
                             const domain = normalizeDomain(resolvedWebsite || b.website);
                             const phoneDigits = normalizePhone(b.phone);
@@ -160,7 +171,7 @@ export async function onRequestPost(context: any) {
 
                             let intakePresent = 0;
                             let bookingPresent = 0;
-                            let detectedEmail: string | null = null;
+                            let detectedEmail: string | null = b.email || null;
                             let finalUrl = resolvedWebsite;
                             let httpsSupported = resolvedWebsite && String(resolvedWebsite).startsWith('https://') ? 1 : 0;
 
@@ -208,6 +219,8 @@ export async function onRequestPost(context: any) {
                                     SET canonical_url = COALESCE(canonical_url, ?),
                                         website_status = CASE WHEN ? = 'known' THEN 'known' ELSE COALESCE(website_status, ?) END,
                                         website_source = COALESCE(website_source, ?),
+                                        website_verified = CASE WHEN ? = 'confirmed_live' THEN 'confirmed_live' ELSE COALESCE(website_verified, ?) END,
+                                        website_last_checked_at = COALESCE(website_last_checked_at, ?),
                                         opportunity_score = CASE WHEN opportunity_score IS NULL OR opportunity_score < ? THEN ? ELSE opportunity_score END,
                                         opportunity_reasons = CASE WHEN opportunity_score IS NULL OR opportunity_score < ? THEN ? ELSE opportunity_reasons END,
                                         intake_present = CASE WHEN intake_present = 1 THEN 1 ELSE ? END,
@@ -218,6 +231,7 @@ export async function onRequestPost(context: any) {
                                 `).bind(
                                     finalUrl,
                                     websiteStatus, websiteStatus, websiteSource,
+                                    websiteVerified, websiteVerified, websiteLastCheckedAt,
                                     scored.score, scored.score,
                                     scored.score, JSON.stringify(scored.reasons),
                                     intakePresent, bookingPresent, detectedEmail, dedupeKey, leadId
@@ -227,12 +241,14 @@ export async function onRequestPost(context: any) {
                                     INSERT OR IGNORE INTO leads (
                                         id, campaign_id, business_id, canonical_url,
                                         website_status, website_source,
+                                        website_verified, website_last_checked_at,
                                         opportunity_score, opportunity_reasons, intake_present, booking_present, detected_email, dedupe_key
                                     )
-                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                                 `).bind(
                                     candidateLeadId, campaignId, b.osm_id, finalUrl,
                                     websiteStatus, websiteSource,
+                                    websiteVerified, websiteLastCheckedAt,
                                     scored.score, JSON.stringify(scored.reasons), intakePresent, bookingPresent, detectedEmail, dedupeKey
                                 ).run();
                                 await env.DB.prepare(`
@@ -267,8 +283,10 @@ export async function onRequestPost(context: any) {
                     }
                     log.push(`leads_scored=${scoredCount}`);
                     log.push(`emails_found_count=${emailsFoundCount}`);
+                    log.push(`websites_verified_live=${websitesVerifiedCount}`);
                     logEvent('info', 'discovery.leads_scored', { campaignId, count: scoredCount });
                     logEvent('info', 'discovery.emails_found_count', { campaignId, count: emailsFoundCount });
+                    logEvent('info', 'discovery.websites_verified_live', { campaignId, count: websitesVerifiedCount });
 
                 } else if (job.type === 'AUDIT') {
                     const payload = JSON.parse(job.payload_json);

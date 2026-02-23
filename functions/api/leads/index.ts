@@ -26,6 +26,8 @@ export async function onRequestGet(context) {
                    l.opportunity_reasons,
                    COALESCE(l.website_status, 'unknown') as website_status,
                    l.website_source,
+                   COALESCE(l.website_verified, 'unknown') as website_verified,
+                   l.website_last_checked_at,
                    COALESCE(l.intake_present, 0) as intake_present,
                    COALESCE(l.booking_present, 0) as booking_present,
                    l.detected_email,

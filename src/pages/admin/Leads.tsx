@@ -46,18 +46,34 @@ const Leads: React.FC = () => {
 
     const websiteLabel = (lead: any) => {
         if (lead.canonical_url) return null;
-        if (lead.website_status === 'confirmed_missing') return 'No website found';
-        return 'Website unknown (OSM)';
+        if (lead.website_status === 'confirmed_missing') return 'None';
+        return 'Unknown';
     };
 
     const websiteSourceBadge = (lead: any) => {
         if (!lead.website_source) return null;
-        const label = lead.website_source === 'nominatim' ? 'Nominatim' : 'OSM';
+        const label = lead.website_source === 'nominatim'
+            ? 'Nominatim'
+            : lead.website_source === 'inferred_email'
+                ? 'Email'
+                : 'OSM';
         return (
             <span className="inline-flex items-center px-2 py-0.5 text-[9px] font-mono uppercase tracking-widest border border-white/10 text-secondary rounded-sm ml-2">
                 {label}
             </span>
         );
+    };
+
+    const websiteVerifiedBadge = (lead: any) => {
+        const status = String(lead.website_verified || 'unknown');
+        if (!lead.canonical_url && status === 'unknown') return null;
+        const label = status === 'confirmed_live' ? 'Live' : status === 'unreachable' ? 'Unreachable' : status === 'invalid_format' ? 'Invalid' : 'Unknown';
+        const cls = status === 'confirmed_live'
+            ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10'
+            : status === 'unreachable'
+                ? 'border-red-500/30 text-red-400 bg-red-500/10'
+                : 'border-white/10 text-secondary';
+        return <span className={`inline-flex items-center px-2 py-0.5 text-[9px] font-mono uppercase tracking-widest border rounded-sm ml-2 ${cls}`}>{label}</span>;
     };
 
     return (
@@ -126,11 +142,14 @@ const Leads: React.FC = () => {
                                             <div className="flex items-center flex-wrap gap-y-1">
                                                 <a href={lead.canonical_url} target="_blank" rel="noopener noreferrer" className="hover:text-accent font-mono truncate max-w-[220px] inline-block">{lead.canonical_url.replace(/^https?:\/\//, '')}</a>
                                                 {websiteSourceBadge(lead)}
+                                                {websiteVerifiedBadge(lead)}
                                             </div>
                                         ) : (
-                                            <span className="text-secondary/50 italic">
-                                                {websiteLabel(lead)}
-                                            </span>
+                                            <div className="flex items-center flex-wrap gap-y-1">
+                                                <span className="text-secondary/50 italic">{websiteLabel(lead)}</span>
+                                                {websiteSourceBadge(lead)}
+                                                {websiteVerifiedBadge(lead)}
+                                            </div>
                                         )}
                                     </td>
                                     <td className="p-4">

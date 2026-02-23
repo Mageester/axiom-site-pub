@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { apiError, d1ErrorMessage, json } from '../../_utils/http';
+import { ensureDiscoverySchema } from '../../_utils/schema';
 
 const ALLOWED_STATUSES = ['new', 'contacted', 'qualified', 'closed', 'disqualified'] as const;
 
@@ -11,8 +12,13 @@ const PatchLeadInput = z.object({
 export async function onRequestGet(context: any) {
     const { env, params } = context;
     try {
+        await ensureDiscoverySchema(env);
         const { results: leads } = await env.DB.prepare(`
             SELECT l.id, l.campaign_id, l.business_id, l.canonical_url, l.status, l.notes,
+                   COALESCE(l.website_status, 'unknown') as website_status,
+                   l.website_source,
+                   COALESCE(l.website_verified, 'unknown') as website_verified,
+                   l.website_last_checked_at,
                    b.name, b.address, b.phone, b.website_raw, b.lat, b.lon,
                    a.id as audit_id, a.final_url, a.redirect_chain_json, a.https_supported, 
                    a.response_time_ms, a.has_form, a.has_booking, a.has_chat,
@@ -39,6 +45,7 @@ export async function onRequestGet(context: any) {
 export async function onRequestPatch(context: any) {
     const { env, params, request } = context;
     try {
+        await ensureDiscoverySchema(env);
         let payload;
         try {
             payload = PatchLeadInput.parse(await request.json());

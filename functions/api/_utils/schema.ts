@@ -28,6 +28,8 @@ export async function ensureDiscoverySchema(env: any) {
     await tryRun(env, `ALTER TABLE leads ADD COLUMN dedupe_key TEXT`);
     await tryRun(env, `ALTER TABLE leads ADD COLUMN website_status TEXT DEFAULT 'unknown'`);
     await tryRun(env, `ALTER TABLE leads ADD COLUMN website_source TEXT`);
+    await tryRun(env, `ALTER TABLE leads ADD COLUMN website_verified TEXT DEFAULT 'unknown'`);
+    await tryRun(env, `ALTER TABLE leads ADD COLUMN website_last_checked_at TEXT`);
 
     await env.DB.prepare(`
         CREATE TABLE IF NOT EXISTS lead_campaigns (
@@ -42,6 +44,15 @@ export async function ensureDiscoverySchema(env: any) {
         CREATE TABLE IF NOT EXISTS website_enrich_cache (
             key TEXT PRIMARY KEY,
             website TEXT,
+            checked_at INTEGER NOT NULL
+        )
+    `).run().catch(() => null);
+
+    await env.DB.prepare(`
+        CREATE TABLE IF NOT EXISTS website_verify_cache (
+            key TEXT PRIMARY KEY,
+            verified_status TEXT NOT NULL,
+            final_url TEXT,
             checked_at INTEGER NOT NULL
         )
     `).run().catch(() => null);
