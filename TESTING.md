@@ -180,6 +180,29 @@ Use this when leads are incorrectly shown as having no website because OSM omitt
    - `name,email,phone,website,city,niche,angle_reason`
 4. DNC leads should be excluded by default from exports unless endpoint is called with `?include_dnc=1`.
 
+## Discovery Reliability: FK Constraint Is 0
+
+1. Run a discovery job for an existing campaign (or create a new campaign and trigger discovery).
+2. Inspect `/api/jobs/run` response `log[]` and Cloudflare/Pages Functions logs.
+3. Confirm there are no messages containing:
+   - `FOREIGN KEY constraint failed`
+   - `event":"discovery.persist_failed"` with FK errors
+4. Confirm discovery summary log is present and includes:
+   - `leads_found`
+   - `leads_inserted`
+   - `leads_linked`
+   - `fk_failures_count=0`
+
+## Discovery Reliability: Overpass Chunking / Throttling
+
+1. Run discovery for a niche likely to fan out (examples: `salons`, `hvac`, `beauty`) in a dense area.
+2. Confirm the run does not fail even if Overpass throttles.
+3. Inspect `/api/jobs/run` `log[]` and server logs:
+   - no fatal `Overpass query failed: Too many subrequests` job failure
+   - if throttled, expect graceful degradation with structured log `event":"overpass.degraded"`
+   - partial results are acceptable and discovery should continue
+4. Confirm leads still populate (even if fewer than ideal during throttling).
+
 ## Login 500 Triage (Cloudflare Pages)
 
 Use this when `POST /api/auth/login` returns `500` in production.

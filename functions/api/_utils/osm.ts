@@ -1,3 +1,5 @@
+import { expandNicheKeywords } from './discovery';
+
 const CANADA_PROVINCES = new Set(['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT']);
 const US_STATES = new Set([
     'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA',
@@ -13,6 +15,8 @@ const WEBSITE_ENRICH_MAX_PER_RUN = 20;
 let websiteVerifyRequestsThisRun = 0;
 let websiteVerifyWindowStartedAt = 0;
 const WEBSITE_VERIFY_MAX_PER_RUN = 30;
+const MAX_OVERPASS_REQUESTS_PER_RUN = 8;
+const MAX_TOTAL_OVERPASS_RESULTS = 200;
 
 function normalizeCityInput(input: string) {
     return input.replace(/\s+/g, ' ').trim();
@@ -547,38 +551,111 @@ export async function verifyWebsiteCandidate(rawWebsite: string, env?: any) {
     };
 }
 
+function sleepMs(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function parseRetryAfterMs(value: string | null) {
+    if (!value) return 0;
+    const asNum = Number(value);
+    if (Number.isFinite(asNum) && asNum > 0) return asNum * 1000;
+    const asDate = Date.parse(value);
+    if (!Number.isNaN(asDate)) return Math.max(0, asDate - Date.now());
+    return 0;
+}
+
+function isOverpassRetriableStatus(status: number) {
+    return status === 429 || status === 408 || status >= 500;
+}
+
+function isOverpassTooManySubrequests(message: string) {
+    return /too many subrequests/i.test(message);
+}
+
+function escapeRegexToken(token: string) {
+    return token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function chunkArray<T>(items: T[], size: number) {
+    const out: T[][] = [];
+    for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
+    return out;
+}
+
+function mergeOverpassData(target: any, next: any) {
+    if (!next?.elements?.length) return target;
+    const out = target || { elements: [] as any[] };
+    const seen = new Set((out.elements || []).map((e: any) => `${e.type || 'node'}:${e.id}`));
+    for (const el of (next.elements || [])) {
+        const key = `${el?.type || 'node'}:${el?.id}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.elements.push(el);
+        if (out.elements.length >= MAX_TOTAL_OVERPASS_RESULTS) break;
+    }
+    return out;
+}
+
 async function runOverpassQuery(query: string) {
-    let data: any;
     const overpassEndpoints = [
         'https://overpass-api.de/api/interpreter',
         'https://overpass.kumi.systems/api/interpreter'
     ];
     let lastError = 'Unknown error';
 
-    for (const url of overpassEndpoints) {
-        const ovController = new AbortController();
-        const ovTimer = setTimeout(() => ovController.abort(), 25000);
-        try {
-            const res = await fetch(url, {
-                method: 'POST',
-                body: 'data=' + encodeURIComponent(query),
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                signal: ovController.signal
-            });
-            if (!res.ok) throw new Error(`Overpass error ${res.status}`);
-            data = await res.json();
-            clearTimeout(ovTimer);
-            break;
-        } catch (e: any) {
-            clearTimeout(ovTimer);
-            lastError = e?.name === 'AbortError' ? 'Overpass timeout' : (e?.message || 'Overpass network error');
+    for (let attempt = 0; attempt < 3; attempt++) {
+        for (const url of overpassEndpoints) {
+            const ovController = new AbortController();
+            const ovTimer = setTimeout(() => ovController.abort(), 25000);
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    body: 'data=' + encodeURIComponent(query),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    signal: ovController.signal
+                });
+                const rawText = await res.text();
+                clearTimeout(ovTimer);
+
+                if (!res.ok) {
+                    const bodySnippet = rawText.slice(0, 200);
+                    const retriable = isOverpassRetriableStatus(res.status) || isOverpassTooManySubrequests(bodySnippet);
+                    lastError = isOverpassTooManySubrequests(bodySnippet)
+                        ? 'Overpass query failed: Too many subrequests'
+                        : `Overpass error ${res.status}`;
+                    if (retriable && attempt < 2) {
+                        const retryMs = parseRetryAfterMs(res.headers.get('Retry-After')) || (1000 * Math.pow(2, attempt));
+                        await sleepMs(retryMs);
+                        continue;
+                    }
+                    throw new Error(lastError);
+                }
+
+                try {
+                    return JSON.parse(rawText);
+                } catch {
+                    if (isOverpassTooManySubrequests(rawText)) {
+                        lastError = 'Overpass query failed: Too many subrequests';
+                        if (attempt < 2) {
+                            await sleepMs(1000 * Math.pow(2, attempt));
+                            continue;
+                        }
+                    }
+                    throw new Error('Overpass invalid JSON response');
+                }
+            } catch (e: any) {
+                clearTimeout(ovTimer);
+                lastError = e?.name === 'AbortError' ? 'Overpass timeout' : (e?.message || 'Overpass network error');
+                const retriable = isOverpassTooManySubrequests(lastError) || /Overpass (timeout|network error)/i.test(lastError);
+                if (retriable && attempt < 2) {
+                    await sleepMs(1000 * Math.pow(2, attempt));
+                    continue;
+                }
+            }
         }
     }
 
-    if (!data) {
-        throw new Error('Overpass query failed: ' + lastError);
-    }
-    return data;
+    throw new Error('Overpass query failed: ' + lastError);
 }
 
 function mapBusinessesFromOverpass(data: any, fallbackLat: number, fallbackLon: number, hardCap: number) {
@@ -669,6 +746,47 @@ export async function enrichWebsiteForBusiness(business: any, env?: any) {
     };
 }
 
+function buildNicheOverpassQuery(tokens: string[], radiusMeters: number, lat: number, lon: number) {
+    const safeTokens = Array.from(new Set(tokens.map(t => t.toLowerCase().trim()).filter(Boolean))).slice(0, 6);
+    const regex = safeTokens.length ? safeTokens.map(escapeRegexToken).join('|') : '';
+    const matcher = regex ? `~"(${regex})","i"` : null;
+    const craftFilter = matcher ? `["craft"${matcher}]` : `["craft"]`;
+    const shopFilter = matcher ? `["shop"${matcher}]` : `["shop"]`;
+    return `
+        [out:json][timeout:20];
+        (
+            node${craftFilter}(around:${radiusMeters},${lat},${lon});
+            way${craftFilter}(around:${radiusMeters},${lat},${lon});
+            relation${craftFilter}(around:${radiusMeters},${lat},${lon});
+            node${shopFilter}(around:${radiusMeters},${lat},${lon});
+            way${shopFilter}(around:${radiusMeters},${lat},${lon});
+            relation${shopFilter}(around:${radiusMeters},${lat},${lon});
+        );
+        out center;
+    `;
+}
+
+function buildBroadOverpassQuery(radiusMeters: number, lat: number, lon: number) {
+    return `
+        [out:json][timeout:20];
+        (
+            node["craft"](around:${radiusMeters},${lat},${lon});
+            way["craft"](around:${radiusMeters},${lat},${lon});
+            relation["craft"](around:${radiusMeters},${lat},${lon});
+            node["office"](around:${radiusMeters},${lat},${lon});
+            way["office"](around:${radiusMeters},${lat},${lon});
+            relation["office"](around:${radiusMeters},${lat},${lon});
+            node["shop"](around:${radiusMeters},${lat},${lon});
+            way["shop"](around:${radiusMeters},${lat},${lon});
+            relation["shop"](around:${radiusMeters},${lat},${lon});
+            node["amenity"](around:${radiusMeters},${lat},${lon});
+            way["amenity"](around:${radiusMeters},${lat},${lon});
+            relation["amenity"](around:${radiusMeters},${lat},${lon});
+        );
+        out center;
+    `;
+}
+
 export async function fetchOsmBusinesses(
     niche: string,
     city: string,
@@ -689,21 +807,37 @@ export async function fetchOsmBusinesses(
         throw new Error(e?.message || 'Geocoding failed');
     }
 
-    const nicheQuery = `
-        [out:json][timeout:20];
-        (
-            node["craft"="${craftType}"](around:${r},${lat},${lon});
-            way["craft"="${craftType}"](around:${r},${lat},${lon});
-            node["shop"="${craftType}"](around:${r},${lat},${lon});
-            way["shop"="${craftType}"](around:${r},${lat},${lon});
-        );
-        out body;
-        >;
-        out skel qt;
-    `;
+    let overpassRequestsUsed = 0;
+    const overpassErrors: string[] = [];
+    let overpassDegraded = false;
+    const runOverpassLimited = async (query: string) => {
+        if (overpassRequestsUsed >= MAX_OVERPASS_REQUESTS_PER_RUN) {
+            overpassDegraded = true;
+            overpassErrors.push('request cap reached');
+            return null;
+        }
+        overpassRequestsUsed++;
+        try {
+            return await runOverpassQuery(query);
+        } catch (e: any) {
+            overpassDegraded = true;
+            overpassErrors.push(String(e?.message || 'overpass error').slice(0, 200));
+            return null;
+        }
+    };
 
-    const nicheData = await runOverpassQuery(nicheQuery);
-    let businesses = mapBusinessesFromOverpass(nicheData, lat, lon, 300);
+    const expanded = Array.from(new Set([craftType, ...expandNicheKeywords(niche)])).filter(Boolean);
+    const keywordChunks = chunkArray(expanded, 5).slice(0, MAX_OVERPASS_REQUESTS_PER_RUN);
+    let nicheData: any = { elements: [] };
+    for (const chunk of (keywordChunks.length ? keywordChunks : [[craftType]])) {
+        if ((nicheData.elements || []).length >= MAX_TOTAL_OVERPASS_RESULTS) break;
+        const chunkQuery = buildNicheOverpassQuery(chunk, r, lat, lon);
+        const chunkData = await runOverpassLimited(chunkQuery);
+        if (!chunkData) continue;
+        nicheData = mergeOverpassData(nicheData, chunkData);
+    }
+
+    let businesses = mapBusinessesFromOverpass(nicheData, lat, lon, MAX_TOTAL_OVERPASS_RESULTS);
 
     const lowThreshold = mode === 'strict' ? 12 : 40;
     let broadFallbackUsed = false;
@@ -711,41 +845,42 @@ export async function fetchOsmBusinesses(
 
     if (businesses.length < lowThreshold) {
         if (mode === 'strict') strictFallbackTriggered = true;
-        const broadQuery = `
-            [out:json][timeout:20];
-            (
-                node["craft"](around:${r},${lat},${lon});
-                way["craft"](around:${r},${lat},${lon});
-                node["office"](around:${r},${lat},${lon});
-                way["office"](around:${r},${lat},${lon});
-                node["shop"](around:${r},${lat},${lon});
-                way["shop"](around:${r},${lat},${lon});
-                node["amenity"](around:${r},${lat},${lon});
-                way["amenity"](around:${r},${lat},${lon});
-            );
-            out body;
-            >;
-            out skel qt;
-        `;
-        const broadData = await runOverpassQuery(broadQuery);
-        const broad = mapBusinessesFromOverpass(broadData, lat, lon, 300);
-        const seen = new Set(businesses.map(b => b.osm_id));
-        for (const b of broad) {
-            if (seen.has(b.osm_id)) continue;
-            businesses.push(b);
-            seen.add(b.osm_id);
-            if (businesses.length >= 300) break;
+        const broadThreshold = Math.min(20, lowThreshold);
+        const initialBroadRadius = Math.min(r, 10000, Math.max(1000, Math.floor(r / 2)));
+        const broadRadii = Array.from(new Set([initialBroadRadius, r].filter(v => v > 0)));
+        let broadCombined: any = { elements: [] };
+        for (const broadRadius of broadRadii) {
+            if (businesses.length >= MAX_TOTAL_OVERPASS_RESULTS) break;
+            const broadData = await runOverpassLimited(buildBroadOverpassQuery(broadRadius, lat, lon));
+            if (broadData) {
+                broadCombined = mergeOverpassData(broadCombined, broadData);
+            }
+            const broadPreview = mapBusinessesFromOverpass(broadCombined, lat, lon, MAX_TOTAL_OVERPASS_RESULTS);
+            if (broadPreview.length >= broadThreshold || broadRadius >= r) {
+                const seen = new Set(businesses.map(b => `${b.osm_type || 'node'}:${b.osm_id}`));
+                for (const b of broadPreview) {
+                    const key = `${b.osm_type || 'node'}:${b.osm_id}`;
+                    if (seen.has(key)) continue;
+                    businesses.push(b);
+                    seen.add(key);
+                    if (businesses.length >= MAX_TOTAL_OVERPASS_RESULTS) break;
+                }
+                break;
+            }
         }
         broadFallbackUsed = true;
     }
 
     return {
-        businesses: businesses.slice(0, 300),
+        businesses: businesses.slice(0, MAX_TOTAL_OVERPASS_RESULTS),
         meta: {
             geocode_query: normalizeCityInput(city),
             broad_query_used: broadFallbackUsed,
             strict_fallback_triggered: strictFallbackTriggered,
-            geocode_country: inferCountryFromRegion(city).countryCode || null
+            geocode_country: inferCountryFromRegion(city).countryCode || null,
+            overpass_degraded: overpassDegraded,
+            overpass_requests_used: overpassRequestsUsed,
+            overpass_errors: overpassErrors.slice(0, 5)
         }
     };
 }
