@@ -4,7 +4,12 @@ import { BackgroundAtmosphere } from './components/BackgroundAtmosphere';
 import { BrandLockup } from './components/BrandLockup';
 
 import Home from './pages/Home';
-import Mission from './pages/Mission';
+import ServicesPage from './pages/ServicesPage';
+import WorkPage from './pages/WorkPage';
+import PricingPage from './pages/PricingPage';
+import ContactPage from './pages/ContactPage';
+
+// Admin System Imports
 import Login from './pages/admin/Login';
 import Account from './pages/admin/Account';
 import Campaigns from './pages/admin/Campaigns';
@@ -15,10 +20,12 @@ import Jobs from './pages/admin/Jobs';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const ScrollToTop = () => {
-    const { pathname } = useLocation();
+    const { pathname, hash } = useLocation();
     useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [pathname]);
+        if (!hash) {
+            window.scrollTo(0, 0);
+        }
+    }, [pathname, hash]);
     return null;
 };
 
@@ -27,14 +34,12 @@ const App: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
 
-    // Scroll tracking for nav transparency
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 20);
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Global scroll reveal logic on route change
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -45,7 +50,6 @@ const App: React.FC = () => {
             });
         }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
 
-        // slight delay to allow rendering before observing
         const timer = setTimeout(() => {
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }, 100);
@@ -56,12 +60,9 @@ const App: React.FC = () => {
         };
     }, [location.pathname]);
 
-    // Close mobile menu on route change
     useEffect(() => {
         setMobileMenuOpen(false);
     }, [location.pathname]);
-
-    const isHome = location.pathname === '/';
 
     return (
         <div className="min-h-screen relative flex flex-col font-inter bg-background text-primary selection:bg-[var(--accent)] selection:text-white">
@@ -78,15 +79,11 @@ const App: React.FC = () => {
                         />
                     </Link>
                     <div className="hidden md:flex items-center gap-10 text-[13px] font-medium text-secondary">
-                        <Link to="/mission" className="hover:text-primary transition-colors duration-300 focus-visible:text-primary">Mission</Link>
-                        {isHome ? (
-                            <>
-                                <a href="#capabilities" className="hover:text-primary transition-colors duration-300 focus-visible:text-primary">Capabilities</a>
-                                <a href="#engagement" className="hover:text-primary transition-colors duration-300 focus-visible:text-primary">Engagement</a>
-                                <a href="#standards" className="hover:text-primary transition-colors duration-300 focus-visible:text-primary">Standards</a>
-                            </>
-                        ) : null}
-                        <Link to="/#contact" className="hover:text-primary transition-colors duration-300 focus-visible:text-primary">Contact</Link>
+                        <Link to="/" className="hover:text-primary transition-colors focus-visible:text-primary">Home</Link>
+                        <Link to="/services" className="hover:text-primary transition-colors focus-visible:text-primary">Services</Link>
+                        <Link to="/work" className="hover:text-primary transition-colors focus-visible:text-primary">Work</Link>
+                        <Link to="/pricing" className="hover:text-primary transition-colors focus-visible:text-primary">Pricing</Link>
+                        <Link to="/contact" className="hover:text-primary transition-colors focus-visible:text-primary">Contact</Link>
                     </div>
 
                     <button
@@ -107,16 +104,12 @@ const App: React.FC = () => {
 
                 {/* Mobile Menu */}
                 {mobileMenuOpen && (
-                    <div className="md:hidden bg-[#0a0c0e] border-b border-subtle absolute top-20 left-0 w-full px-6 py-4 flex flex-col gap-4 text-sm font-medium text-secondary shadow-xl">
-                        <Link to="/mission" onClick={() => setMobileMenuOpen(false)}>Mission</Link>
-                        {isHome && (
-                            <>
-                                <a href="#capabilities" onClick={() => setMobileMenuOpen(false)}>Capabilities</a>
-                                <a href="#engagement" onClick={() => setMobileMenuOpen(false)}>Engagement</a>
-                                <a href="#standards" onClick={() => setMobileMenuOpen(false)}>Standards</a>
-                            </>
-                        )}
-                        <Link to="/#contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+                    <div className="md:hidden bg-[#0a0c0e] border-b border-subtle absolute top-20 left-0 w-full px-6 py-4 flex flex-col gap-4 text-sm font-medium text-secondary shadow-xl z-50">
+                        <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+                        <Link to="/services" onClick={() => setMobileMenuOpen(false)}>Services</Link>
+                        <Link to="/work" onClick={() => setMobileMenuOpen(false)}>Work</Link>
+                        <Link to="/pricing" onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
+                        <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
                     </div>
                 )}
             </nav>
@@ -124,9 +117,15 @@ const App: React.FC = () => {
             <main className="flex-1 flex flex-col">
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/mission" element={<Mission />} />
+                    <Route path="/services" element={<ServicesPage />} />
+                    <Route path="/work" element={<WorkPage />} />
+                    <Route path="/pricing" element={<PricingPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
 
-                    {/* Secure Admin Routes */}
+                    {/* Old mission route redirects to services */}
+                    <Route path="/mission" element={<Navigate to="/services" replace />} />
+
+                    {/* Secure Admin Routes (hidden from public ui) */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/admin/login" element={<Navigate to="/login" replace />} />
                     <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
@@ -149,14 +148,9 @@ const App: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col items-center md:items-end gap-2 text-[12px] text-secondary font-mono">
-                        <span className="tracking-widest uppercase text-[10px] opacity-60">Ontario, Canada</span>
+                        <span className="tracking-widest uppercase text-[10px] opacity-60">Professional Website Building</span>
                         <a href="mailto:contact@axiominfrastructure.com" className="hover:text-primary transition-colors duration-300 tracking-tight">contact@axiominfrastructure.com</a>
                     </div>
-                </div>
-                <div className="max-w-[1100px] mx-auto mt-16 flex justify-center md:justify-start">
-                    <p className="text-[10px] text-secondary/40 font-mono uppercase tracking-[0.2em] border border-subtle px-4 py-2 bg-surface/30 rounded-sm shadow-inner">
-                        Vertical AI Systems // Web Infrastructure // Discreet Delivery
-                    </p>
                 </div>
             </footer>
         </div>
