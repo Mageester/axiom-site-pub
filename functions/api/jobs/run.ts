@@ -154,7 +154,23 @@ export async function onRequestPost(context: any) {
                     ).bind(campaignId).all();
                     if (campaignCheckRows.length === 0) throw new Error(`Campaign not found for discovery: ${campaignId}`);
 
-                    const discoveryRes = await fetchOsmBusinesses(niche, city, Number(radius_km) || 10, env, mode);
+                    log.push(`Discovery source fetch: geocode+overpass city=${city} mode=${mode}`);
+                    let discoveryRes: any;
+                    try {
+                        discoveryRes = await fetchOsmBusinesses(niche, city, Number(radius_km) || 10, env, mode);
+                    } catch (sourceE: any) {
+                        const sourceMsg = String(sourceE?.message || 'discovery source fetch failed');
+                        const step = sourceMsg.toLowerCase().includes('geocode') ? 'geocode' : (sourceMsg.toLowerCase().includes('overpass') ? 'overpass' : 'source_fetch');
+                        log.push(`Discovery source failed (${step}): ${sourceMsg}`);
+                        logEvent('error', 'discovery.source_fetch_failed', {
+                            campaignId,
+                            city,
+                            mode,
+                            step,
+                            error: sourceMsg.slice(0, 300)
+                        });
+                        throw sourceE;
+                    }
                     const businesses = discoveryRes.businesses || [];
                     if (discoveryRes.meta?.broad_query_used) {
                         log.push(`broad_query_used city=${city} mode=${mode}`);

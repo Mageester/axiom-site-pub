@@ -766,22 +766,18 @@ function buildNicheOverpassQuery(tokens: string[], radiusMeters: number, lat: nu
     `;
 }
 
-function buildBroadOverpassQuery(radiusMeters: number, lat: number, lon: number) {
+function buildBroadOverpassQuery(radiusMeters: number, lat: number, lon: number, categories?: string[]) {
+    const cats = (categories && categories.length ? categories : ['craft', 'office', 'shop', 'amenity'])
+        .filter(c => ['craft', 'office', 'shop', 'amenity'].includes(c));
+    const clauses = cats.flatMap(cat => ([
+        `node["${cat}"](around:${radiusMeters},${lat},${lon});`,
+        `way["${cat}"](around:${radiusMeters},${lat},${lon});`,
+        `relation["${cat}"](around:${radiusMeters},${lat},${lon});`
+    ])).join('\n                ');
     return `
         [out:json][timeout:20];
         (
-            node["craft"](around:${radiusMeters},${lat},${lon});
-            way["craft"](around:${radiusMeters},${lat},${lon});
-            relation["craft"](around:${radiusMeters},${lat},${lon});
-            node["office"](around:${radiusMeters},${lat},${lon});
-            way["office"](around:${radiusMeters},${lat},${lon});
-            relation["office"](around:${radiusMeters},${lat},${lon});
-            node["shop"](around:${radiusMeters},${lat},${lon});
-            way["shop"](around:${radiusMeters},${lat},${lon});
-            relation["shop"](around:${radiusMeters},${lat},${lon});
-            node["amenity"](around:${radiusMeters},${lat},${lon});
-            way["amenity"](around:${radiusMeters},${lat},${lon});
-            relation["amenity"](around:${radiusMeters},${lat},${lon});
+                ${clauses}
         );
         out center;
     `;
@@ -848,12 +844,17 @@ export async function fetchOsmBusinesses(
         const broadThreshold = Math.min(20, lowThreshold);
         const initialBroadRadius = Math.min(r, 10000, Math.max(1000, Math.floor(r / 2)));
         const broadRadii = Array.from(new Set([initialBroadRadius, r].filter(v => v > 0)));
+        const broadCategoryChunks = [['craft', 'shop'], ['office', 'amenity']];
         let broadCombined: any = { elements: [] };
         for (const broadRadius of broadRadii) {
             if (businesses.length >= MAX_TOTAL_OVERPASS_RESULTS) break;
-            const broadData = await runOverpassLimited(buildBroadOverpassQuery(broadRadius, lat, lon));
-            if (broadData) {
-                broadCombined = mergeOverpassData(broadCombined, broadData);
+            for (const cats of broadCategoryChunks) {
+                if (overpassRequestsUsed >= MAX_OVERPASS_REQUESTS_PER_RUN) break;
+                const broadData = await runOverpassLimited(buildBroadOverpassQuery(broadRadius, lat, lon, cats));
+                if (broadData) {
+                    broadCombined = mergeOverpassData(broadCombined, broadData);
+                }
+                if ((broadCombined.elements || []).length >= MAX_TOTAL_OVERPASS_RESULTS) break;
             }
             const broadPreview = mapBusinessesFromOverpass(broadCombined, lat, lon, MAX_TOTAL_OVERPASS_RESULTS);
             if (broadPreview.length >= broadThreshold || broadRadius >= r) {
