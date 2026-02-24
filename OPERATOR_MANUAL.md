@@ -4,10 +4,11 @@
 
 This repository contains:
 
-- Public marketing site (React/Vite in `src/`)
-- Admin lead finder UI (same React app)
+- Public website building agency site (React/Vite in `src/`)
+- Public intake form handler (`functions/api/public/website-request.ts`)
+- Hidden Admin lead finder UI (same React app, behind `/login`)
 - Cloudflare Pages Functions API (`functions/api/*`)
-- D1-backed auth, campaigns, leads, jobs, audits, scores, summaries
+- D1-backed auth, website requests, campaigns, leads, jobs, audits
 
 ## Platform Constraints (current repo reality)
 

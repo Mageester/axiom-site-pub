@@ -1,17 +1,17 @@
-# Axiom Infrastructure - Production Web Architecture
+# Axiom Web Infrastructure - Professional Website Agency
 
-A production-ready static marketing site built with Vite, React, and Tailwind CSS.
-Designed for a dark, institutional aesthetic, prioritizing high performance and accessibility.
+A production-ready static agency site built with Vite, React, and Tailwind CSS.
+Configured for selling high-performance, professional website builds and maintenance to local and service businesses.
 
 ## Infrastructure Stack
-* **Framework:** React 18 + Vite (Fully Static)
+* **Framework:** React 18 + Vite (Fully Static for Public, API Functions for Intake)
 * **Styling:** Tailwind CSS
 * **Typography:** Space Grotesk (Headings), Inter (Body)
 * **Colors:** Dark Background (`#0B0B0C`), Surface (`#15171A`), Accent (`#4B6EAF`)
 
 ## Assets
-We have provided a fallback SVG logo (`public/logo.svg`).
-**Action Required:** Please place your provided Axiom Infrastructure logo image at `public/logo.png`. The application is already configured to prioritize `logo.png` and will fallback to `logo.svg` if the image is missing. 
+We have provided a fallback SVG logo (`public/favicon.svg`).
+**Action Required:** Please place your provided agency logo image if necessary. 
 
 ## Local Development & Build Commands
 
