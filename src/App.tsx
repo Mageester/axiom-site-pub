@@ -6,6 +6,7 @@ import { BrandLockup } from './components/BrandLockup';
 import Home from './pages/Home';
 import ServicesPage from './pages/ServicesPage';
 import WorkPage from './pages/WorkPage';
+import WorkCaseStudyPage from './pages/WorkCaseStudyPage';
 import PricingPage from './pages/PricingPage';
 import ContactPage from './pages/ContactPage';
 
@@ -138,6 +139,7 @@ const App: React.FC = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/services" element={<ServicesPage />} />
                     <Route path="/work" element={<WorkPage />} />
+                    <Route path="/work/:slug" element={<WorkCaseStudyPage />} />
                     <Route path="/pricing" element={<PricingPage />} />
                     <Route path="/contact" element={<ContactPage />} />
 
