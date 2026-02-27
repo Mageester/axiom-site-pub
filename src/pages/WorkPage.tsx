@@ -67,11 +67,11 @@ const WorkPage: React.FC = () => {
                                 <img
                                     src={
                                         project.niche.includes('HVAC')
-                                            ? "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=800"
+                                            ? "/hvac-case-study.webp"
                                             : project.niche.includes('Landscaping')
-                                                ? "/landscape-concept.jpg"
+                                                ? "/landscaping-concept.webp"
                                                 : project.niche.includes('Roofing')
-                                                    ? "/roofing-concept.jpg"
+                                                    ? "/roofing-concept.webp"
                                                     : "https://images.unsplash.com/photo-1581094288338-2314dddb7ec3?auto=format&fit=crop&q=80&w=800"
                                     }
                                     alt={project.title}
