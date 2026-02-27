@@ -32,12 +32,12 @@ const WorkPage: React.FC = () => {
                     >
                         <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div className="h-48 md:h-56 w-full bg-white/5 border-b border-white/5 mb-6 flex items-center justify-center rounded-sm relative overflow-hidden group-hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-500">
-                            <div className="absolute inset-0 bg-black/20 z-10 transition-colors duration-500 group-hover:bg-black/10"></div>
                             <img
-                                src="https://images.unsplash.com/photo-1581094288338-2314dddb7ec3?auto=format&fit=crop&q=80&w=800"
+                                src="/hvac-demo.png"
                                 alt="Demonstration"
-                                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             />
+                            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300 pointer-events-none z-10"></div>
                         </div>
                         <div className="flex items-center justify-between gap-3 mb-3">
                             <span className="text-[10px] font-mono uppercase tracking-widest border px-2 py-1 rounded-sm border-accent/20 text-accent/90 bg-accent/5">
@@ -64,7 +64,6 @@ const WorkPage: React.FC = () => {
                         >
                             <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div className="h-48 md:h-56 w-full bg-white/5 border-b border-white/5 mb-6 flex items-center justify-center rounded-sm relative overflow-hidden group-hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-500">
-                                <div className="absolute inset-0 bg-black/20 z-10 transition-colors duration-500 group-hover:bg-black/10"></div>
                                 <img
                                     src={
                                         project.niche.includes('HVAC')
@@ -76,8 +75,9 @@ const WorkPage: React.FC = () => {
                                                     : "https://images.unsplash.com/photo-1581094288338-2314dddb7ec3?auto=format&fit=crop&q=80&w=800"
                                     }
                                     alt={project.title}
-                                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
+                                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300 pointer-events-none z-10"></div>
                             </div>
                             <div className="flex items-center justify-between gap-3 mb-3">
                                 <span className={`text-[10px] font-mono uppercase tracking-widest border px-2 py-1 rounded-sm ${project.label === 'Sample Case Study' ? 'border-accent/20 text-accent/90 bg-accent/5' : 'border-white/10 text-secondary'}`}>
