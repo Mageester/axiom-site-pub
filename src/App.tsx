@@ -84,7 +84,7 @@ const App: React.FC = () => {
                     <div className="hidden md:flex items-center gap-10 text-[13px] font-medium text-secondary">
                         <Link to="/" className="hover:text-primary transition-colors focus-visible:text-primary">Home</Link>
                         <Link to="/services" className="hover:text-primary transition-colors focus-visible:text-primary">Services</Link>
-                        <Link to="/work" className="hover:text-primary transition-colors focus-visible:text-primary">Work</Link>
+                        <Link to="/work" className="hover:text-primary transition-colors focus-visible:text-primary">Concepts</Link>
                         <Link to="/pricing" className="hover:text-primary transition-colors focus-visible:text-primary">Pricing</Link>
                         <Link to="/contact" className="hover:text-primary transition-colors focus-visible:text-primary">Contact</Link>
                     </div>
@@ -119,7 +119,7 @@ const App: React.FC = () => {
                     <div className="md:hidden bg-[#0a0c0e] border-b border-subtle absolute top-20 left-0 w-full px-6 py-4 flex flex-col gap-4 text-sm font-medium text-secondary shadow-xl z-50">
                         <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
                         <Link to="/services" onClick={() => setMobileMenuOpen(false)}>Services</Link>
-                        <Link to="/work" onClick={() => setMobileMenuOpen(false)}>Work</Link>
+                        <Link to="/work" onClick={() => setMobileMenuOpen(false)}>Concepts</Link>
                         <Link to="/pricing" onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
                         <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
                         <Link

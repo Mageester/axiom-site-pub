@@ -103,7 +103,7 @@ const Home: React.FC = () => {
                             Request a Consultation
                         </Link>
                         <Link to="/work" className="w-full sm:w-auto px-8 py-4 bg-[#121417]/50 border border-white/10 hover:border-white/30 hover:bg-white/5 text-primary text-[12px] font-semibold tracking-[0.05em] uppercase transition-all duration-300">
-                            View Work
+                            View Concepts
                         </Link>
                     </div>
                 </div>

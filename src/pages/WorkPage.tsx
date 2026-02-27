@@ -7,12 +7,12 @@ const WorkPage: React.FC = () => {
         <div className="pt-32 pb-24">
             <section className="px-6 pb-24 border-b border-subtle">
                 <div className="max-w-[800px] w-full mx-auto text-center reveal">
-                    <div className="text-[11px] font-mono text-accent/80 uppercase tracking-widest mb-6">Our Work</div>
+                    <div className="text-[11px] font-mono text-accent/80 uppercase tracking-widest mb-6">Concept Architectures</div>
                     <h1 className="text-[40px] sm:text-[56px] lg:text-[72px] font-semibold tracking-[-0.02em] mb-8 leading-[1.02] text-primary">
-                        Performance-First Case Studies
+                        Industry Demonstrations
                     </h1>
                     <p className="text-[17px] text-secondary max-w-[700px] mx-auto leading-relaxed font-light reveal reveal-delay-1">
-                        Click through sample and concept builds to see how Axiom structures websites for local service businesses, contractors, and premium operators.
+                        Explore our blueprint demonstrations. We custom-build these structural frameworks for specific industries to show you exactly how performance and conversion architecture should work before you hire us.
                     </p>
                 </div>
             </section>
@@ -43,7 +43,7 @@ const WorkPage: React.FC = () => {
                             <div className="text-[12px] text-secondary/60 uppercase font-mono tracking-widest mb-4">{project.niche}</div>
                             <p className="text-[14px] text-secondary leading-relaxed mb-6">{project.summary}</p>
                             <div className="mt-auto flex items-center justify-between">
-                                <span className="text-[10px] font-mono uppercase tracking-widest text-secondary">Open Case Study</span>
+                                <span className="text-[10px] font-mono uppercase tracking-widest text-secondary">Open Blueprint</span>
                                 <span className="text-accent/80 text-lg leading-none">→</span>
                             </div>
                         </Link>
