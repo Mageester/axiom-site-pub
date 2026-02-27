@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { caseStudies } from '../data/caseStudies';
-import { Activity, PenTool, Leaf, Home, LayoutTemplate } from 'lucide-react';
 
 const WorkPage: React.FC = () => {
     return (
@@ -27,9 +26,13 @@ const WorkPage: React.FC = () => {
                         className="surface-panel p-8 md:p-10 relative overflow-hidden group hover:-translate-y-1 hover:border-white/20 transition-all duration-500 flex flex-col"
                     >
                         <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="h-48 md:h-56 w-full bg-gradient-to-br from-zinc-800 to-zinc-900 border-b border-white/5 mb-6 flex items-center justify-center rounded-sm relative overflow-hidden group-hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-500">
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px] opacity-20"></div>
-                            <Activity className="w-12 h-12 text-zinc-500 group-hover:text-blue-500/50 group-hover:scale-110 transition-all duration-500 relative z-10" />
+                        <div className="h-48 md:h-56 w-full bg-white/5 border-b border-white/5 mb-6 flex items-center justify-center rounded-sm relative overflow-hidden group-hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-500">
+                            <div className="absolute inset-0 bg-black/20 z-10 transition-colors duration-500 group-hover:bg-black/10"></div>
+                            <img
+                                src="https://images.unsplash.com/photo-1581094288338-2314dddb7ec3?auto=format&fit=crop&q=80&w=800"
+                                alt="Demonstration"
+                                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                            />
                         </div>
                         <div className="flex items-center justify-between gap-3 mb-3">
                             <span className="text-[10px] font-mono uppercase tracking-widest border px-2 py-1 rounded-sm border-accent/20 text-accent/90 bg-accent/5">
@@ -55,17 +58,21 @@ const WorkPage: React.FC = () => {
                             style={{ transitionDelay: `${i * 50}ms` }}
                         >
                             <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div className="h-48 md:h-56 w-full bg-gradient-to-br from-zinc-800 to-zinc-900 border-b border-white/5 mb-6 flex items-center justify-center rounded-sm relative overflow-hidden group-hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-500">
-                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px] opacity-20"></div>
-                                {project.niche.includes('HVAC') ? (
-                                    <PenTool className="w-12 h-12 text-zinc-500 group-hover:text-blue-500/50 group-hover:scale-110 transition-all duration-500 relative z-10" />
-                                ) : project.niche.includes('Landscaping') ? (
-                                    <Leaf className="w-12 h-12 text-zinc-500 group-hover:text-amber-500/50 group-hover:scale-110 transition-all duration-500 relative z-10" />
-                                ) : project.niche.includes('Roofing') ? (
-                                    <Home className="w-12 h-12 text-zinc-500 group-hover:text-red-500/50 group-hover:scale-110 transition-all duration-500 relative z-10" />
-                                ) : (
-                                    <LayoutTemplate className="w-12 h-12 text-zinc-500 group-hover:text-purple-500/50 group-hover:scale-110 transition-all duration-500 relative z-10" />
-                                )}
+                            <div className="h-48 md:h-56 w-full bg-white/5 border-b border-white/5 mb-6 flex items-center justify-center rounded-sm relative overflow-hidden group-hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-500">
+                                <div className="absolute inset-0 bg-black/20 z-10 transition-colors duration-500 group-hover:bg-black/10"></div>
+                                <img
+                                    src={
+                                        project.niche.includes('HVAC')
+                                            ? "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=800"
+                                            : project.niche.includes('Landscaping')
+                                                ? "https://images.unsplash.com/photo-1558905619-159c4740e21a?auto=format&fit=crop&q=80&w=800"
+                                                : project.niche.includes('Roofing')
+                                                    ? "https://images.unsplash.com/photo-1632759162353-194941ee24fd?auto=format&fit=crop&q=80&w=800"
+                                                    : "https://images.unsplash.com/photo-1581094288338-2314dddb7ec3?auto=format&fit=crop&q=80&w=800"
+                                    }
+                                    alt={project.title}
+                                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                />
                             </div>
                             <div className="flex items-center justify-between gap-3 mb-3">
                                 <span className={`text-[10px] font-mono uppercase tracking-widest border px-2 py-1 rounded-sm ${project.label === 'Sample Case Study' ? 'border-accent/20 text-accent/90 bg-accent/5' : 'border-white/10 text-secondary'}`}>
