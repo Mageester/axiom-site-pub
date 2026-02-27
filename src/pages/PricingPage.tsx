@@ -51,7 +51,7 @@ const PricingPage: React.FC = () => {
                         <div className="text-[11px] font-mono text-primary uppercase tracking-widest mb-6 border-b border-subtle pb-6">$3,500 – $5,500 CAD <br /><span className="lowercase text-secondary/60">(4-6 weeks)</span></div>
                         <ul className="flex flex-col gap-4 text-[13px] text-secondary flex-1">
                             <li className="flex items-start gap-3"><span className="text-accent/60 mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"></span>5-10 Page Custom Design</li>
-                            <li className="flex items-start gap-3"><span className="text-accent/60 mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"></span>Focused Service Service Pages</li>
+                            <li className="flex items-start gap-3"><span className="text-accent/60 mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"></span>Focused Service Pages</li>
                             <li className="flex items-start gap-3"><span className="text-accent/60 mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"></span>Advanced Local SEO Structure (Schema)</li>
                             <li className="flex items-start gap-3"><span className="text-accent/60 mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"></span>Google Analytics & Tag Manager</li>
                             <li className="flex items-start gap-3"><span className="text-accent/60 mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"></span>Speed Guarantees (90+ Lighthouse)</li>

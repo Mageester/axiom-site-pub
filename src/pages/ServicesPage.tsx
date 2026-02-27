@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 
 const ServicesPage: React.FC = () => {
@@ -43,6 +44,19 @@ const ServicesPage: React.FC = () => {
                             <p className="text-[14px] text-secondary leading-relaxed relative">{srv.desc}</p>
                         </div>
                     ))}
+                </div>
+            </section>
+
+            {/* SERVICES CTA */}
+            <section className="py-24 px-6 border-t border-subtle">
+                <div className="max-w-[800px] mx-auto text-center flex flex-col items-center">
+                    <h2 className="text-[24px] sm:text-[32px] font-semibold text-primary mb-6">Ready to Build Your Infrastructure?</h2>
+                    <p className="text-[15px] text-secondary mb-10 leading-relaxed max-w-[600px]">
+                        Get a clear, technical assessment of your current infrastructure and a roadmap for improvement. No commitment required.
+                    </p>
+                    <Link to="/contact" className="px-8 py-4 bg-white text-black hover:bg-[#e2e2e2] text-[12px] font-bold uppercase tracking-widest rounded-sm transition-all duration-300">
+                        Request a Consultation
+                    </Link>
                 </div>
             </section>
         </div>

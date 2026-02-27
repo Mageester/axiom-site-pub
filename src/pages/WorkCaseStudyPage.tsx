@@ -3,6 +3,13 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 import { getCaseStudyBySlug } from '../data/caseStudies';
 
+const getConceptImage = (slug: string) => {
+    if (slug.includes('hvac')) return 'https://images.unsplash.com/photo-1581094288338-2314dddb7ec3?auto=format&fit=crop&q=80&w=800';
+    if (slug.includes('landscaping') || slug.includes('lawn')) return 'https://images.unsplash.com/photo-1558904541-efa843a96f0f?auto=format&fit=crop&q=80&w=800';
+    if (slug.includes('roofing')) return 'https://images.unsplash.com/photo-1632759145351-1d592919f522?auto=format&fit=crop&q=80&w=800';
+    return 'https://images.unsplash.com/photo-1504307651254-35680f356db4?auto=format&fit=crop&q=80&w=800'; // fallback
+};
+
 const WorkCaseStudyPage: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
     const entry = getCaseStudyBySlug(String(slug || ''));
@@ -100,8 +107,13 @@ const WorkCaseStudyPage: React.FC = () => {
 
                         <div className="surface-panel p-6 rounded-sm">
                             <h2 className="text-[12px] font-mono text-secondary uppercase tracking-widest mb-4">Concept Visual</h2>
-                            <div className="h-[220px] rounded-sm border border-white/10 bg-white/5 flex items-center justify-center">
-                                <span className="text-[11px] font-mono text-secondary/50 uppercase tracking-widest">[Concept Layout Frame]</span>
+                            <div className="h-[220px] rounded-sm border border-white/10 relative overflow-hidden group">
+                                <img
+                                    src={getConceptImage(slug || '')}
+                                    alt="Concept Visual"
+                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-black/40 pointer-events-none transition-opacity duration-500 group-hover:bg-black/20"></div>
                             </div>
                         </div>
                     </div>

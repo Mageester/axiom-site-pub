@@ -94,7 +94,10 @@ export default function Campaigns() {
         try {
             const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:10000';
             const res = await fetch(`${backendUrl}/api/scrape?niche=${encodeURIComponent(normalizedNiche)}&city=${encodeURIComponent(normalizedCity)}&radius=${radius}&maxDepth=${maxDepth}`, {
-                signal: controller.signal
+                signal: controller.signal,
+                headers: {
+                    'x-engine-secret': import.meta.env.VITE_ENGINE_SECRET || ''
+                }
             });
 
             if (!res.body) throw new Error("No response body");

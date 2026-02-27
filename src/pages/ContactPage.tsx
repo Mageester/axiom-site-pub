@@ -293,7 +293,7 @@ const ContactPage: React.FC = () => {
                     </button>
 
                     <p className="text-center text-[10px] text-secondary/40 font-mono mt-4">
-                        Or email us directly at: <a href="mailto:contact@axiominfrastructure.com" className="hover:text-primary transition-colors">contact@axiominfrastructure.com</a>
+                        Or email us directly at: <a href="mailto:contact@getaxiom.ca" className="hover:text-primary transition-colors">contact@getaxiom.ca</a>
                     </p>
                 </form>
             </div>

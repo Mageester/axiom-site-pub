@@ -19,6 +19,11 @@ app.get('/api/scrape', async (req, res) => {
     const maxDepth = parseInt(req.query.maxDepth || "5", 10);
     const apiKey = process.env.GEMINI_API_KEY;
 
+    const providedSecret = req.headers['x-engine-secret'];
+    if (!process.env.ENGINE_SECRET || providedSecret !== process.env.ENGINE_SECRET) {
+        return res.status(401).json({ error: "Unauthorized: Invalid Engine Secret" });
+    }
+
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache, no-transform');
     res.setHeader('Connection', 'keep-alive');

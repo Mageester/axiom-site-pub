@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, useLocation, Link, Navigate } from 'react-router-dom';
 import { BackgroundAtmosphere } from './components/BackgroundAtmosphere';
 import { BrandLockup } from './components/BrandLockup';
@@ -10,17 +10,23 @@ import WorkCaseStudyPage from './pages/WorkCaseStudyPage';
 import PricingPage from './pages/PricingPage';
 import ContactPage from './pages/ContactPage';
 
-// Admin System Imports
-import Login from './pages/admin/Login';
-import Account from './pages/admin/Account';
-import Campaigns from './pages/admin/Campaigns';
-import Leads from './pages/admin/Leads';
-import LeadDetail from './pages/admin/LeadDetail';
-import Jobs from './pages/admin/Jobs';
-import Inquiries from './pages/admin/Inquiries';
-import InquiryDetail from './pages/admin/InquiryDetail';
+// Admin System Imports - Lazy Loaded
+const Login = lazy(() => import('./pages/admin/Login'));
+const Account = lazy(() => import('./pages/admin/Account'));
+const Campaigns = lazy(() => import('./pages/admin/Campaigns'));
+const Leads = lazy(() => import('./pages/admin/Leads'));
+const LeadDetail = lazy(() => import('./pages/admin/LeadDetail'));
+const Jobs = lazy(() => import('./pages/admin/Jobs'));
+const Inquiries = lazy(() => import('./pages/admin/Inquiries'));
+const InquiryDetail = lazy(() => import('./pages/admin/InquiryDetail'));
 
 import ProtectedRoute from './components/ProtectedRoute';
+
+const AdminLoader = () => (
+    <div className="min-h-[50vh] flex items-center justify-center w-full">
+        <div className="text-[11px] font-mono text-secondary uppercase tracking-widest animate-pulse border border-subtle px-4 py-2 bg-white/5">Loading System Module...</div>
+    </div>
+);
 
 const ScrollToTop = () => {
     const { pathname, hash } = useLocation();
@@ -135,27 +141,29 @@ const App: React.FC = () => {
             </nav>
 
             <main className="flex-1 flex flex-col">
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/services" element={<ServicesPage />} />
-                    <Route path="/work" element={<WorkPage />} />
-                    <Route path="/work/:slug" element={<WorkCaseStudyPage />} />
-                    <Route path="/pricing" element={<PricingPage />} />
-                    <Route path="/contact" element={<ContactPage />} />
+                <Suspense fallback={<AdminLoader />}>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/services" element={<ServicesPage />} />
+                        <Route path="/work" element={<WorkPage />} />
+                        <Route path="/work/:slug" element={<WorkCaseStudyPage />} />
+                        <Route path="/pricing" element={<PricingPage />} />
+                        <Route path="/contact" element={<ContactPage />} />
 
-                    {/* Secure Admin Routes */}
-                    <Route path="/login" element={<Navigate to="/" replace />} />
-                    <Route path="/admin/login" element={<Login />} />
-                    {/* Old mission route redirects to services */}
-                    <Route path="/mission" element={<Navigate to="/services" replace />} />
-                    <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
-                    <Route path="/campaigns" element={<ProtectedRoute><Campaigns /></ProtectedRoute>} />
-                    <Route path="/leads" element={<ProtectedRoute><Leads /></ProtectedRoute>} />
-                    <Route path="/leads/:id" element={<ProtectedRoute><LeadDetail /></ProtectedRoute>} />
-                    <Route path="/jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
-                    <Route path="/admin/inquiries" element={<ProtectedRoute><Inquiries /></ProtectedRoute>} />
-                    <Route path="/admin/inquiries/:id" element={<ProtectedRoute><InquiryDetail /></ProtectedRoute>} />
-                </Routes>
+                        {/* Secure Admin Routes */}
+                        <Route path="/login" element={<Navigate to="/" replace />} />
+                        <Route path="/admin/login" element={<Login />} />
+                        {/* Old mission route redirects to services */}
+                        <Route path="/mission" element={<Navigate to="/services" replace />} />
+                        <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
+                        <Route path="/campaigns" element={<ProtectedRoute><Campaigns /></ProtectedRoute>} />
+                        <Route path="/leads" element={<ProtectedRoute><Leads /></ProtectedRoute>} />
+                        <Route path="/leads/:id" element={<ProtectedRoute><LeadDetail /></ProtectedRoute>} />
+                        <Route path="/jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
+                        <Route path="/admin/inquiries" element={<ProtectedRoute><Inquiries /></ProtectedRoute>} />
+                        <Route path="/admin/inquiries/:id" element={<ProtectedRoute><InquiryDetail /></ProtectedRoute>} />
+                    </Routes>
+                </Suspense>
             </main>
 
             {/* FOOTER */}
