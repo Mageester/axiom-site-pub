@@ -107,6 +107,13 @@ export default function Campaigns() {
         setLogs([])
         setCsvPath("")
 
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+        if (!apiKey) {
+            setLogs([`[!!!] System Error: API Key missing. Please configure your environment variables.`]);
+            setLoading(false);
+            return;
+        }
+
         const normalizedNiche = normalizeText(niche);
         const normalizedCity = normalizeText(city);
 
