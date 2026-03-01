@@ -162,7 +162,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                from: 'Axiom Engine <onboarding@resend.dev>',
+                from: 'Axiom Systems <engine@getaxiom.ca>',
                 to: [destinationEmail],
                 reply_to: email,
                 subject: subjectLine,
@@ -179,7 +179,70 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             }), { status: 500, headers });
         }
 
-        console.log('[INTAKE] Email dispatched successfully to', destinationEmail);
+        console.log('[INTAKE] Lead notification dispatched to', destinationEmail);
+
+        // --- Axiom Receipt: Confirmation email to the client ---
+        try {
+            const scaleLabel = projectScale || primaryGoal || 'Infrastructure Audit';
+            const painPointsText = painPointsList.length > 0
+                ? painPointsList.join(', ')
+                : 'general infrastructure review';
+
+            const receiptHtml = `
+                <div style="font-family: 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a; max-width: 560px; margin: 0 auto;">
+                    <div style="border-bottom: 1px solid #e0e0e0; padding-bottom: 24px; margin-bottom: 32px;">
+                        <h1 style="font-size: 20px; font-weight: 600; color: #0a0a0a; margin: 0; letter-spacing: -0.02em;">Axiom Infrastructure</h1>
+                    </div>
+
+                    <p style="font-size: 15px; line-height: 1.7; color: #333; margin: 0 0 20px 0;">
+                        Hello ${name},
+                    </p>
+
+                    <p style="font-size: 15px; line-height: 1.7; color: #333; margin: 0 0 20px 0;">
+                        Thank you for your interest in Axiom. We have received your infrastructure qualification for a <strong>${scaleLabel}</strong> build.
+                    </p>
+
+                    <p style="font-size: 15px; line-height: 1.7; color: #333; margin: 0 0 20px 0;">
+                        Our lead engineer is currently auditing your selected pain points: <strong>${painPointsText}</strong>.
+                    </p>
+
+                    <p style="font-size: 15px; line-height: 1.7; color: #333; margin: 0 0 32px 0;">
+                        Expect your Blueprint within 24 hours.
+                    </p>
+
+                    <div style="border-top: 1px solid #e0e0e0; padding-top: 24px; margin-top: 32px;">
+                        <p style="font-size: 12px; color: #999; margin: 0;">
+                            Axiom Infrastructure &mdash; Enterprise-grade web systems for service businesses.<br/>
+                            <a href="https://getaxiom.ca" style="color: #666;">getaxiom.ca</a>
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            const receiptResponse = await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${resendApiKey}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    from: 'Axiom Systems <engine@getaxiom.ca>',
+                    to: [email],
+                    subject: '[Axiom Blueprint] Infrastructure Audit Initiated',
+                    html: receiptHtml,
+                }),
+            });
+
+            if (receiptResponse.ok) {
+                console.log('[INTAKE] Axiom Receipt dispatched to', email);
+            } else {
+                const receiptError = await receiptResponse.text();
+                console.warn('[INTAKE] Receipt email failed (non-critical):', receiptResponse.status, receiptError);
+            }
+        } catch (receiptErr: any) {
+            console.warn('[INTAKE] Receipt email threw (non-critical):', receiptErr?.message || receiptErr);
+        }
+
         return new Response(JSON.stringify({ success: true }), { status: 200, headers });
 
     } catch (error: any) {
