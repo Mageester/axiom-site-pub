@@ -43,6 +43,9 @@ const transporter = nodemailer.createTransport({
 
 app.post('/api/intake', async (req, res) => {
     try {
+        // --- DEBUG: Log raw incoming payload ---
+        console.log('[INTAKE] Raw req.body:', JSON.stringify(req.body, null, 2));
+
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
         const now = Date.now();
 
@@ -58,40 +61,47 @@ app.post('/api/intake', async (req, res) => {
         rateData.count++;
         intakeRateLimiter.set(ip, rateData);
 
-        const {
-            name,
-            email,
-            business_name,
-            phone,
-            current_website,
-            project_scale,
-            pain_points,
-            details,
-            primary_goal,
-            company_fax // honeypot
-        } = req.body;
+        const body = req.body || {};
+
+        // Accept both camelCase (frontend) and snake_case (legacy) keys
+        const name = body.name || '';
+        const email = body.email || '';
+        const business_name = body.business_name || body.businessName || '';
+        const phone = body.phone || '';
+        const current_website = body.current_website || body.websiteUrl || body.website || '';
+        const project_scale = body.project_scale || body.projectScale || '';
+        const details = body.details || '';
+        const primary_goal = body.primary_goal || body.primaryGoal || '';
+        const company_fax = body.company_fax || body.companyFax || '';
+        const source_path = body.source_path || body.sourcePath || '';
+
+        // Parse pain_points: accept string, array, or undefined
+        let rawPainPoints = body.pain_points || body.painPoints || '';
+        let painPointsList = [];
+        if (Array.isArray(rawPainPoints)) {
+            painPointsList = rawPainPoints.map(p => String(p).trim()).filter(p => p.length > 0);
+        } else if (typeof rawPainPoints === 'string' && rawPainPoints.trim().length > 0) {
+            painPointsList = rawPainPoints.split(',').map(p => p.trim()).filter(p => p.length > 0);
+        }
 
         if (company_fax) {
             // Honeypot tripped, return fake success
-            return res.status(200).json({ success: true, fake: true });
+            return res.status(200).json({ success: true });
         }
 
         if (!name || !email) {
-            return res.status(400).json({ error: "Name and email are strictly required." });
+            console.warn('[INTAKE] Validation failed. name:', name, 'email:', email);
+            return res.status(400).json({ error: "Name and email are required.", details: `Received name='${name}', email='${email}'` });
         }
 
         let scaleText = project_scale ? project_scale.toUpperCase() : "AUDIT REQUEST";
-        let titleLine = business_name ? business_name : current_website;
-        if (!titleLine) titleLine = name;
+        let titleLine = business_name || current_website || name;
 
         const subjectLine = `[NEW LEAD] - ${scaleText} - ${titleLine}`;
 
         let painPointsHtml = "<em>None selected</em>";
-        if (pain_points && typeof pain_points === 'string' && pain_points.trim().length > 0) {
-            const points = pain_points.split(',').map(p => p.trim()).filter(p => p.length > 0);
-            if (points.length > 0) {
-                painPointsHtml = `<ul>${points.map(p => `<li>${p}</li>`).join('')}</ul>`;
-            }
+        if (painPointsList.length > 0) {
+            painPointsHtml = `<ul>${painPointsList.map(p => `<li>${p}</li>`).join('')}</ul>`;
         }
 
         const htmlBody = `
@@ -109,6 +119,7 @@ app.post('/api/intake', async (req, res) => {
 
                 <h3 style="margin-top: 24px;">Project Scope</h3>
                 <p><strong>Scale/Goal:</strong> ${project_scale || primary_goal || 'N/A'}</p>
+                <p><strong>Source:</strong> ${source_path || 'N/A'}</p>
                 
                 <p style="margin-top: 16px;"><strong>Identified Pain Points:</strong></p>
                 ${painPointsHtml}

@@ -114,14 +114,17 @@ const ContactPage: React.FC = () => {
         setMsg('');
 
         try {
+            const payload = {
+                ...form,
+                pain_points: form.pain_points.join(', '),
+                source_path: window.location.pathname
+            };
+            console.log('[AXIOM] Sending Payload:', payload);
+
             const res = await fetch('/api/intake', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...form,
-                    pain_points: form.pain_points.join(', '),
-                    source_path: window.location.pathname
-                })
+                body: JSON.stringify(payload)
             });
 
             if (res.ok) {
@@ -180,8 +183,8 @@ const ContactPage: React.FC = () => {
                     )}
 
                     {status === 'error' && (
-                        <div className="bg-[#070708] border border-white/10 text-secondary p-5 rounded-[2px] text-[13px] font-mono leading-relaxed mb-2 flex items-start gap-4 animate-in fade-in duration-300">
-                            <div className="w-2 h-2 mt-1.5 bg-red-500/80 rounded-sm shrink-0"></div>
+                        <div className="bg-[#0e0d0c] border border-[#2a2218] text-[#a89070] p-5 rounded-[2px] text-[13px] font-mono leading-relaxed mb-2 flex items-start gap-4 animate-in fade-in duration-300">
+                            <div className="w-2 h-2 mt-1.5 bg-[#6b4c2a] rounded-sm shrink-0"></div>
                             <p>{msg}</p>
                         </div>
                     )}
