@@ -7,6 +7,8 @@ const demos = [
         subtitle: 'Apex Climate Systems',
         desc: 'Built for emergency-driven demand with fast dispatch flows and trust-first conversion structure.',
         roi: 'Increase urgent-service lead capture during peak weather events.',
+        problem: 'Unqualified calls wasting tech time and burning dispatch hours on low-ticket maintenance.',
+        solution: 'Automated intake that filters for high-ticket emergency installs and pre-qualifies every lead before it reaches your team.',
         url: 'https://hvac.getaxiom.ca',
         accent: '#38bdf8',
         features: ['24/7 Dispatch Banner', 'Maintenance Matrix', 'Split-Screen Hero', 'System Diagnostics Grid'],
@@ -16,6 +18,8 @@ const demos = [
         subtitle: 'Summit Roofing Co.',
         desc: 'Storm-response positioning with premium visual hierarchy and high-intent inquiry pathways.',
         roi: 'Convert insurance and replacement traffic into higher-ticket project calls.',
+        problem: 'Losing storm-season leads to slow-loading mobile sites that crash under traffic spikes.',
+        solution: 'Instant-load edge infrastructure that captures every click — even on 3G cell signal at a storm site.',
         url: 'https://roofing.getaxiom.ca',
         accent: '#ea580c',
         features: ['Material Selection Tabs', 'Storm Response Protocol', 'Drone Inspection CTA', 'Impact Rating Cards'],
@@ -25,6 +29,8 @@ const demos = [
         subtitle: 'Verdant Landscapes',
         desc: 'Seasonal service positioning with polished brand presentation and clear offer segmentation.',
         roi: 'Win premium design/maintenance clients with stronger first impressions.',
+        problem: 'Competing for $50K+ design projects with a website that looks like a $500 template.',
+        solution: 'A portfolio-grade digital experience that positions you as the premium choice before the first phone call.',
         url: 'https://landscaping.getaxiom.ca',
         accent: '#22c55e',
         features: ['Before/After Slider', 'Seasonal Timeline', 'Masonry Gallery', 'Design Consultation Flow'],
@@ -75,12 +81,21 @@ const ConceptsPage: React.FC = () => {
 
                             <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed">{demo.desc}</p>
 
-                            {/* ROI callout */}
-                            <div className="bg-[#0e0f12] border border-[#1a1d25] rounded-md p-4 flex gap-3 items-start">
-                                <div className="w-1 h-full min-h-[20px] rounded-full shrink-0 mt-0.5" style={{ backgroundColor: demo.accent, opacity: 0.4 }}></div>
-                                <div>
-                                    <p className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-secondary)] mb-1">ROI Focus</p>
-                                    <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">{demo.roi}</p>
+                            {/* Problem → Solution */}
+                            <div className="bg-[#0e0f12] border border-[#1a1d25] rounded-md overflow-hidden">
+                                <div className="p-4 flex gap-3 items-start border-b border-[#1a1d25]">
+                                    <div className="w-1 self-stretch rounded-full shrink-0 bg-red-500/30"></div>
+                                    <div>
+                                        <p className="text-[10px] font-mono uppercase tracking-widest text-red-400/70 mb-1">Problem</p>
+                                        <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">{demo.problem}</p>
+                                    </div>
+                                </div>
+                                <div className="p-4 flex gap-3 items-start">
+                                    <div className="w-1 self-stretch rounded-full shrink-0 bg-emerald-500/40"></div>
+                                    <div>
+                                        <p className="text-[10px] font-mono uppercase tracking-widest text-emerald-400/70 mb-1">Solution</p>
+                                        <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">{demo.solution}</p>
+                                    </div>
                                 </div>
                             </div>
 

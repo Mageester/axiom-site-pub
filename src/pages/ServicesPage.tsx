@@ -146,6 +146,37 @@ const ServicesPage: React.FC = () => {
                 ))}
             </section>
 
+            {/* Engineering Roadmap */}
+            <section className="max-w-[1100px] mx-auto mt-10">
+                <div className="bg-[#111214] border border-[#1e2028] rounded-lg p-10 md:p-12">
+                    <div className="text-center mb-10">
+                        <div className="flex items-center justify-center gap-3 mb-4">
+                            <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
+                            <p className="text-[11px] font-mono text-[var(--accent)] uppercase tracking-[0.2em]">Our Process</p>
+                            <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
+                        </div>
+                        <h2 className="text-[28px] sm:text-[34px] font-semibold text-white tracking-tight">
+                            The Path to Authority: Our Engineering Process.
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        {[
+                            { num: '01', title: 'Discovery & Audit', desc: 'We map your local market and identify lead-leakage in your current setup.' },
+                            { num: '02', title: 'Infrastructure Engineering', desc: 'We build your bespoke V8 Edge environment and automated intake pipelines.' },
+                            { num: '03', title: 'Performance Hardening', desc: 'We run 50+ point security and speed audits to ensure sub-second delivery.' },
+                            { num: '04', title: 'Launch & Support', desc: 'Your asset goes live on the global edge with 24/7 uptime monitoring.' },
+                        ].map((phase) => (
+                            <div key={phase.num} className="bg-[#0e0f12] border border-[#1a1d25] rounded-md p-6 flex flex-col gap-3">
+                                <span className="text-[26px] font-bold text-[var(--accent)]/20 font-mono">{phase.num}</span>
+                                <h3 className="text-[16px] font-semibold text-white tracking-tight">{phase.title}</h3>
+                                <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">{phase.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* FAQ Section */}
             <section className="max-w-[1100px] mx-auto mt-10">
                 <div className="bg-[#111214] border border-[#1e2028] rounded-lg p-10 md:p-12">
