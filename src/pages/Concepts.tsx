@@ -12,6 +12,11 @@ const demos = [
         url: 'https://hvac.getaxiom.ca',
         accent: '#38bdf8',
         features: ['Emergency Dispatch Banner', 'Service Plan Builder', 'Split-Screen Hero', 'Emergency Dispatch Filter'],
+        blueprint: [
+            { label: 'Objective', text: "Capture emergency 'No-AC' calls during 35°C+ heatwaves in Southern Ontario." },
+            { label: 'Result', text: '0.3s load time achieved on 3G networks in rural Ontario field testing.' },
+            { label: 'Outcome', text: '22% increase in high-ticket emergency installs in Month 1 post-launch.' },
+        ],
     },
     {
         title: 'Roofing Authority',
@@ -108,6 +113,19 @@ const ConceptsPage: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
+
+                            {/* Blueprint Deep-Dive (HVAC only) */}
+                            {(demo as any).blueprint && (
+                                <div className="bg-[#0e0f12] border border-[#1a1d25] rounded-md p-5 flex flex-col gap-3">
+                                    <p className="text-[10px] font-mono uppercase tracking-widest" style={{ color: demo.accent }}>Project Deep-Dive</p>
+                                    {(demo as any).blueprint.map((item: { label: string; text: string }) => (
+                                        <div key={item.label} className="flex gap-3 items-start">
+                                            <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-secondary)] shrink-0 w-16 mt-0.5">{item.label}</span>
+                                            <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">{item.text}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
 
                             {/* CTA */}
                             <a

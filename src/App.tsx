@@ -12,6 +12,7 @@ import ContactPage from './pages/ContactPage';
 import AuditPage from './pages/AuditPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
+import Manifesto from './pages/Manifesto';
 
 const Login = lazy(() => import('./pages/admin/Login'));
 const Account = lazy(() => import('./pages/admin/Account'));
@@ -163,6 +164,7 @@ const App: React.FC = () => {
                         <Route path="/audit" element={<AuditPage />} />
                         <Route path="/terms" element={<TermsPage />} />
                         <Route path="/privacy" element={<PrivacyPage />} />
+                        <Route path="/manifesto" element={<Manifesto />} />
 
                         <Route path="/login" element={<Navigate to="/" replace />} />
                         <Route path="/admin/login" element={<Login />} />

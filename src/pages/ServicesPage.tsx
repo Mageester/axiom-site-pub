@@ -99,7 +99,8 @@ const ServicesPage: React.FC = () => {
             </section>
 
             {/* Pricing Grid */}
-            <section className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
+            <section className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-5 relative">
+                <div className="absolute inset-0 -m-4 rounded-xl pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(90,114,155,0.4) 39px, rgba(90,114,155,0.4) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(90,114,155,0.4) 39px, rgba(90,114,155,0.4) 40px)' }}></div>
                 {tiers.map((tier) => (
                     <article
                         key={tier.name}
