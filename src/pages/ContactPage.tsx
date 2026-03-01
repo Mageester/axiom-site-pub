@@ -126,17 +126,15 @@ const ContactPage: React.FC = () => {
 
             if (res.ok) {
                 setStatus('success');
-                setMsg('Blueprint Request Received. Our engineering team will review your infrastructure and respond within 24 hours.');
-                setForm(INITIAL_FORM);
-                setStep(1);
+                setMsg('Axiom Blueprint Requested.');
                 return;
             }
 
             setStatus('error');
-            setMsg('Failed to submit request. Please email us directly.');
+            setMsg('Engineering Link Failed. Please reach out to aidan@getaxiom.ca directly while we recalibrate.');
         } catch {
             setStatus('error');
-            setMsg('Network error. Please try again or email us.');
+            setMsg('Engineering Link Failed. Please reach out to aidan@getaxiom.ca directly while we recalibrate.');
         }
     };
 
@@ -165,13 +163,26 @@ const ContactPage: React.FC = () => {
                     </div>
 
                     {status === 'success' && (
-                        <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 p-4 rounded-[2px] text-[14px] font-medium text-center mb-2">
-                            {msg}
+                        <div className="absolute inset-0 bg-[#0f1113] z-50 flex flex-col items-center justify-center text-center p-8 animate-in fade-in zoom-in-95 duration-500">
+                            <div className="text-accent mb-6 w-12 h-12 flex items-center justify-center rounded-full border border-accent/30 bg-accent/10">
+                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <h2 className="text-[24px] font-semibold text-primary mb-3">Axiom Blueprint Requested.</h2>
+                            <p className="text-[14px] text-secondary leading-relaxed max-w-sm mb-8">
+                                Our engineering team will review your infrastructure and respond within 24 hours.
+                            </p>
+                            <button onClick={() => { setStatus(''); setStep(1); setForm(INITIAL_FORM); }} className="px-6 py-3 border border-white/10 hover:border-white/30 text-[12px] font-bold uppercase tracking-widest text-primary transition-colors">
+                                Return to Forms
+                            </button>
                         </div>
                     )}
+
                     {status === 'error' && (
-                        <div className="bg-red-500/10 border border-red-500/30 text-red-500 p-4 rounded-[2px] text-[14px] font-medium text-center mb-2">
-                            {msg}
+                        <div className="bg-[#070708] border border-white/10 text-secondary p-5 rounded-[2px] text-[13px] font-mono leading-relaxed mb-2 flex items-start gap-4 animate-in fade-in duration-300">
+                            <div className="w-2 h-2 mt-1.5 bg-red-500/80 rounded-sm shrink-0"></div>
+                            <p>{msg}</p>
                         </div>
                     )}
 
@@ -242,8 +253,8 @@ const ContactPage: React.FC = () => {
                                                 type="button"
                                                 onClick={() => togglePainPoint(point)}
                                                 className={`min-h-[48px] p-3 text-[14px] rounded-[2px] transition-all duration-300 border text-left flex items-center gap-3 ${isSelected
-                                                        ? 'bg-accent/10 border-accent/40 text-primary'
-                                                        : 'bg-[#070708] border-white/10 text-secondary hover:border-white/30'
+                                                    ? 'bg-accent/10 border-accent/40 text-primary'
+                                                    : 'bg-[#070708] border-white/10 text-secondary hover:border-white/30'
                                                     }`}
                                             >
                                                 <div className={`w-4 h-4 border flex items-center justify-center rounded-sm transition-colors ${isSelected ? 'border-accent bg-accent/20' : 'border-white/20'}`}>
