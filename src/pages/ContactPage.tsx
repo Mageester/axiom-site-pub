@@ -154,8 +154,11 @@ const ContactPage: React.FC = () => {
 
             {/* Founder's Note */}
             <section className="max-w-4xl mx-auto mb-6">
-                <div className="bg-[#111214] border border-[#1e2028] rounded-lg p-6 md:p-8 flex gap-4 items-start">
-                    <div className="text-[28px] leading-none shrink-0 mt-1">👤</div>
+                <div className="bg-[#111214] border border-[#1e2028] rounded-lg p-6 md:p-8 flex gap-5 items-start">
+                    <div className="shrink-0 flex flex-col items-center gap-2">
+                        <div className="w-14 h-14 rounded-full bg-[#1a1d25] border border-[#2a2d35] flex items-center justify-center text-[18px] font-bold text-white/60 uppercase tracking-wide">A</div>
+                        <p className="text-[9px] font-mono text-[var(--text-secondary)]/40 uppercase tracking-widest text-center leading-tight max-w-[70px]">Aidan<br />Lead Engineer<br />Kitchener ON</p>
+                    </div>
                     <div className="flex flex-col gap-2">
                         <p className="text-[13px] font-mono text-[var(--accent)] uppercase tracking-widest">From the Operator</p>
                         <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed">
