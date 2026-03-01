@@ -5,35 +5,35 @@ const demos = [
     {
         title: 'HVAC Authority',
         subtitle: 'Apex Climate Systems',
-        desc: 'Built for emergency-driven demand with fast dispatch flows and trust-first conversion structure.',
-        roi: 'Increase urgent-service lead capture during peak weather events.',
-        problem: 'Unqualified calls wasting tech time and burning dispatch hours on low-ticket maintenance.',
-        solution: 'Automated intake that filters for high-ticket emergency installs and pre-qualifies every lead before it reaches your team.',
+        desc: 'When the first heatwave hits and your phones blow up, this system filters the tire-kickers so your techs only roll trucks for high-ticket emergency installs.',
+        roi: 'Double your emergency dispatch rate during peak weather events.',
+        problem: 'Unqualified calls burning dispatch hours — your techs are rolling trucks for $89 tune-ups instead of $4,000 compressor replacements.',
+        solution: 'An intake system that asks the right questions upfront, filters out the tire-kickers, and routes real emergency calls straight to dispatch.',
         url: 'https://hvac.getaxiom.ca',
         accent: '#38bdf8',
-        features: ['24/7 Dispatch Banner', 'Maintenance Matrix', 'Split-Screen Hero', 'System Diagnostics Grid'],
+        features: ['Emergency Dispatch Banner', 'Service Plan Builder', 'Split-Screen Hero', 'Emergency Dispatch Filter'],
     },
     {
         title: 'Roofing Authority',
         subtitle: 'Summit Roofing Co.',
-        desc: 'Storm-response positioning with premium visual hierarchy and high-intent inquiry pathways.',
-        roi: 'Convert insurance and replacement traffic into higher-ticket project calls.',
-        problem: 'Losing storm-season leads to slow-loading mobile sites that crash under traffic spikes.',
-        solution: 'Instant-load edge infrastructure that captures every click — even on 3G cell signal at a storm site.',
+        desc: "When hail storms hit and every roof in town leaks, your site loads instantly while your competitors' sites crash. You get the calls. They get voicemail.",
+        roi: "Capture storm-season leads while competitors' sites go down.",
+        problem: 'Every time a big storm rolls through, your site grinds to a halt from the traffic spike — and those leads go to whoever loads first.',
+        solution: 'Edge-deployed infrastructure that handles traffic spikes without flinching. Your site loads in under a second, even when half the county is searching for roof repair.',
         url: 'https://roofing.getaxiom.ca',
         accent: '#ea580c',
-        features: ['Material Selection Tabs', 'Storm Response Protocol', 'Drone Inspection CTA', 'Impact Rating Cards'],
+        features: ['Material Comparison Tool', 'Storm Damage Checklist', 'Insurance Claim Helper', 'Before/After Gallery'],
     },
     {
         title: 'Landscaping Authority',
         subtitle: 'Verdant Landscapes',
-        desc: 'Seasonal service positioning with polished brand presentation and clear offer segmentation.',
-        roi: 'Win premium design/maintenance clients with stronger first impressions.',
+        desc: "You're bidding on $50K hardscape projects against companies with $200 websites. This fixes the gap between the quality of your work and the quality of your online presence.",
+        roi: 'Win premium design contracts with a portfolio that matches your craft.',
         problem: 'Competing for $50K+ design projects with a website that looks like a $500 template.',
         solution: 'A portfolio-grade digital experience that positions you as the premium choice before the first phone call.',
         url: 'https://landscaping.getaxiom.ca',
         accent: '#22c55e',
-        features: ['Before/After Slider', 'Seasonal Timeline', 'Masonry Gallery', 'Design Consultation Flow'],
+        features: ['Before/After Slider', 'Seasonal Project Timeline', 'Full-Screen Gallery', 'Design Consultation Booking'],
     }
 ];
 
@@ -53,10 +53,10 @@ const ConceptsPage: React.FC = () => {
                     <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
                 </div>
                 <h1 className="text-[38px] sm:text-[50px] font-semibold text-white tracking-tight leading-[1.06]">
-                    Industry-specific demos engineered for conversion.
+                    Real sites built for real contractors. Not templates.
                 </h1>
                 <p className="text-[16px] text-[var(--text-secondary)] leading-relaxed max-w-xl mx-auto">
-                    Each concept reflects our Authority tier standards: bespoke layout, structured funnel flow, and edge-deployed performance. No two sites share the same template.
+                    Each concept is engineered from scratch for a specific industry. Different layouts, different funnels, different conversion strategies. Because roofers and HVAC techs don't sell the same way.
                 </p>
             </section>
 
@@ -127,10 +127,10 @@ const ConceptsPage: React.FC = () => {
             <section className="max-w-[1100px] mx-auto mt-12">
                 <div className="bg-[#111214] border border-[#1e2028] rounded-lg p-10 md:p-12 text-center">
                     <h2 className="text-[28px] sm:text-[34px] font-semibold text-white tracking-tight mb-4">
-                        Want this built for your industry?
+                        Want this built for your trade?
                     </h2>
                     <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed max-w-xl mx-auto mb-6">
-                        Every Authority build is engineered from scratch for your specific market. No templates. No shared layouts.
+                        Every build is engineered from scratch for your specific market. No templates. No shared layouts. No recycled designs from another contractor down the road.
                     </p>
                     <a
                         href="/contact"

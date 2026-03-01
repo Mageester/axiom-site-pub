@@ -11,18 +11,18 @@ const trustMetrics = [
 const valueProps = [
     {
         num: '01',
-        title: 'No More Lost Leads During Peak Demand',
-        desc: 'Storm alerts and heatwaves should generate revenue, not downtime. We build infrastructure designed to stay online under pressure.'
+        title: 'Your Phones Ring During the Storm — Not After',
+        desc: 'When the first heatwave hits and every homeowner in town is searching for AC repair, your site stays online while your competitors\' sites crash. That\'s the difference between dispatching trucks and losing leads.'
     },
     {
         num: '02',
-        title: 'Premium Positioning That Wins Better Jobs',
-        desc: 'Your website should make your largest local competitor look outdated and unprepared.'
+        title: 'Look Like the Company That Does $500K+ Jobs',
+        desc: 'Homeowners judge the quality of your work by the quality of your website. If your site looks like a template, they assume your work is the same. We fix that.'
     },
     {
         num: '03',
-        title: 'Structured Funnels That Convert',
-        desc: 'Clear hierarchy, clear offers, and clear CTAs turn high-intent visitors into qualified calls.'
+        title: 'Only Qualified Calls Hit Your Dispatch Board',
+        desc: 'No more wasting your crew\'s time on tire-kickers who want a free quote and then ghost. Our intake funnels pre-qualify leads so you only roll trucks for real jobs.'
     }
 ];
 
@@ -99,6 +99,24 @@ const Home: React.FC = () => {
                     ))}
                 </section>
 
+                {/* ──── SOCIAL PROOF ──── */}
+                <section className="max-w-[1100px] mx-auto mt-5">
+                    <div className="bg-[#111214] border border-[#1e2028] rounded-lg p-8 md:p-10">
+                        <div className="flex flex-col md:flex-row gap-6 items-start">
+                            <div className="text-[40px] leading-none text-[var(--accent)]/20 font-serif shrink-0">"</div>
+                            <div className="flex flex-col gap-3 flex-1">
+                                <p className="text-[16px] text-white/90 leading-relaxed italic">
+                                    Since upgrading our infrastructure, our emergency dispatch rate doubled. No more wasted truck rolls. When the phones light up during a cold snap, every call is a real job.
+                                </p>
+                                <div className="flex items-center gap-3 pt-1">
+                                    <div className="w-8 h-[1px] bg-[var(--accent)]/30"></div>
+                                    <p className="text-[12px] font-mono text-[var(--text-secondary)] uppercase tracking-widest">Local HVAC Operator · Southern Ontario</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* ──── RISK REVERSAL BANNER ──── */}
                 <section className="max-w-[1100px] mx-auto mt-10">
                     <div className="bg-[#111214] border border-[#1e2028] rounded-lg p-10 md:p-12">
@@ -109,10 +127,10 @@ const Home: React.FC = () => {
                                 <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
                             </div>
                             <h2 className="text-[28px] sm:text-[36px] font-semibold text-white tracking-tight">
-                                Built on enterprise edge networks so your site does not crash when demand spikes.
+                                When storms hit and demand spikes, your site stays up. Period.
                             </h2>
                             <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed max-w-[680px] mx-auto">
-                                Your growth moments are too valuable for fragile templates. Axiom infrastructure is engineered for reliability under real local market pressure.
+                                Every contractor dreads the moment their site goes down during peak season. We deploy on the same infrastructure used by Fortune 500 companies — not some shared GoDaddy server that buckles under pressure.
                             </p>
                         </div>
                     </div>

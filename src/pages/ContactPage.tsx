@@ -152,7 +152,21 @@ const ContactPage: React.FC = () => {
                 </p>
             </section>
 
-            <section className="max-w-4xl mx-auto surface-panel bg-zinc-900/50 border-zinc-800 p-8 md:p-10 rounded-sm">
+            {/* Founder's Note */}
+            <section className="max-w-4xl mx-auto mb-6">
+                <div className="bg-[#111214] border border-[#1e2028] rounded-lg p-6 md:p-8 flex gap-4 items-start">
+                    <div className="text-[28px] leading-none shrink-0 mt-1">👤</div>
+                    <div className="flex flex-col gap-2">
+                        <p className="text-[13px] font-mono text-[var(--accent)] uppercase tracking-widest">From the Operator</p>
+                        <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed">
+                            I don't run a volume agency. I partner with a handful of serious contractors to build infrastructure that dominates local markets. Fill out the survey, and I will personally review your current setup.
+                        </p>
+                        <p className="text-[12px] font-mono text-[var(--text-secondary)]/60 uppercase tracking-widest mt-1">— Aidan · Axiom Infrastructure</p>
+                    </div>
+                </div>
+            </section>
+
+            <section className="max-w-4xl mx-auto bg-[#111214] border border-[#1e2028] p-8 md:p-10 rounded-lg">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-8">
                     {status === 'success' && (
                         <div className="surface-panel bg-zinc-900/70 border-zinc-700 p-8 text-center rounded-sm">

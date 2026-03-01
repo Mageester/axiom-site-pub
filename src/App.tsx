@@ -195,10 +195,15 @@ const App: React.FC = () => {
                     </div>
 
                     {/* Brand Statement */}
-                    <div className="mt-6 pt-6 border-t border-[#1e2028]">
+                    <div className="mt-6 pt-6 border-t border-[#1e2028] flex flex-col gap-3 items-center">
                         <p className="text-[12px] text-[var(--text-secondary)]/40 leading-relaxed text-center max-w-2xl mx-auto">
                             Axiom Infrastructure is a performance-first engineering firm. We do not use templates, DIY builders, or shared hosting.
                         </p>
+                        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] font-mono text-[var(--text-secondary)]/40 uppercase tracking-widest">
+                            <span>Engineered in Kitchener, Ontario</span>
+                            <span className="hidden sm:inline">·</span>
+                            <a href="tel:+15195550198" className="hover:text-white transition-colors min-h-[48px] inline-flex items-center">(519) 555-0198</a>
+                        </div>
                     </div>
 
                     {/* Copyright + Status */}
