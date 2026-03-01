@@ -7,16 +7,26 @@ const tiers = [
         name: 'The Foundation',
         price: '$2,500',
         tag: 'Single Page',
-        desc: 'Single-page authority asset for businesses that need a serious digital front door now.',
-        features: ['Custom design', 'Mobile-first build', 'SEO foundation', 'Contact form'],
+        desc: 'A premium single-page site that makes you the obvious choice when homeowners search your area.',
+        features: [
+            'A stunning custom design that outclasses your local competitors',
+            'Loads instantly on any phone, even on a job site with weak signal',
+            'Built-in SEO so you show up when customers are searching',
+            'A clear contact form that turns visitors into phone calls'
+        ],
         cta: 'Start Here'
     },
     {
         name: 'The Engine',
         price: '$5,000',
         tag: 'Multi-Page',
-        desc: 'Multi-page infrastructure that improves lead quality and creates a repeatable conversion path.',
-        features: ['Multi-page site', 'Content strategy', 'Intake pipeline', 'Analytics setup'],
+        desc: 'A multi-page system that pre-qualifies leads and books calls on autopilot so you can focus on jobs.',
+        features: [
+            'Multiple pages that address every service you offer',
+            'Content structured to answer customer objections before they call',
+            'Automated lead-qualification and call scheduling',
+            'Built-in analytics so you know exactly what\'s working'
+        ],
         cta: 'Level Up',
         featured: true
     },
@@ -24,9 +34,29 @@ const tiers = [
         name: 'The Authority',
         price: '$7,500+',
         tag: 'Bespoke',
-        desc: 'Full bespoke infrastructure for market dominance, premium trust, and zero-friction onboarding.',
-        features: ['Custom architecture', 'Edge Functions', 'Full funnel design', 'Priority support'],
+        desc: 'A tailored digital experience designed around your exact sales process and market position.',
+        features: [
+            'Bespoke architecture built around how your best deals close',
+            'Instant page loads from servers in 200+ cities — no delays',
+            'A complete funnel: from first click to booked appointment',
+            'Dedicated priority support with a named engineer'
+        ],
         cta: 'Go Authority'
+    }
+];
+
+const faqs = [
+    {
+        q: 'How long does a typical build take?',
+        a: 'Foundation builds ship in 2 weeks. Engine builds take 3–4 weeks. Authority builds are 4–6 weeks depending on scope. We work in focused sprints with weekly check-ins — you\'re never left guessing.'
+    },
+    {
+        q: 'Do I need to handle my own hosting?',
+        a: 'No. Every Axiom build is deployed to Cloudflare\'s global edge network — the same infrastructure used by Fortune 500 companies. Hosting, SSL, and CDN are included and managed for you.'
+    },
+    {
+        q: 'What if I need changes after launch?',
+        a: 'Authority builds include 30 days of post-launch adjustments at no extra cost. After that, we offer retainer plans for ongoing optimization. You always own your code — no lock-in.'
     }
 ];
 
@@ -39,7 +69,7 @@ const ServicesPage: React.FC = () => {
             />
 
             {/* Header */}
-            <section className="max-w-3xl mx-auto text-center flex flex-col gap-5 mb-12">
+            <section className="max-w-3xl mx-auto text-center flex flex-col gap-5 mb-8">
                 <div className="flex items-center justify-center gap-3">
                     <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
                     <p className="text-[11px] font-mono text-[var(--accent)] uppercase tracking-[0.2em]">Infrastructure Investments</p>
@@ -53,14 +83,29 @@ const ServicesPage: React.FC = () => {
                 </p>
             </section>
 
+            {/* SLA Guarantee Banner */}
+            <section className="max-w-[1100px] mx-auto mb-8">
+                <div className="bg-[#0d1117] border border-[var(--accent)]/20 rounded-lg p-6 md:p-8 flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+                    <div className="w-14 h-14 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 flex items-center justify-center text-[24px] shrink-0">
+                        🛡️
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <h3 className="text-[18px] font-semibold text-white tracking-tight">Performance Guarantee</h3>
+                        <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed">
+                            If your site isn't loading in under one second, we'll fix it free. <span className="text-white font-medium">99.99% Edge Uptime guaranteed</span> or your month is on us.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             {/* Pricing Grid */}
             <section className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
                 {tiers.map((tier) => (
                     <article
                         key={tier.name}
                         className={`relative bg-[#111214] border rounded-lg p-8 flex flex-col gap-5 transition-colors ${tier.featured
-                                ? 'border-[var(--accent)]/30 shadow-[0_0_24px_rgba(90,114,155,0.1)]'
-                                : 'border-[#1e2028] hover:border-[#2a2d38]'
+                            ? 'border-[var(--accent)]/30 shadow-[0_0_24px_rgba(90,114,155,0.1)]'
+                            : 'border-[#1e2028] hover:border-[#2a2d38]'
                             }`}
                     >
                         {tier.featured && (
@@ -79,10 +124,10 @@ const ServicesPage: React.FC = () => {
 
                         <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed">{tier.desc}</p>
 
-                        <ul className="flex flex-col gap-3 py-2">
+                        <ul className="flex flex-col gap-3 py-2 flex-1">
                             {tier.features.map((f) => (
-                                <li key={f} className="flex items-center gap-3 text-[14px] text-[var(--text-secondary)]">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]/50 shrink-0"></div>
+                                <li key={f} className="flex items-start gap-3 text-[14px] text-[var(--text-secondary)] leading-snug">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]/50 shrink-0 mt-[7px]"></div>
                                     {f}
                                 </li>
                             ))}
@@ -91,8 +136,8 @@ const ServicesPage: React.FC = () => {
                         <Link
                             to="/contact"
                             className={`mt-auto inline-flex items-center justify-center min-h-[48px] px-8 text-[12px] font-bold uppercase tracking-widest transition-all rounded-[4px] ${tier.featured
-                                    ? 'bg-white text-[#0B0B0C] hover:bg-[#f0f0f0] shadow-[0_0_16px_rgba(255,255,255,0.06)]'
-                                    : 'bg-[#161820] border border-[#2a2d35] text-white hover:bg-[#1c1f28]'
+                                ? 'bg-white text-[#0B0B0C] hover:bg-[#f0f0f0] shadow-[0_0_16px_rgba(255,255,255,0.06)]'
+                                : 'bg-[#161820] border border-[#2a2d35] text-white hover:bg-[#1c1f28]'
                                 }`}
                         >
                             {tier.cta}
@@ -101,24 +146,36 @@ const ServicesPage: React.FC = () => {
                 ))}
             </section>
 
-            {/* Authority Callout */}
+            {/* FAQ Section */}
             <section className="max-w-[1100px] mx-auto mt-10">
                 <div className="bg-[#111214] border border-[#1e2028] rounded-lg p-10 md:p-12">
-                    <div className="max-w-3xl mx-auto text-center flex flex-col gap-5">
-                        <h2 className="text-[28px] sm:text-[36px] font-semibold text-white tracking-tight">
-                            Authority tier is built for total market capture.
-                        </h2>
-                        <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed">
-                            Advanced funnel logic, premium UI systems, and edge reliability combine to increase qualified demand and protect revenue during peak season.
-                        </p>
-                        <div className="flex justify-center pt-2">
-                            <Link
-                                to="/contact"
-                                className="inline-flex items-center justify-center min-h-[52px] px-10 bg-white text-[#0B0B0C] hover:bg-[#f0f0f0] text-[12px] font-bold uppercase tracking-widest transition-all rounded-[4px] shadow-[0_0_20px_rgba(255,255,255,0.08)]"
-                            >
-                                Book Strategy Call
-                            </Link>
+                    <div className="text-center mb-8">
+                        <div className="flex items-center justify-center gap-3 mb-4">
+                            <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
+                            <p className="text-[11px] font-mono text-[var(--accent)] uppercase tracking-[0.2em]">Common Questions</p>
+                            <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
                         </div>
+                        <h2 className="text-[28px] sm:text-[34px] font-semibold text-white tracking-tight">
+                            Before you apply.
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {faqs.map((faq) => (
+                            <div key={faq.q} className="flex flex-col gap-3">
+                                <h3 className="text-[16px] font-semibold text-white tracking-tight">{faq.q}</h3>
+                                <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed">{faq.a}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="text-center mt-8">
+                        <Link
+                            to="/contact"
+                            className="inline-flex items-center justify-center min-h-[52px] px-10 bg-white text-[#0B0B0C] hover:bg-[#f0f0f0] text-[12px] font-bold uppercase tracking-widest transition-all rounded-[4px] shadow-[0_0_20px_rgba(255,255,255,0.08)]"
+                        >
+                            Book Strategy Call
+                        </Link>
                     </div>
                 </div>
             </section>

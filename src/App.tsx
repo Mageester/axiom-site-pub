@@ -156,32 +156,9 @@ const App: React.FC = () => {
                 </Suspense>
             </main>
 
-            <footer className="bg-background py-16 px-6 border-t border-subtle">
+            <footer className="bg-[#0B0B0C] py-12 px-6 border-t border-[#1e2028]">
                 <div className="max-w-[1100px] mx-auto">
-                    <div className="bg-[#111214] border border-[#1e2028] p-8 sm:p-10 rounded-lg text-center">
-                        <div className="flex items-center justify-center gap-3 mb-4">
-                            <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
-                            <p className="text-[11px] font-mono text-[var(--accent)] uppercase tracking-[0.2em]">Risk Reversal</p>
-                            <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
-                        </div>
-                        <h2 className="text-[26px] sm:text-[34px] font-semibold text-primary tracking-tight mb-4">
-                            Your site stays online when demand spikes.
-                        </h2>
-                        <p className="text-[15px] text-secondary leading-relaxed max-w-[760px] mx-auto mb-8">
-                            We build on enterprise edge networks so your website does not crash during storms, heatwaves, or peak seasonal demand.
-                        </p>
-                        <Link
-                            to="/contact"
-                            className="inline-flex items-center justify-center min-h-[52px] px-8 py-4 bg-white hover:bg-white/90 text-black text-[12px] font-bold tracking-[0.05em] uppercase transition-all duration-300 border border-transparent shadow-[0_0_20px_rgba(255,255,255,0.1)]"
-                        >
-                            Start Project Application
-                        </Link>
-                        <p className="text-[11px] font-mono uppercase tracking-widest text-secondary/70 mt-5">
-                            Limited Onboarding: 4 New Partners Per Month
-                        </p>
-                    </div>
-
-                    <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-5">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
                         <BrandLockup
                             opacity="opacity-40 hover:opacity-100 transition-opacity duration-500"
                             logoSize="h-[18px] w-auto grayscale hover:grayscale-0 transition-all drop-shadow-sm"
@@ -190,6 +167,15 @@ const App: React.FC = () => {
                         <div className="flex items-center gap-6 text-[11px] font-mono uppercase tracking-widest text-secondary/60">
                             <Link to="/privacy" className="py-2 hover:text-primary transition-colors duration-300">Privacy</Link>
                             <Link to="/terms" className="py-2 hover:text-primary transition-colors duration-300">Terms</Link>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-6 border-t border-[#1e2028] flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p className="text-[11px] font-mono text-[var(--text-secondary)]/50 uppercase tracking-widest">
+                            © {new Date().getFullYear()} Axiom Infrastructure
+                        </p>
+                        <div className="flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+                            <span className="text-[10px] font-mono text-[var(--text-secondary)]/50 uppercase tracking-widest">All systems operational</span>
                         </div>
                     </div>
                 </div>
