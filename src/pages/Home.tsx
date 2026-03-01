@@ -4,50 +4,50 @@ import { SEO } from '../components/SEO';
 
 const authorityPillars = [
     {
-        title: 'Performance Engineering',
-        desc: 'Performance-first builds engineered for fast loading, edge delivery, and 90+ Lighthouse target benchmarks on production-ready pages.'
+        title: 'Instant Load Speed',
+        desc: 'We build the fastest sites in your market, so customers stay, trust you, and contact you before they bounce.'
     },
     {
-        title: 'Conversion Architecture',
-        desc: 'Page structure, messaging, and CTA hierarchy designed to turn service traffic into quote requests and booked calls.'
+        title: 'Conversion Design',
+        desc: 'Every page is built to move visitors from curiosity to action with clear offers, clear proof, and clear next steps.'
     },
     {
-        title: 'Local SEO Foundation',
-        desc: 'Service-area page structure, clean semantic markup, and schema basics built in from day one for indexing readiness.'
+        title: 'Always-On Reliability',
+        desc: 'Enterprise-grade protection and uptime keep your site available day and night when real jobs are on the line.'
     }
 ];
 
 const processSteps = [
     {
-        title: 'Discovery',
-        desc: 'Map services, target geography, and offer positioning.'
+        title: 'Clarity',
+        desc: 'We define your best services, best customers, and the offer that wins calls.'
     },
     {
         title: 'Blueprint',
-        desc: 'Define page structure, messaging, and conversion architecture.'
+        desc: 'We map the exact pages, messaging, and lead flow before any build work starts.'
     },
     {
         title: 'Build',
-        desc: 'Custom-coded implementation with mobile-first speed optimization.'
+        desc: 'We design and build a custom site that looks premium and performs fast on every device.'
     },
     {
-        title: 'Deployment',
-        desc: 'Production launch, analytics setup, and edge network configuration.'
+        title: 'Launch',
+        desc: 'We go live cleanly, track performance, and make sure your site is ready to produce leads.'
     }
 ];
 
 const differentiationCards = [
     {
         title: 'Speed',
-        desc: '90+ Lighthouse scores.'
+        desc: 'Loads in a snap.'
     },
     {
-        title: 'Security',
-        desc: 'Cloudflare Edge protection.'
+        title: 'Reliability',
+        desc: 'Online when customers need you.'
     },
     {
-        title: 'SEO',
-        desc: 'Local Market Dominance Schema.'
+        title: 'Design',
+        desc: 'Built to make competitors look dated.'
     }
 ];
 
@@ -111,23 +111,23 @@ const Home: React.FC = () => {
 
                 <div className="max-w-[1100px] w-full mx-auto relative z-10 flex flex-col items-center text-center">
                     <div className="text-[11px] font-mono text-accent/80 uppercase tracking-widest mb-6 reveal">
-                        Performance-First Websites for Contractors & Service Businesses
+                        Authority Websites for Service Businesses
                     </div>
                     <h1 className="text-[40px] sm:text-[56px] lg:text-[72px] font-semibold tracking-[-0.02em] mb-8 leading-[1.02] text-primary reveal max-w-[980px]">
-                        Premium websites engineered to help local service businesses win better clients.
+                        The fastest way to look premium and win more jobs.
                     </h1>
                     <p className="text-[17px] text-secondary max-w-[720px] mb-5 leading-relaxed font-light reveal reveal-delay-1">
-                        Axiom Infrastructure builds conversion-focused, custom-coded marketing sites for operators who care about performance, clarity, and long-term control.
+                        We build high-converting websites for HVAC, roofing, and landscaping companies that turn clicks into calls.
                     </p>
                     <p className="text-[12px] text-secondary/70 font-mono uppercase tracking-widest mb-12 reveal reveal-delay-1">
-                        Performance-first builds, engineered for 90+ Lighthouse target benchmarks.
+                        Built for speed. Built to convert. Built to outrank.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center gap-4 mb-14 reveal reveal-delay-2 w-full sm:w-auto justify-center">
                         <Link to="/contact" className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-white/90 hover:scale-[1.01] active:scale-[0.99] text-black text-[12px] font-bold tracking-[0.05em] uppercase transition-all duration-300 border border-transparent shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                            Request a Consultation
+                            Book a Strategy Call
                         </Link>
                         <Link to="/work" className="w-full sm:w-auto px-8 py-4 bg-[#121417]/50 border border-white/10 hover:border-white/30 hover:bg-white/5 text-primary text-[12px] font-semibold tracking-[0.05em] uppercase transition-all duration-300">
-                            View Concepts
+                            See Industry Demos
                         </Link>
                     </div>
                 </div>
@@ -136,9 +136,9 @@ const Home: React.FC = () => {
             <section className="py-28 px-6 max-w-[1100px] mx-auto w-full overflow-hidden">
                 <div className="text-center mb-14 reveal">
                     <div className="text-[11px] font-mono text-accent/80 uppercase tracking-widest mb-5">Authority</div>
-                    <h2 className="text-2xl sm:text-3xl font-semibold text-primary tracking-tight mb-4">Built for operators who expect results.</h2>
+                    <h2 className="text-2xl sm:text-3xl font-semibold text-primary tracking-tight mb-4">Three pillars behind every Authority build.</h2>
                     <p className="text-[15px] text-secondary max-w-[700px] mx-auto leading-relaxed">
-                        We focus on the fundamentals that drive trust and conversion: speed, structure, and technical control.
+                        Speed, design, and reliability are non-negotiable if you want more calls and better clients.
                     </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -159,9 +159,9 @@ const Home: React.FC = () => {
                 <div className="max-w-[1100px] mx-auto">
                     <div className="mb-10">
                         <div className="text-[11px] font-mono text-accent/80 uppercase tracking-widest mb-5">Differentiation</div>
-                        <h2 className="text-2xl sm:text-3xl font-semibold text-primary tracking-tight mb-4">Why not Wix or Squarespace?</h2>
+                        <h2 className="text-2xl sm:text-3xl font-semibold text-primary tracking-tight mb-4">Why serious operators skip templates.</h2>
                         <p className="text-[15px] text-secondary max-w-[760px] leading-relaxed">
-                            Template builders can be fine for simple websites. Axiom is built for businesses that want tighter performance control, cleaner technical execution, and a site that can scale without template constraints.
+                            Templates are built for convenience. Authority sites are built for growth, trust, and market position.
                         </p>
                     </div>
 
@@ -179,9 +179,9 @@ const Home: React.FC = () => {
             <section className="py-28 px-6 max-w-[1100px] mx-auto w-full reveal">
                 <div className="text-center mb-14">
                     <div className="text-[11px] font-mono text-accent/80 uppercase tracking-widest mb-5">Process</div>
-                    <h2 className="text-2xl sm:text-3xl font-semibold text-primary tracking-tight mb-4">A clear build process from strategy to launch.</h2>
+                    <h2 className="text-2xl sm:text-3xl font-semibold text-primary tracking-tight mb-4">A clean process from first call to launch.</h2>
                     <p className="text-[15px] text-secondary max-w-[680px] mx-auto leading-relaxed">
-                        Short, decisive phases designed to keep momentum high and reduce revision churn.
+                        Fast decisions. Clear milestones. No bloated timelines.
                     </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -199,16 +199,16 @@ const Home: React.FC = () => {
                 <div className="max-w-[820px] mx-auto text-center">
                     <div className="text-[11px] font-mono text-accent/80 uppercase tracking-widest mb-6">Proof in Progress</div>
                     <h2 className="text-2xl sm:text-3xl font-semibold text-primary tracking-tight mb-4">
-                        Results will be published here as projects launch.
+                        Results are published as clients launch.
                     </h2>
                     <p className="text-[15px] text-secondary leading-relaxed mb-8">
-                        We do not publish placeholder testimonials or fabricated client outcomes. If you want to evaluate fit before launch case studies are available, ask for a sample or concept build walkthrough.
+                        No fake testimonials. No inflated claims. If you want proof before launch case studies are live, we will walk you through a real build.
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
                         {[
-                            'What operators usually ask first: speed, mobile usability, and conversion structure',
-                            'Early access builds are available for review during planning',
-                            'Performance targets and deliverables are scoped before build begins'
+                            'Most owners ask about speed, mobile usability, and lead quality first',
+                            'You can review draft builds early before final launch',
+                            'Clear performance goals are defined before build starts'
                         ].map((item) => (
                             <div key={item} className="surface-panel p-4 rounded-sm">
                                 <p className="text-[12px] text-secondary leading-relaxed">{item}</p>
@@ -223,22 +223,22 @@ const Home: React.FC = () => {
                     <div className="lg:col-span-7">
                         <div className="text-[11px] font-mono text-accent/80 uppercase tracking-widest mb-5">About Axiom</div>
                         <h2 className="text-2xl sm:text-3xl font-semibold text-primary tracking-tight mb-4">
-                            Axiom Infrastructure builds performance-first websites for local service businesses.
+                            We build digital infrastructure that helps service businesses dominate locally.
                         </h2>
                         <p className="text-[15px] text-secondary leading-relaxed mb-4">
-                            We focus on practical digital infrastructure: fast sites, clear conversion pathways, and technical foundations that support growth without template bloat.
+                            Your website should be your best salesperson. It should load instantly, look elite, and make contacting you effortless.
                         </p>
                         <p className="text-[15px] text-secondary leading-relaxed">
-                            The goal is simple: give serious operators a website that looks premium, loads fast, and supports the way they actually sell.
+                            That is the standard we build to on every Authority project.
                         </p>
                     </div>
                     <div className="lg:col-span-5 surface-panel p-6 rounded-sm">
                         <h3 className="text-[12px] font-mono text-secondary uppercase tracking-widest mb-5">Trust Anchors</h3>
                         <ul className="flex flex-col gap-3 text-[14px] text-secondary">
-                            <li className="flex items-start gap-3"><span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0"></span>Ontario-focused service business positioning</li>
-                            <li className="flex items-start gap-3"><span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0"></span>Performance benchmark targets built into project planning</li>
-                            <li className="flex items-start gap-3"><span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0"></span>Transparent pricing structure and scoped deliverables</li>
-                            <li className="flex items-start gap-3"><span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0"></span>No template bloat, no plugin-heavy stacks by default</li>
+                            <li className="flex items-start gap-3"><span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0"></span>Built for real local service markets</li>
+                            <li className="flex items-start gap-3"><span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0"></span>Speed and conversion targets defined up front</li>
+                            <li className="flex items-start gap-3"><span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0"></span>Clear scope, clear pricing, clear outcomes</li>
+                            <li className="flex items-start gap-3"><span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0"></span>Custom builds that do not look like everyone else</li>
                         </ul>
                     </div>
                 </div>
@@ -254,15 +254,15 @@ const Home: React.FC = () => {
                     {[
                         {
                             q: 'Do you use WordPress or Squarespace?',
-                            a: "No. We build custom coded websites (React/static architecture) because it gives tighter performance, security, and technical control than builder-first stacks."
+                            a: "No. We build custom websites so your business looks unique, loads faster, and is easier to scale as you grow."
                         },
                         {
                             q: 'Do you provide hosting?',
-                            a: 'Yes. We deploy on Cloudflare edge infrastructure and can manage hosting, SSL, and uptime as an ongoing service.'
+                            a: 'Yes. We handle hosting, security, and uptime so your site stays online and protected.'
                         },
                         {
                             q: 'What about SEO?',
-                            a: 'Every build includes technical SEO fundamentals: semantic markup, performance optimization, mobile-first structure, and metadata foundations.'
+                            a: 'Every build is structured to rank locally with fast performance, clear service pages, and clean on-page SEO basics.'
                         }
                     ].map((faq, i) => (
                         <div key={i} className="border-b border-subtle pb-8 last:border-0">
@@ -276,17 +276,17 @@ const Home: React.FC = () => {
             <section className="py-24 px-6 border-t border-subtle relative overflow-hidden text-center reveal">
                 <div className="max-w-[720px] mx-auto w-full relative z-10">
                     <div className="text-[11px] font-mono text-accent/80 uppercase tracking-widest mb-5">Next Step</div>
-                    <h2 className="text-[32px] font-semibold mb-4 text-primary tracking-tight">Ready to plan your rebuild?</h2>
+                    <h2 className="text-[32px] font-semibold mb-4 text-primary tracking-tight">Ready to upgrade what your market sees?</h2>
                     <p className="text-[15px] text-secondary mx-auto leading-relaxed mb-8">
-                        Start with a consultation, or review project investment ranges before you reach out.
+                        Start with a strategy call. We will map the fastest path to a site that looks elite and brings in better leads.
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link to="/contact" className="inline-block px-8 py-4 bg-white hover:bg-white/90 hover:scale-[1.01] active:scale-[0.99] text-black text-[12px] font-bold tracking-[0.05em] uppercase transition-all duration-300 border border-transparent shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                            Request a Consultation
+                            Start Your Authority Build
                         </Link>
                         <Link to="/pricing" className="inline-block px-8 py-4 bg-[#121417]/50 border border-white/10 hover:border-white/30 hover:bg-white/5 text-primary text-[12px] font-semibold tracking-[0.05em] uppercase transition-all duration-300">
-                            View Pricing
+                            See Investment Tiers
                         </Link>
                     </div>
                 </div>

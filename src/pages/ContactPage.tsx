@@ -29,22 +29,21 @@ const INITIAL_FORM: IntakeFormState = {
 };
 
 const SCALE_OPTIONS = [
-    { value: 'foundation', label: 'The Foundation ($1,450+)' },
-    { value: 'engine', label: 'The Engine ($3,250+)' },
-    { value: 'authority', label: 'The Authority ($7,500+)' }
+    { value: 'foundation', label: 'The Foundation Investment ($2,500)' },
+    { value: 'engine', label: 'The Engine Investment ($5,000)' },
+    { value: 'authority', label: 'The Authority Investment ($7,500+)' }
 ];
 
 const PAIN_POINTS_OPTIONS = [
-    'Slow Speeds',
-    'Poor Mobile UX',
-    'Low Lead Volume',
-    'Outdated Design'
+    'Losing leads to slow loading',
+    'Looks worse than my competitors',
+    'Hard for customers to take action',
+    'Hard to update and manage'
 ];
 
 const ContactPage: React.FC = () => {
     const [searchParams] = useSearchParams();
     const [form, setForm] = useState<IntakeFormState>(() => {
-        // Pre-fill package if it came from URL
         const packageParam = (searchParams.get('package') || '').toLowerCase();
         return {
             ...INITIAL_FORM,
@@ -57,7 +56,7 @@ const ContactPage: React.FC = () => {
     const [msg, setMsg] = useState('');
     const [errors, setErrors] = useState<Partial<Record<keyof IntakeFormState, string>>>({});
 
-    const setField = (key: keyof IntakeFormState, value: any) => {
+    const setField = (key: keyof IntakeFormState, value: string | string[]) => {
         if (errors[key]) {
             setErrors(prev => {
                 const next = { ...prev };
@@ -98,12 +97,11 @@ const ContactPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (form.company_fax) return; // Honeypot check
+        if (form.company_fax) return;
 
-        // Step 2 Validation
         const nextErrors: typeof errors = {};
-        if (!form.project_scale) nextErrors.project_scale = 'Please select a project scale.';
-        if (form.details.trim().length < 10) nextErrors.details = 'Please provide some project details (min 10 chars).';
+        if (!form.project_scale) nextErrors.project_scale = 'Please select an investment tier.';
+        if (form.details.trim().length < 10) nextErrors.details = 'Please share details (min 10 chars).';
 
         if (Object.keys(nextErrors).length > 0) {
             setErrors(nextErrors);
@@ -129,34 +127,33 @@ const ContactPage: React.FC = () => {
 
             if (res.ok) {
                 setStatus('success');
-                setMsg('Axiom Blueprint Requested.');
+                setMsg('Infrastructure Audit Submitted.');
                 return;
             }
 
             setStatus('error');
-            setMsg('Engineering Link Failed. Please reach out to aidan@getaxiom.ca directly while we recalibrate.');
+            setMsg('Application link failed. Please email aidan@getaxiom.ca directly while we recalibrate.');
         } catch {
             setStatus('error');
-            setMsg('Engineering Link Failed. Please reach out to aidan@getaxiom.ca directly while we recalibrate.');
+            setMsg('Application link failed. Please email aidan@getaxiom.ca directly while we recalibrate.');
         }
     };
 
     return (
         <div className="pt-32 pb-24 min-h-[90vh] flex flex-col items-center justify-center relative overflow-hidden">
             <SEO
-                title="Project Intake | Axiom Infrastructure"
-                description="Start your web infrastructure project today. Fill out our intake form to discuss custom builds or rebuilds for your service business."
+                title="Infrastructure Audit Application | Axiom"
+                description="Apply for an Infrastructure Audit. We review your current site, identify revenue leaks, and recommend the right Axiom investment tier."
             />
-            {/* Background glowing orb */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none z-0" style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 60%)' }}></div>
 
             <div className="max-w-[700px] mx-auto w-full relative z-10 px-6 reveal">
                 <div className="text-center mb-12">
                     <h1 className="text-[40px] md:text-[48px] font-semibold mb-4 text-primary tracking-tight leading-[1.05]">
-                        Infrastructure Qualification
+                        Infrastructure Audit Application
                     </h1>
                     <p className="text-[16px] text-secondary max-w-md mx-auto leading-relaxed">
-                        Step {step} of 2. Tell us about your current capabilities and goals.
+                        Step {step} of 2. Tell us where revenue is leaking so we can scope the right build.
                     </p>
                 </div>
 
@@ -172,12 +169,12 @@ const ContactPage: React.FC = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <h2 className="text-[24px] font-semibold text-primary mb-3">Axiom Blueprint Requested.</h2>
+                            <h2 className="text-[24px] font-semibold text-primary mb-3">Application Received.</h2>
                             <p className="text-[14px] text-secondary leading-relaxed max-w-sm mb-8">
-                                Our engineering team will review your infrastructure and respond within 24 hours.
+                                Our strategy team will review your audit details and reply within 24 hours.
                             </p>
                             <button onClick={() => { setStatus(''); setStep(1); setForm(INITIAL_FORM); }} className="px-6 py-3 border border-white/10 hover:border-white/30 text-[12px] font-bold uppercase tracking-widest text-primary transition-colors">
-                                Return to Forms
+                                Start New Application
                             </button>
                         </div>
                     )}
@@ -189,7 +186,6 @@ const ContactPage: React.FC = () => {
                         </div>
                     )}
 
-                    {/* Honeypot */}
                     <div className="absolute left-[-10000px] top-auto w-px h-px overflow-hidden" aria-hidden="true">
                         <label htmlFor="company-fax">Company Fax</label>
                         <input id="company-fax" type="text" name="company_fax" tabIndex={-1} autoComplete="off" value={form.company_fax} onChange={(e) => setField('company_fax', e.target.value)} />
@@ -217,27 +213,26 @@ const ContactPage: React.FC = () => {
                                     {errors.business_name && <p className="text-[12px] text-red-400">{errors.business_name}</p>}
                                 </div>
                                 <div className="flex flex-col gap-3">
-                                    <label className="text-[12px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Phone (Optional)</label>
+                                    <label className="text-[12px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Phone (Best Number)</label>
                                     <input type="tel" name="phone" value={form.phone} onChange={(e) => setField('phone', e.target.value)} className="bg-[#070708] border border-white/10 text-primary text-[16px] p-4 min-h-[48px] focus-visible:border-white/40 focus-visible:bg-[#0a0a0b] transition-colors rounded-[2px] shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] outline-none" />
                                 </div>
                             </div>
 
                             <div className="flex flex-col gap-3">
-                                <label className="text-[12px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Current Website (if any)</label>
+                                <label className="text-[12px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Current Website</label>
                                 <input type="url" name="current_website" placeholder="https://" value={form.current_website} onChange={(e) => setField('current_website', e.target.value)} className="bg-[#070708] border border-white/10 text-primary text-[16px] p-4 min-h-[48px] focus-visible:border-white/40 focus-visible:bg-[#0a0a0b] transition-colors rounded-[2px] shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] outline-none" />
                             </div>
 
                             <button type="button" onClick={handleNextStep} className="w-full py-4 mt-4 bg-white text-black hover:bg-[#e2e2e2] hover:scale-[1.01] active:scale-[0.99] min-h-[50px] text-[14px] font-bold uppercase tracking-[0.05em] transition-all duration-300 rounded-[2px]">
-                                Continue to Project Details →
+                                Continue to Audit Questions
                             </button>
                         </div>
                     ) : (
                         <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-right-4 duration-500">
-
                             <div className="flex flex-col gap-3">
-                                <label className="text-[12px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Project Scale</label>
+                                <label className="text-[12px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Preferred Investment Tier</label>
                                 <select required value={form.project_scale} onChange={(e) => setField('project_scale', e.target.value)} className="bg-[#070708] border border-white/10 text-primary text-[16px] p-4 min-h-[48px] focus-visible:border-white/40 focus-visible:bg-[#0a0a0b] transition-colors rounded-[2px] shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] outline-none appearance-none cursor-pointer">
-                                    <option value="" disabled>Select your infrastructure tier...</option>
+                                    <option value="" disabled>Select your investment tier...</option>
                                     {SCALE_OPTIONS.map(opt => (
                                         <option key={opt.value} value={opt.value}>{opt.label}</option>
                                     ))}
@@ -246,7 +241,7 @@ const ContactPage: React.FC = () => {
                             </div>
 
                             <div className="flex flex-col gap-4">
-                                <label className="text-[12px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Primary Pain Points</label>
+                                <label className="text-[12px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Current Business Problems</label>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     {PAIN_POINTS_OPTIONS.map(point => {
                                         const isSelected = form.pain_points.includes(point);
@@ -271,8 +266,8 @@ const ContactPage: React.FC = () => {
                             </div>
 
                             <div className="flex flex-col gap-3 mb-2">
-                                <label className="text-[12px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Project Details & Objectives</label>
-                                <textarea name="details" rows={4} required minLength={10} value={form.details} onChange={(e) => setField('details', e.target.value)} placeholder="Tell us exactly what you need built..." className="bg-[#070708] border border-white/10 text-primary text-[16px] p-4 min-h-[48px] focus-visible:border-white/40 focus-visible:bg-[#0a0a0b] transition-colors resize-none rounded-[2px] shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] outline-none"></textarea>
+                                <label className="text-[12px] font-mono text-secondary/80 uppercase tracking-widest pl-1">Goals and Constraints</label>
+                                <textarea name="details" rows={4} required minLength={10} value={form.details} onChange={(e) => setField('details', e.target.value)} placeholder="What are you trying to fix, and what outcome do you want in the next 6-12 months?" className="bg-[#070708] border border-white/10 text-primary text-[16px] p-4 min-h-[48px] focus-visible:border-white/40 focus-visible:bg-[#0a0a0b] transition-colors resize-none rounded-[2px] shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] outline-none"></textarea>
                                 {errors.details && <p className="text-[12px] text-red-400">{errors.details}</p>}
                             </div>
 
@@ -281,7 +276,7 @@ const ContactPage: React.FC = () => {
                                     Back
                                 </button>
                                 <button disabled={status === 'loading' || status === 'success'} type="submit" className="flex-1 py-4 bg-white text-black hover:bg-[#e2e2e2] hover:scale-[1.01] active:scale-[0.99] min-h-[50px] text-[14px] font-bold uppercase tracking-[0.05em] transition-all duration-300 rounded-[2px] disabled:opacity-50">
-                                    {status === 'loading' ? 'Submitting...' : 'Submit Infrastructure Request'}
+                                    {status === 'loading' ? 'Submitting...' : 'Submit Project Application'}
                                 </button>
                             </div>
                         </div>
