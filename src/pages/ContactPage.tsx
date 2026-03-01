@@ -121,8 +121,7 @@ const ContactPage: React.FC = () => {
             };
             console.log('[AXIOM] Sending Payload:', payload);
 
-            const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
-            const res = await fetch(`${backendUrl}/api/intake`, {
+            const res = await fetch('/api/intake', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
