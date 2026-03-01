@@ -84,7 +84,7 @@ const App: React.FC = () => {
             <BackgroundAtmosphere />
 
             <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ease-out ${isScrolled ? 'bg-[#060708] border-b border-white/5 shadow-sm shadow-black/20' : 'bg-[#060708]/90 border-b border-white/5'}`}>
-                <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between gap-6">
+                <div className="max-w-[1400px] mx-auto px-6 h-20 grid grid-cols-[1fr_auto] md:grid-cols-3 items-center gap-6">
                     <Link to="/" className="flex items-center gap-3 group focus-visible:ring-offset-background min-h-[48px]">
                         <BrandLockup
                             logoSize="h-[22px] lg:h-[24px] w-auto opacity-90 group-hover:opacity-100 transition-all duration-500 drop-shadow-[0_0_8px_rgba(255,255,255,0.1)] group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
@@ -92,13 +92,27 @@ const App: React.FC = () => {
                         />
                     </Link>
 
+                    <div className="hidden md:flex items-center justify-center gap-8 text-[13px] font-medium text-secondary">
+                        <Link to="/" className="min-h-[48px] inline-flex items-center py-2 hover:text-primary transition-colors">Home</Link>
+                        <Link to="/services" className="min-h-[48px] inline-flex items-center py-2 hover:text-primary transition-colors">Infrastructure</Link>
+                        <Link to="/contact" className="min-h-[48px] inline-flex items-center py-2 hover:text-primary transition-colors">Apply</Link>
+                    </div>
+
                     <Link
                         to="/contact"
                         aria-label="Apply for strategy call"
-                        className="inline-flex items-center justify-center min-h-[48px] px-6 py-2.5 bg-white text-black hover:bg-[#e2e2e2] text-[10px] font-bold uppercase tracking-[0.08em] border border-transparent transition-all duration-300 rounded-[2px]"
+                        className="justify-self-end inline-flex items-center justify-center min-h-[48px] px-6 py-2.5 bg-white text-black hover:bg-[#e2e2e2] text-[10px] font-bold uppercase tracking-[0.08em] border border-transparent transition-all duration-300 rounded-[2px]"
                     >
-                        Apply for Strategy Call
+                        Book a Strategy Call
                     </Link>
+                </div>
+
+                <div className="md:hidden border-t border-white/5">
+                    <div className="max-w-[1400px] mx-auto px-6 py-2 flex items-center justify-center gap-6 text-[12px] font-medium text-secondary">
+                        <Link to="/" className="min-h-[48px] inline-flex items-center py-2 hover:text-primary transition-colors">Home</Link>
+                        <Link to="/services" className="min-h-[48px] inline-flex items-center py-2 hover:text-primary transition-colors">Infrastructure</Link>
+                        <Link to="/contact" className="min-h-[48px] inline-flex items-center py-2 hover:text-primary transition-colors">Apply</Link>
+                    </div>
                 </div>
 
                 <div className="border-t border-white/5 bg-[#080a0c]/95">
