@@ -72,7 +72,7 @@ const ServicesPage: React.FC = () => {
             />
 
             {/* Header */}
-            <section className="max-w-3xl mx-auto text-center flex flex-col gap-4 sm:gap-5 mb-8">
+            <section className="max-w-3xl mx-auto text-center flex flex-col gap-4 sm:gap-5 mb-12 sm:mb-16">
                 <p className="eyebrow-center">Infrastructure Investments</p>
                 <h1 className="text-[28px] sm:text-[40px] md:text-[48px] font-semibold tracking-tight leading-[1.08]">
                     Structured build tiers for serious local operators.
@@ -83,7 +83,7 @@ const ServicesPage: React.FC = () => {
             </section>
 
             {/* SLA Guarantee Banner */}
-            <section className="max-w-[1100px] mx-auto mb-8">
+            <section className="max-w-[1100px] mx-auto mb-10 sm:mb-12">
                 <div className="panel border-[var(--accent)]/15 p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row items-center gap-5 sm:gap-6 text-center sm:text-left">
                     <div className="w-14 h-14 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 flex items-center justify-center text-[24px] shrink-0">
                         🛡️
@@ -147,7 +147,7 @@ const ServicesPage: React.FC = () => {
             </section>
 
             {/* Engineering Roadmap */}
-            <section className="max-w-[1100px] mx-auto mt-10 sm:mt-12">
+            <section className="max-w-[1100px] mx-auto mt-14 sm:mt-20">
                 <div className="panel p-8 sm:p-10 md:p-12">
                     <div className="text-center mb-10">
                         <p className="eyebrow-center mb-4">Our Process</p>
@@ -188,8 +188,11 @@ const ServicesPage: React.FC = () => {
                 </div>
             </section>
 
+            {/* Section Break */}
+            <div className="max-w-[1100px] mx-auto mt-14 sm:mt-20"><div className="section-rule"></div></div>
+
             {/* ROI Math Block */}
-            <section className="max-w-[1100px] mx-auto mt-10 sm:mt-12">
+            <section className="max-w-[1100px] mx-auto mt-12 sm:mt-16">
                 <div className="panel p-8 sm:p-10 md:p-12">
                     <div className="text-center mb-10">
                         <p className="eyebrow-center mb-4" style={{ color: '#ef4444' }}>The Math</p>
@@ -225,7 +228,7 @@ const ServicesPage: React.FC = () => {
             </section>
 
             {/* FAQ Section */}
-            <section className="max-w-[1100px] mx-auto mt-10 sm:mt-12">
+            <section className="max-w-[1100px] mx-auto mt-14 sm:mt-20">
                 <div className="panel p-8 sm:p-10 md:p-12">
                     <div className="text-center mb-8">
                         <p className="eyebrow-center mb-4">Common Questions</p>

@@ -91,7 +91,7 @@ const Home: React.FC = () => {
                 </section>
 
                 {/* ──── PERFORMANCE GUARANTEE ──── */}
-                <section className="max-w-[1100px] mx-auto mt-5 sm:mt-6">
+                <section className="max-w-[1100px] mx-auto mt-4 sm:mt-5">
                     <div className="bg-[var(--bg-main)] border border-[var(--border-subtle)] rounded-lg p-4 sm:p-6 text-center">
                         <p className="text-[13px] sm:text-[14px] text-[var(--text-body)] leading-relaxed">
                             <span className="font-bold text-[var(--text-heading)] uppercase tracking-widest text-[10.5px] sm:text-[11px] mr-2">The Axiom Guarantee:</span>
@@ -143,7 +143,7 @@ const Home: React.FC = () => {
                 </section>
 
                 {/* ──── RISK REVERSAL BANNER ──── */}
-                <section className="max-w-[1100px] mx-auto mt-10 sm:mt-12">
+                <section className="max-w-[1100px] mx-auto mt-16 sm:mt-24">
                     <div className="panel p-8 sm:p-10 md:p-12">
                         <div className="max-w-2xl mx-auto text-center flex flex-col gap-5">
                             <p className="eyebrow-center">Risk Reversal</p>
@@ -158,7 +158,7 @@ const Home: React.FC = () => {
                 </section>
 
                 {/* ──── VALUE PROPOSITION CARDS ──── */}
-                <section className="max-w-[1100px] mx-auto mt-4 sm:mt-5 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                <section className="max-w-[1100px] mx-auto mt-5 sm:mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                     {valueProps.map((card) => (
                         <article key={card.title} className="panel p-6 sm:p-8 flex flex-col gap-4 group hover:border-[#2a2d38] transition-colors">
                             <span className="text-[24px] sm:text-[28px] font-bold text-[var(--accent)]/15 font-grotesk">{card.num}</span>
@@ -168,8 +168,11 @@ const Home: React.FC = () => {
                     ))}
                 </section>
 
+                {/* ── Section Break ── */}
+                <div className="max-w-[1100px] mx-auto mt-16 sm:mt-24"><div className="section-rule"></div></div>
+
                 {/* ──── DEPLOYMENT PROOF ──── */}
-                <section className="max-w-[1100px] mx-auto mt-10 sm:mt-12">
+                <section className="max-w-[1100px] mx-auto mt-12 sm:mt-16">
                     <div className="panel p-7 sm:p-10 md:p-12">
                         <p className="eyebrow mb-3" style={{ color: '#34d399' }}>Field Operations</p>
                         <h2 className="text-[22px] sm:text-[30px] md:text-[34px] font-semibold tracking-tight mb-3">
@@ -265,7 +268,7 @@ const Home: React.FC = () => {
                 </section>
 
                 {/* ──── BEFORE / AFTER ECONOMICS ──── */}
-                <section className="max-w-[1100px] mx-auto mt-5 sm:mt-6">
+                <section className="max-w-[1100px] mx-auto mt-12 sm:mt-16">
                     <div className="panel p-7 sm:p-10 md:p-12">
                         <p className="eyebrow mb-3">The Real Comparison</p>
                         <h2 className="text-[22px] sm:text-[30px] md:text-[34px] font-semibold tracking-tight mb-10 sm:mb-12">
@@ -341,8 +344,11 @@ const Home: React.FC = () => {
                     </div>
                 </section>
 
+                {/* ── Section Break ── */}
+                <div className="max-w-[1100px] mx-auto mt-16 sm:mt-24"><div className="section-rule"></div></div>
+
                 {/* ──── MANIFESTO BRIDGE CTA ──── */}
-                <section className="max-w-[1100px] mx-auto mt-10 sm:mt-12">
+                <section className="max-w-[1100px] mx-auto mt-12 sm:mt-16">
                     <div className="panel border-[var(--accent)]/12 p-7 sm:p-10 md:p-12 flex flex-col md:flex-row items-center gap-6 md:gap-10">
                         <div className="flex-1 flex flex-col gap-3">
                             <p className="eyebrow">The Whitepaper</p>
@@ -363,7 +369,7 @@ const Home: React.FC = () => {
                 </section>
 
                 {/* ──── INFRASTRUCTURE SPECIFICATION ──── */}
-                <section className="max-w-[1100px] mx-auto mt-10 sm:mt-12">
+                <section className="max-w-[1100px] mx-auto mt-12 sm:mt-16">
                     <div className="panel p-7 sm:p-10 md:p-12">
                         <p className="eyebrow mb-8" style={{ color: '#34d399' }}>Infrastructure Specification</p>
 
@@ -383,7 +389,7 @@ const Home: React.FC = () => {
                 </section>
 
                 {/* ──── INDUSTRIES SERVED ──── */}
-                <section className="max-w-[1100px] mx-auto mt-10 sm:mt-12">
+                <section className="max-w-[1100px] mx-auto mt-12 sm:mt-16">
                     <div className="panel p-7 sm:p-10 md:p-12">
                         <div className="text-center flex flex-col gap-4 sm:gap-5 mb-10">
                             <p className="eyebrow-center">Industries</p>
@@ -405,7 +411,7 @@ const Home: React.FC = () => {
                         <div className="text-center mt-8">
                             <Link
                                 to="/concepts"
-                                className="inline-flex items-center justify-center min-h-[48px] px-8 border border-[var(--border-panel)] bg-[var(--bg-surface)] text-white hover:bg-[#1c1f28] text-[12px] font-semibold uppercase tracking-widest transition-all rounded-[4px]"
+                                className="btn-secondary"
                             >
                                 View Industry Concepts →
                             </Link>
@@ -413,8 +419,11 @@ const Home: React.FC = () => {
                     </div>
                 </section>
 
+                {/* ── Section Break ── */}
+                <div className="max-w-[1100px] mx-auto mt-16 sm:mt-24"><div className="section-rule"></div></div>
+
                 {/* ──── THE AXIOM STORY ──── */}
-                <section className="max-w-[1100px] mx-auto mt-10 sm:mt-12">
+                <section className="max-w-[1100px] mx-auto mt-12 sm:mt-16">
                     <div className="panel p-7 sm:p-10 md:p-14">
                         <p className="eyebrow mb-6 sm:mb-8">The Axiom Story</p>
 
@@ -457,9 +466,9 @@ const Home: React.FC = () => {
                 </section>
 
                 {/* ──── FINAL CTA ──── */}
-                <section className="max-w-[1100px] mx-auto mt-10 sm:mt-12">
+                <section className="max-w-[1100px] mx-auto mt-16 sm:mt-24">
                     <div className="inline-cta !m-0">
-                        <h2 className="text-[22px] sm:text-[32px] md:text-[36px] font-semibold tracking-tight">
+                        <h2 className="text-[24px] sm:text-[32px] md:text-[40px] font-semibold tracking-tight">
                             Ready to stop losing revenue to your website?
                         </h2>
                         <p className="lead text-center mx-auto">

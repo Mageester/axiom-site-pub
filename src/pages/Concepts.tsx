@@ -52,7 +52,7 @@ const ConceptsPage: React.FC = () => {
             />
 
             {/* Header */}
-            <section className="max-w-3xl mx-auto text-center flex flex-col gap-4 sm:gap-5 mb-14">
+            <section className="max-w-3xl mx-auto text-center flex flex-col gap-4 sm:gap-5 mb-16 sm:mb-20">
                 <p className="eyebrow-center">Professional Concepts</p>
                 <h1 className="text-[28px] sm:text-[40px] md:text-[48px] font-semibold tracking-tight leading-[1.08]">
                     Real sites built for real contractors. Not templates.
@@ -63,11 +63,11 @@ const ConceptsPage: React.FC = () => {
             </section>
 
             {/* Demo Cards */}
-            <section className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <section className="max-w-[1200px] mx-auto flex overflow-x-auto snap-x snap-mandatory gap-5 pb-4 lg:grid lg:grid-cols-3 lg:overflow-visible scrollbar-hide">
                 {demos.map((demo) => (
                     <article
                         key={demo.title}
-                        className="panel flex flex-col overflow-hidden group hover:border-[#2a2a2a] transition-colors"
+                        className="min-w-[85%] snap-center lg:min-w-0 panel flex flex-col overflow-hidden group hover:border-[#2a2a2a] transition-colors"
                     >
                         {/* Accent top bar */}
                         <div className="h-[3px] w-full" style={{ backgroundColor: demo.accent }}></div>
@@ -139,7 +139,7 @@ const ConceptsPage: React.FC = () => {
             </section>
 
             {/* Bottom CTA */}
-            <section className="max-w-[1100px] mx-auto mt-12">
+            <section className="max-w-[1100px] mx-auto mt-16 sm:mt-24">
                 <div className="inline-cta !m-0">
                     <h2 className="text-[24px] sm:text-[32px] md:text-[40px] font-semibold tracking-tight">
                         Want this built for your trade?
