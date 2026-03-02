@@ -50,7 +50,7 @@ const Home: React.FC = () => {
                         <div className="relative z-10 max-w-3xl flex flex-col gap-6">
                             <div className="flex items-center gap-3">
                                 <div className="h-[1px] w-8 bg-[var(--accent)]/50"></div>
-                                <p className="text-[11px] font-mono text-[var(--accent)] uppercase tracking-[0.2em]">Authority Tier Infrastructure</p>
+                                <p className="text-[11px] font-mono text-[var(--accent)] uppercase tracking-[0.2em]">Professional Tier Infrastructure</p>
                             </div>
 
                             <h1 className="text-[38px] sm:text-[50px] font-semibold text-white tracking-tight leading-[1.06]">
@@ -175,7 +175,7 @@ const Home: React.FC = () => {
                                 <div key={ind.name} className="bg-[#0e0f12] border border-[#1a1d25] rounded-md p-6 text-center">
                                     <div className="w-3 h-3 rounded-full mx-auto mb-4" style={{ backgroundColor: ind.accent, boxShadow: `0 0 12px ${ind.accent}40` }}></div>
                                     <p className="text-[16px] font-semibold text-white">{ind.name}</p>
-                                    <p className="text-[12px] font-mono text-[var(--text-secondary)] mt-2 uppercase tracking-widest">Authority Tier</p>
+                                    <p className="text-[12px] font-mono text-[var(--text-secondary)] mt-2 uppercase tracking-widest">Professional Tier</p>
                                 </div>
                             ))}
                         </div>

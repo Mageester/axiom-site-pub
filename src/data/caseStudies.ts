@@ -47,7 +47,7 @@ export const caseStudies: CaseStudyEntry[] = [
     },
     {
         slug: 'concept-landscaping-authority-site',
-        title: 'Demo: Landscaping Authority Site',
+        title: 'Demo: Landscaping Professional Site',
         label: 'Active Deployment',
         niche: 'Local Business',
         location: 'Edge Isolated',

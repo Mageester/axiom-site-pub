@@ -91,7 +91,7 @@ const PricingPage: React.FC = () => {
                     {/* TIER 3 */}
                     <div className="surface-panel p-8 sm:p-10 relative overflow-hidden group border-white/5 hover:border-white/10 transition-all duration-300 rounded-sm flex flex-col bg-black/40">
                         <div className="absolute top-0 left-0 w-[3px] h-full bg-[#a1a1a1]/30"></div>
-                        <h3 className="text-[24px] font-semibold text-[#ffffff] mb-2 tracking-tight">The Authority</h3>
+                        <h3 className="text-[24px] font-semibold text-[#ffffff] mb-2 tracking-tight">Enterprise</h3>
                         <p className="text-[13px] text-[#a1a1a1] mb-6 min-h-[40px] leading-relaxed">Custom-engineered systems for market leaders.</p>
                         <div className="text-[32px] font-semibold text-[#ffffff] mb-8 border-b border-white/5 pb-6">
                             $7,500+ <span className="text-[12px] font-normal text-[#a1a1a1] uppercase tracking-widest ml-1">CAD</span>
@@ -103,7 +103,7 @@ const PricingPage: React.FC = () => {
                             <li className="flex items-center gap-3"><span className="text-white/40 w-1 h-1 rounded-full shrink-0"></span>Priority Engineering Support</li>
                         </ul>
                         <Link to="/contact?package=authority" className="mt-10 inline-flex items-center justify-center px-5 py-4 bg-transparent hover:bg-white text-white hover:text-black border border-white/20 hover:scale-[1.05] text-[11px] font-bold uppercase tracking-widest rounded-sm transition-all duration-300">
-                            Select Authority
+                            Select Enterprise
                         </Link>
                     </div>
 

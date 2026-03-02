@@ -41,14 +41,14 @@ const tiers = [
             'A complete funnel: from first click to booked appointment',
             'Dedicated priority support with a named engineer'
         ],
-        cta: 'Go Authority'
+        cta: 'Go Enterprise'
     }
 ];
 
 const faqs = [
     {
         q: 'How long does a typical build take?',
-        a: 'Foundation builds ship in 2 weeks. Engine builds take 3–4 weeks. Authority builds are 4–6 weeks depending on scope. We work in focused sprints with weekly check-ins — you\'re never left guessing.'
+        a: 'Starter builds ship in 2 weeks. Professional builds take 3–4 weeks. Enterprise builds are 4–6 weeks depending on scope. We work in focused sprints with weekly check-ins — you\'re never left guessing.'
     },
     {
         q: 'Do I need to handle my own hosting?',
@@ -56,7 +56,7 @@ const faqs = [
     },
     {
         q: 'What if I need changes after launch?',
-        a: 'Authority builds include 30 days of post-launch adjustments at no extra cost. After that, we offer retainer plans for ongoing optimization. You always own your code — no lock-in.'
+        a: 'Enterprise builds include 30 days of post-launch adjustments at no extra cost. After that, we offer retainer plans for ongoing optimization. You always own your code — no lock-in.'
     }
 ];
 
@@ -65,7 +65,7 @@ const ServicesPage: React.FC = () => {
         <div className="pt-36 pb-24 px-6">
             <SEO
                 title="Infrastructure Investments | Axiom"
-                description="Explore Foundation, Engine, and Authority infrastructure investments for local service businesses."
+                description="Explore Starter, Professional, and Enterprise infrastructure investments for local service businesses."
             />
 
             {/* Header */}
@@ -157,7 +157,7 @@ const ServicesPage: React.FC = () => {
                             <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
                         </div>
                         <h2 className="text-[28px] sm:text-[34px] font-semibold text-white tracking-tight">
-                            The Path to Authority: Our Engineering Process.
+                            The Path to Professional: Our Engineering Process.
                         </h2>
                     </div>
 

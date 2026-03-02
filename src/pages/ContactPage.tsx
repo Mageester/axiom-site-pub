@@ -29,9 +29,9 @@ const INITIAL_FORM: IntakeFormState = {
 };
 
 const SCALE_OPTIONS = [
-    { value: 'foundation', label: 'The Foundation Investment ($2,500)' },
-    { value: 'engine', label: 'The Engine Investment ($5,000)' },
-    { value: 'authority', label: 'The Authority Investment ($7,500+)' }
+    { value: 'starter', label: 'Starter Investment ($2,500)' },
+    { value: 'professional', label: 'Professional Investment ($5,000)' },
+    { value: 'enterprise', label: 'Enterprise Investment ($7,500+)' }
 ];
 
 const PAIN_POINTS_OPTIONS = [

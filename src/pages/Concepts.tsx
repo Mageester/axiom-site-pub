@@ -47,14 +47,14 @@ const ConceptsPage: React.FC = () => {
         <div className="pt-36 pb-24 px-6">
             <SEO
                 title="Concepts | Axiom Infrastructure"
-                description="Explore Axiom Authority demo concepts for HVAC, roofing, and landscaping businesses."
+                description="Explore Axiom Professional demo concepts for HVAC, roofing, and landscaping businesses."
             />
 
             {/* Header */}
             <section className="max-w-3xl mx-auto text-center flex flex-col gap-5 mb-14">
                 <div className="flex items-center justify-center gap-3">
                     <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
-                    <p className="text-[11px] font-mono text-[var(--accent)] uppercase tracking-[0.2em]">Authority Concepts</p>
+                    <p className="text-[11px] font-mono text-[var(--accent)] uppercase tracking-[0.2em]">Professional Concepts</p>
                     <div className="h-[1px] w-8 bg-[var(--accent)]/40"></div>
                 </div>
                 <h1 className="text-[38px] sm:text-[50px] font-semibold text-white tracking-tight leading-[1.06]">

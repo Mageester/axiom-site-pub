@@ -227,7 +227,7 @@ const App: React.FC = () => {
                     to="/contact"
                     className="flex items-center justify-center w-full min-h-[52px] bg-white text-[#0B0B0C] text-[12px] font-bold uppercase tracking-widest rounded-[4px] shadow-[0_0_20px_rgba(255,255,255,0.1)] active:bg-[#e2e2e2] transition-colors"
                 >
-                    Apply for Authority Build
+                    Apply for Enterprise Build
                 </Link>
             </div>
         </div>
