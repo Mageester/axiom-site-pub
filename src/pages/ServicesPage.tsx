@@ -4,7 +4,7 @@ import { SEO } from '../components/SEO';
 
 const tiers = [
     {
-        name: 'The Foundation',
+        name: 'Starter',
         price: '$2,500',
         tag: 'Single Page',
         desc: 'A premium single-page site that makes you the obvious choice when homeowners search your area.',
@@ -17,7 +17,7 @@ const tiers = [
         cta: 'Start Here'
     },
     {
-        name: 'The Engine',
+        name: 'Professional',
         price: '$5,000',
         tag: 'Multi-Page',
         desc: 'A multi-page system that pre-qualifies leads and books calls on autopilot so you can focus on jobs.',
@@ -31,7 +31,7 @@ const tiers = [
         featured: true
     },
     {
-        name: 'The Authority',
+        name: 'Enterprise',
         price: '$7,500+',
         tag: 'Bespoke',
         desc: 'A tailored digital experience designed around your exact sales process and market position.',
