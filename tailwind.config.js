@@ -21,6 +21,13 @@ export default {
                 background: 'var(--bg-main)',
                 surface: 'var(--bg-surface)',
                 inset: 'var(--bg-inset)',
+                'axiom-base': '#090A0B',
+                'axiom-elevated': '#13171B',
+                'axiom-surface': '#1F2326',
+                'axiom-border': '#31363B',
+                'axiom-accent': '#E4572E',
+                'axiom-text-main': '#F5F7FA',
+                'axiom-text-mute': '#A7B3BC',
                 accent: {
                     DEFAULT: 'var(--accent)',
                     muted: 'var(--accent-muted)',
@@ -28,6 +35,8 @@ export default {
                 panel: 'var(--border-panel)',
             },
             fontFamily: {
+                axiomSans: ['Inter', 'Satoshi', 'sans-serif'],
+                axiomMono: ['IBM Plex Mono', 'Space Mono', 'monospace'],
                 grotesk: ['Space Grotesk', 'sans-serif'],
                 inter: ['Inter', 'sans-serif'],
             },

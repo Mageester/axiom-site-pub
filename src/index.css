@@ -54,7 +54,7 @@
      ──────────────────────────────────────────────── */
 
   body {
-    @apply bg-[var(--bg-main)] text-[var(--text-body)] antialiased selection:bg-[var(--accent)] selection:text-white bg-fixed;
+    @apply bg-axiom-base text-axiom-text-main font-axiomSans leading-[1.6];
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     font-size: 16px;
     line-height: 1.625;
@@ -105,6 +105,13 @@
    ══════════════════════════════════════════════════════ */
 
 @layer components {
+  .axiom-bento {
+    @apply bg-axiom-elevated border border-axiom-border rounded-2xl p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)];
+  }
+
+  .axiom-glass {
+    @apply bg-axiom-surface/60 backdrop-blur-md border border-axiom-border/50 rounded-xl;
+  }
 
   /* ──────────────────────────────────────────────────
      SECTION CONTAINER
