@@ -4,44 +4,50 @@ import { SEO } from '../components/SEO';
 
 const tiers = [
     {
-        name: 'Starter',
-        price: '$2,500',
-        tag: 'Single Page',
-        desc: 'A premium single-page site that makes you the obvious choice when homeowners search your area.',
-        features: [
-            'A stunning custom design that outclasses your local competitors',
-            'Loads instantly on any phone, even on a job site with weak signal',
-            'Built-in SEO so you show up when customers are searching',
-            'A clear contact form that turns visitors into phone calls'
-        ],
-        cta: 'Start Here'
-    },
-    {
-        name: 'Professional',
-        price: '$5,000',
-        tag: 'Multi-Page',
-        desc: 'A multi-page system that pre-qualifies leads and books calls on autopilot so you can focus on jobs.',
-        features: [
-            'Multiple pages that address every service you offer',
-            'Content structured to answer customer objections before they call',
-            'Automated lead-qualification and call scheduling',
-            'Built-in analytics so you know exactly what\'s working'
-        ],
-        cta: 'Level Up',
-        featured: true
-    },
-    {
-        name: 'Enterprise',
+        name: 'Foundation',
         price: '$7,500+',
-        tag: 'Bespoke',
-        desc: 'A tailored digital experience designed around your exact sales process and market position.',
+        tag: 'Core Deployment',
+        desc: 'Launch-grade contractor infrastructure for replacing fragile agency templates.',
+        qualifier: 'Best for owner-led teams in one primary service territory.',
+        technical: '3-5 pages // edge hosting // conversion instrumentation',
         features: [
-            'Bespoke architecture built around how your best deals close',
-            'Instant page loads from servers in 200+ cities â€” no delays',
-            'A complete funnel: from first click to booked appointment',
-            'Dedicated priority support with a named engineer'
+            'Offer architecture that frames premium positioning early',
+            'Emergency-ready intake flow for fast mobile conversions',
+            'Performance hardening with handoff baseline metrics',
         ],
-        cta: 'Go Enterprise'
+        cta: 'Apply for Foundation',
+        packageParam: 'starter',
+    },
+    {
+        name: "Contractor's Choice",
+        price: '$7,500+',
+        tag: 'Growth System',
+        desc: 'Most selected by scaling operators who need authority and throughput at the same time.',
+        qualifier: 'Best for teams of 10+ targeting higher-ticket service work.',
+        technical: '7-10 pages // ROI terminal // trust proof stack',
+        features: [
+            'Qualification-first funnels that reduce low-margin leads',
+            'High-ticket service positioning across every key page',
+            'Priority launch support through first campaign cycle',
+        ],
+        cta: 'Apply for Contractor\'s Choice',
+        packageParam: 'professional',
+        featured: true,
+    },
+    {
+        name: 'Authority',
+        price: '$7,500+',
+        tag: 'Bespoke Command',
+        desc: 'Custom architecture for multi-crew and multi-market growth operators.',
+        qualifier: 'Best for established teams expanding territories or acquisitions.',
+        technical: 'custom architecture // workflow integrations // executive reporting',
+        features: [
+            'Sales-process mapping from first click to closed work',
+            'CRM and dispatch integration strategy at implementation',
+            'Quarterly instrumentation review for growth accountability',
+        ],
+        cta: 'Apply for Authority',
+        packageParam: 'enterprise',
     }
 ];
 
@@ -98,51 +104,70 @@ const ServicesPage: React.FC = () => {
             </section>
 
             {/* Pricing Grid */}
-            <section className="max-w-[1100px] mx-auto flex overflow-x-auto snap-x snap-mandatory gap-5 pb-8 md:grid md:grid-cols-3 md:overflow-visible scrollbar-hide relative">
-                <div className="hidden md:block absolute inset-0 -m-4 rounded-xl pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(90,114,155,0.4) 39px, rgba(90,114,155,0.4) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(90,114,155,0.4) 39px, rgba(90,114,155,0.4) 40px)' }}></div>
+            <section className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
                 {tiers.map((tier) => (
                     <article
                         key={tier.name}
-                        className={`min-w-[85%] snap-center md:min-w-0 relative panel p-7 sm:p-8 flex flex-col gap-5 transition-colors ${tier.featured
-                            ? 'border-[var(--accent)]/25 shadow-[0_0_24px_rgba(90,114,155,0.1)]'
-                            : 'hover:border-[#2a2d38]'
-                            }`}
+                        className={`axiom-bento bg-axiom-surface border border-axiom-border p-6 sm:p-8 flex flex-col gap-5 ${tier.featured ? 'border-t-2 border-t-axiom-accent' : ''}`}
                     >
-                        {tier.featured && (
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                                <span className="bg-[var(--accent)] text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">
-                                    Popular
+                        <div className="flex items-center justify-between gap-3">
+                            <h2 className="font-axiomSans text-[24px] font-semibold tracking-tight text-axiom-text-main">{tier.name}</h2>
+                            {tier.featured && (
+                                <span className="font-axiomMono text-[10px] uppercase tracking-[0.14em] text-axiom-accent border border-axiom-accent/40 px-2 py-1 rounded">
+                                    Contractor's Choice
                                 </span>
-                            </div>
-                        )}
-
-                        <div className="flex flex-col gap-2">
-                            <p className="big-figure-label text-[var(--text-secondary)]">{tier.tag}</p>
-                            <h2 className="text-[22px] sm:text-[24px] font-semibold tracking-tight">{tier.name}</h2>
-                            <p className="text-[28px] sm:text-[32px] font-bold tracking-tight font-grotesk">{tier.price}</p>
+                            )}
                         </div>
 
-                        <p className="text-[14px] text-[var(--text-body)] leading-[1.75]">{tier.desc}</p>
+                        <p className="font-axiomMono text-[10px] uppercase tracking-[0.14em] text-axiom-text-mute">{tier.tag}</p>
+                        <p className="font-axiomSans text-[32px] font-bold leading-none text-axiom-text-main">{tier.price}</p>
+                        <p className="font-axiomSans text-[14px] text-axiom-text-main/90 leading-relaxed">{tier.desc}</p>
+                        <p className="font-axiomMono text-[11px] uppercase tracking-[0.14em] text-axiom-text-mute">{tier.technical}</p>
 
-                        <ul className="flex flex-col gap-3 py-2 flex-1">
+                        <ul className="space-y-3 flex-1">
                             {tier.features.map((f) => (
-                                <li key={f} className="flex items-start gap-3 text-[14px] text-[var(--text-body)] leading-[1.65]">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]/40 shrink-0 mt-[7px]"></div>
-                                    {f}
+                                <li key={f} className="flex items-start gap-2.5 text-[14px] leading-relaxed text-axiom-text-main/90">
+                                    <span className="mt-[2px] text-axiom-accent">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M20 7L10 17L5 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </span>
+                                    <span>{f}</span>
                                 </li>
                             ))}
                         </ul>
 
+                        <p className="font-axiomSans text-[12px] text-axiom-text-mute">{tier.qualifier}</p>
+
                         <Link
-                            to="/contact"
-                            className={`mt-auto inline-flex items-center justify-center min-h-[48px] px-8 text-[12px] font-bold uppercase tracking-widest transition-all rounded-[4px] ${tier.featured
-                                ? 'bg-white text-[#0B0B0C] hover:bg-[#f0f0f0] shadow-[0_0_16px_rgba(255,255,255,0.06)]'
-                                : 'bg-[var(--bg-surface)] border border-[var(--border-panel)] text-white hover:bg-[#1c1f28]'
-                                }`}
+                            to={`/contact?package=${tier.packageParam}`}
+                            className="magnetic-primary inline-flex items-center justify-center min-h-[48px] px-6 bg-axiom-accent text-axiom-text-main text-[12px] font-bold uppercase tracking-widest"
                         >
                             {tier.cta}
                         </Link>
                     </article>
+                ))}
+            </section>
+
+            <section className="max-w-[1100px] mx-auto mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+                {[
+                    {
+                        label: 'Performance Guarantee',
+                        text: 'If your production site is not sub-second on modern mobile, we keep optimizing at no charge.',
+                    },
+                    {
+                        label: 'Outcome Proof',
+                        text: '"We closed two replacement jobs in week one from leads that used to bounce." - Ontario HVAC Owner',
+                    },
+                    {
+                        label: 'Partner Capacity',
+                        text: 'Four active production partners per month to protect delivery quality.',
+                    },
+                ].map((item) => (
+                    <div key={item.label} className="axiom-bento bg-axiom-surface border border-axiom-border p-4 sm:p-5">
+                        <p className="font-axiomMono text-[10px] uppercase tracking-[0.14em] text-axiom-text-mute">{item.label}</p>
+                        <p className="font-axiomSans text-[14px] text-axiom-text-main/90 leading-relaxed mt-2">{item.text}</p>
+                    </div>
                 ))}
             </section>
 

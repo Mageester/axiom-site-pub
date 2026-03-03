@@ -1,122 +1,147 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 
+const pricingTiers = [
+  {
+    name: 'Foundation',
+    price: '$7,500+',
+    currency: 'CAD',
+    packageParam: 'starter',
+    summary: 'Launch-grade infrastructure for contractors replacing slow, template-heavy agency builds.',
+    qualifier: 'Best for owner-led teams in one service territory.',
+    technical: '3-5 pages // edge deployment // conversion instrumentation',
+    outcomes: [
+      'Offer architecture that clarifies premium positioning',
+      'Mobile-first intake flow tuned for urgent calls',
+      'Hardened performance baseline with handoff documentation',
+    ],
+  },
+  {
+    name: "Contractor's Choice",
+    price: '$7,500+',
+    currency: 'CAD',
+    packageParam: 'professional',
+    featured: true,
+    summary: 'The default package for growth operators scaling lead volume without sacrificing job quality.',
+    qualifier: 'Best for teams of 10+ targeting higher-ticket service work.',
+    technical: '7-10 pages // ROI terminal // trust proof system',
+    outcomes: [
+      'Qualification-first funnels that reduce low-margin leads',
+      'Authority messaging across core services and locations',
+      'Priority launch support through initial campaign ramp',
+    ],
+  },
+  {
+    name: 'Authority',
+    price: '$7,500+',
+    currency: 'CAD',
+    packageParam: 'enterprise',
+    summary: 'Bespoke infrastructure for companies running multiple crews, territories, or acquisitions.',
+    qualifier: 'Best for established operations with multi-market expansion goals.',
+    technical: 'custom architecture // workflow integrations // executive reporting',
+    outcomes: [
+      'Sales-process mapping from first click to signed work',
+      'Dispatch and CRM integration planning at launch',
+      'Quarterly instrumentation reviews for sustained ROI control',
+    ],
+  },
+];
+
+const trustSignals = [
+  {
+    label: 'Performance Guarantee',
+    detail: 'If your production build is not sub-second on modern mobile, we keep optimizing at no charge.',
+  },
+  {
+    label: 'Outcome Proof',
+    detail: '"We closed two replacement jobs in week one from leads that used to bounce." - Ontario HVAC Owner',
+  },
+  {
+    label: 'Partner Capacity',
+    detail: 'We accept four active production partners per month to protect implementation quality.',
+  },
+];
+
 const PricingPage: React.FC = () => {
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const pricingRef = useRef<HTMLElement>(null);
+  return (
+    <div className="pt-32 pb-24 px-6 md:px-10 xl:px-20">
+      <SEO
+        title="Infrastructure Investment | Axiom Infrastructure"
+        description="High-ticket web infrastructure packages built for contractors who need measurable conversion and performance authority."
+      />
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!pricingRef.current) return;
-        const rect = pricingRef.current.getBoundingClientRect();
-        setMousePos({
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top
-        });
-    };
+      <section className="max-w-3xl mx-auto text-center flex flex-col gap-5 mb-14 sm:mb-16">
+        <p className="font-axiomMono text-[11px] uppercase tracking-[0.2em] text-axiom-text-mute">Infrastructure Investment</p>
+        <h1 className="text-[32px] sm:text-[44px] md:text-[54px] font-axiomSans font-semibold tracking-[-0.02em] leading-[1.06] text-axiom-text-main">
+          Pricing Built for Serious Operators.
+        </h1>
+        <p className="text-[16px] sm:text-[18px] text-axiom-text-main/85 leading-relaxed max-w-[760px] mx-auto">
+          Transparent pricing, explicit outcomes, and engineered delivery standards. No hidden fees. No commodity agency fluff.
+        </p>
+      </section>
 
-    return (
-        <div className="pt-32 pb-24 bg-[#0a0a0a] min-h-screen text-[#a1a1a1] font-sans selection:bg-white/20">
-            <SEO
-                title="Website Pricing & Packages | Axiom Infrastructure"
-                description="Honest, transparent pricing for high-performance contractor web design. View our website packages starting at $1,450 CAD."
-            />
-            <section className="px-6 pb-24 border-b border-white/5">
-                <div className="max-w-[800px] w-full mx-auto text-center reveal">
-                    <div className="text-[11px] font-mono text-white/70 uppercase tracking-widest mb-6">Investment Structure</div>
-                    <h1 className="text-[40px] sm:text-[56px] lg:text-[72px] font-semibold tracking-[-0.02em] mb-8 leading-[1.02] text-[#ffffff]">
-                        Simple, Honest Pricing.
-                    </h1>
-                    <p className="text-[17px] text-[#a1a1a1] max-w-[650px] mx-auto leading-relaxed font-light reveal reveal-delay-1">
-                        Professional web architecture designed to convert your local traffic into booked revenue. No hidden fees.
-                    </p>
-                </div>
-            </section>
-
-            {/* THREE TIERS */}
-            <section
-                ref={pricingRef}
-                onMouseMove={handleMouseMove}
-                className="py-24 px-6 max-w-[1200px] mx-auto w-full reveal relative overflow-hidden"
+      <section className="max-w-[1200px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+          {pricingTiers.map((tier) => (
+            <article
+              key={tier.name}
+              className={`axiom-bento bg-axiom-surface border border-axiom-border p-6 sm:p-8 flex flex-col gap-5 ${tier.featured ? 'border-t-2 border-t-axiom-accent' : ''}`}
             >
-                <div
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-80 mix-blend-screen z-0"
-                    style={{
-                        background: `radial-gradient(1000px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.02), transparent 40%)`
-                    }}
-                />
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="font-axiomSans text-[24px] font-semibold tracking-tight text-axiom-text-main">{tier.name}</h2>
+                {tier.featured && (
+                  <span className="font-axiomMono text-[10px] uppercase tracking-[0.14em] text-axiom-accent border border-axiom-accent/50 px-2 py-1 rounded">
+                    Contractor's Choice
+                  </span>
+                )}
+              </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10 w-full text-left">
+              <p className="font-axiomSans text-[14px] leading-relaxed text-axiom-text-main/90">{tier.summary}</p>
 
-                    {/* TIER 1 */}
-                    <div className="surface-panel p-8 sm:p-10 relative overflow-hidden group border-white/5 hover:border-white/10 transition-all duration-300 rounded-sm flex flex-col bg-black/40">
-                        <div className="absolute top-0 left-0 w-[3px] h-full bg-[#a1a1a1]/30"></div>
-                        <h3 className="text-[24px] font-semibold text-[#ffffff] mb-2 tracking-tight">Foundation</h3>
-                        <p className="text-[13px] text-axiom-text-mute mb-6 min-h-[40px] leading-relaxed">Essential digital infrastructure for local professionals.</p>
-                        <div className="text-[32px] font-semibold text-[#ffffff] mb-8 border-b border-white/5 pb-6">
-                            $7,500+ <span className="text-[12px] font-normal text-axiom-text-mute uppercase tracking-widest ml-1">CAD</span>
-                        </div>
-                        <ul className="flex flex-col gap-4 text-[13px] text-[#a1a1a1] flex-1">
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>3-Page Core Architecture</li>
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>Cloudflare Edge Deployment</li>
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>Field-Optimized Mobile UX</li>
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>SSL & Global CDN Security</li>
-                        </ul>
-                        <Link to="/contact?package=foundation" className="mt-10 inline-flex items-center justify-center px-5 py-4 bg-transparent hover:bg-white text-white hover:text-black border border-white/20 hover:scale-[1.05] text-[11px] font-bold uppercase tracking-widest rounded-sm transition-all duration-300">
-                            Select Foundation
-                        </Link>
-                    </div>
+              <p className="font-axiomSans text-[32px] font-bold leading-none text-axiom-text-main">
+                {tier.price}
+                <span className="font-axiomMono text-[12px] text-axiom-text-mute ml-2 align-middle">{tier.currency}</span>
+              </p>
 
-                    {/* TIER 2 - FEATURED */}
-                    <div className="surface-panel p-8 sm:p-10 relative overflow-hidden group border-white/20 hover:border-white/40 transition-all duration-500 rounded-sm flex flex-col scale-[1.02] shadow-[0_0_30px_rgba(255,255,255,0.06)] z-20 bg-[#0c0c0c] border-t-2 border-t-axiom-accent">
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px] opacity-40 pointer-events-none"></div>
-                        <div className="absolute top-0 left-0 w-[4px] h-full bg-[#ffffff]"></div>
-                        <div className="absolute top-0 right-0 py-1.5 px-4 bg-white text-black text-[10px] font-bold uppercase tracking-widest rounded-bl-sm z-10 shadow-lg">Contractor's Choice</div>
-                        <h3 className="text-[24px] font-semibold text-[#ffffff] mb-2 tracking-tight">Contractor's Choice</h3>
-                        <p className="text-[13px] text-axiom-text-mute mb-6 min-h-[40px] leading-relaxed">A high-speed lead generation machine for growth-stage teams.</p>
-                        <div className="text-[32px] font-semibold text-[#ffffff] mb-8 border-b border-white/10 pb-6 relative z-10">
-                            $7,500+ <span className="text-[12px] font-normal text-axiom-text-mute uppercase tracking-widest ml-1">CAD</span>
-                        </div>
-                        <ul className="flex flex-col gap-4 text-[13px] text-white/90 font-medium flex-1 relative z-10">
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>7-10 High-Conversion Pages</li>
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>90+ Lighthouse Speed Performance</li>
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>Local SEO Schema Architecture</li>
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>Advanced Lead Capture Systems</li>
-                        </ul>
-                        <Link to="/contact?package=engine" className="mt-10 relative z-10 inline-flex items-center justify-center px-5 py-4 bg-white text-black border border-transparent hover:bg-[#e2e2e2] hover:scale-[1.05] text-[11px] font-bold uppercase tracking-widest rounded-sm transition-all duration-300">
-                            Select Engine
-                        </Link>
-                    </div>
+              <p className="font-axiomMono text-[11px] uppercase tracking-[0.14em] text-axiom-text-mute">{tier.technical}</p>
 
-                    {/* TIER 3 */}
-                    <div className="surface-panel p-8 sm:p-10 relative overflow-hidden group border-white/5 hover:border-white/10 transition-all duration-300 rounded-sm flex flex-col bg-black/40">
-                        <div className="absolute top-0 left-0 w-[3px] h-full bg-[#a1a1a1]/30"></div>
-                        <h3 className="text-[24px] font-semibold text-[#ffffff] mb-2 tracking-tight">Authority</h3>
-                        <p className="text-[13px] text-axiom-text-mute mb-6 min-h-[40px] leading-relaxed">Custom-engineered systems for market leaders.</p>
-                        <div className="text-[32px] font-semibold text-[#ffffff] mb-8 border-b border-white/5 pb-6">
-                            $7,500+ <span className="text-[12px] font-normal text-axiom-text-mute uppercase tracking-widest ml-1">CAD</span>
-                        </div>
-                        <ul className="flex flex-col gap-4 text-[13px] text-[#a1a1a1] flex-1">
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>Bespoke Digital Ecosystems</li>
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>Custom CRM & Booking Integration</li>
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>Enterprise-Grade Security Protocols</li>
-                            <li className="flex items-center gap-3"><span className="text-axiom-accent shrink-0">✓</span>Priority Engineering Support</li>
-                        </ul>
-                        <Link to="/contact?package=authority" className="mt-10 inline-flex items-center justify-center px-5 py-4 bg-transparent hover:bg-white text-white hover:text-black border border-white/20 hover:scale-[1.05] text-[11px] font-bold uppercase tracking-widest rounded-sm transition-all duration-300">
-                            Select Enterprise
-                        </Link>
-                    </div>
+              <ul className="space-y-3 flex-1">
+                {tier.outcomes.map((outcome) => (
+                  <li key={outcome} className="flex items-start gap-2.5 text-[14px] leading-relaxed text-axiom-text-main/90">
+                    <span className="mt-[2px] text-axiom-accent">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M20 7L10 17L5 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                    <span>{outcome}</span>
+                  </li>
+                ))}
+              </ul>
 
-                </div>
+              <p className="font-axiomSans text-[12px] text-axiom-text-mute">{tier.qualifier}</p>
 
-                <div className="mt-20 pt-10 border-t border-white/5 text-center reveal w-full flex align-center justify-center">
-                    <p className="text-[12px] font-mono text-[#a1a1a1] tracking-widest uppercase">
-                        Managed Infrastructure starting at <span className="text-white font-bold ml-1">$95/mo.</span>
-                    </p>
-                </div>
-            </section>
+              <Link
+                to={`/contact?package=${tier.packageParam}`}
+                className="magnetic-primary inline-flex items-center justify-center min-h-[48px] px-6 bg-axiom-accent text-axiom-text-main text-[12px] font-bold uppercase tracking-widest"
+              >
+                Apply for {tier.name}
+              </Link>
+            </article>
+          ))}
         </div>
-    );
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+          {trustSignals.map((signal) => (
+            <div key={signal.label} className="axiom-bento bg-axiom-surface border border-axiom-border p-4 sm:p-5">
+              <p className="font-axiomMono text-[10px] uppercase tracking-[0.14em] text-axiom-text-mute">{signal.label}</p>
+              <p className="font-axiomSans text-[14px] text-axiom-text-main/90 leading-relaxed mt-2">{signal.detail}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
 };
 
 export default PricingPage;
