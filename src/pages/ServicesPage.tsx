@@ -71,7 +71,7 @@ const ServicesPage: React.FC = () => {
     const [openFaq, setOpenFaq] = useState<string | null>(null);
 
     return (
-        <div className="pt-32 sm:pt-36 pb-24 px-6 md:px-10 xl:px-20">
+        <div className="page-shell">
             <SEO
                 title="Infrastructure Investments | Axiom"
                 description="Explore Starter, Professional, and Enterprise infrastructure investments for local service businesses."
@@ -220,7 +220,7 @@ const ServicesPage: React.FC = () => {
             <section className="max-w-[1100px] mx-auto mt-12 sm:mt-16">
                 <div className="axiom-bento p-8 sm:p-10 md:p-12">
                     <div className="text-center mb-10">
-                        <p className="eyebrow-center mb-4" style={{ color: '#ef4444' }}>The Math</p>
+                        <p className="eyebrow-center mb-4">The Math</p>
                         <h2 className="text-[24px] sm:text-[30px] md:text-[40px] font-semibold tracking-tight">
                             The Cost of Doing Nothing.
                         </h2>

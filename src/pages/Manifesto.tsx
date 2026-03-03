@@ -36,7 +36,7 @@ const Manifesto: React.FC = () => {
     }, [annualLeak]);
 
     return (
-        <div className="pt-32 sm:pt-36 pb-24 px-6 md:px-10 xl:px-20">
+        <div className="page-shell">
             <SEO
                 title="The $100,000 Leak | Axiom Infrastructure"
                 description="Why cheap websites fail during peak season and how the math of downtime costs HVAC, roofing, and landscaping firms six figures a year."
@@ -133,7 +133,7 @@ const Manifesto: React.FC = () => {
                                             max="10"
                                             value={lostCalls}
                                             onChange={(e) => setLostCalls(Number(e.target.value))}
-                                            className="w-full h-2 rounded-full cursor-pointer accent-[#E4572E]"
+                                            className="w-full h-2 rounded-full cursor-pointer accent-axiom-accent"
                                         />
                                         <div
                                             aria-hidden="true"
@@ -313,7 +313,7 @@ const Manifesto: React.FC = () => {
             </article>
 
             {/* Mobile-only sticky CTA */}
-            <div className={`md:hidden fixed z-[45] bottom-[72px] left-0 w-full px-4 py-2 pointer-events-none transition-all duration-300 ease-in-out ${showSticky ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <div className={`md:hidden fixed z-[45] bottom-4 left-0 w-full px-4 py-2 pointer-events-none transition-all duration-300 ease-in-out ${showSticky ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 <div className="pointer-events-auto">
                     <Link
                         to="/contact"

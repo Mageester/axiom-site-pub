@@ -27,9 +27,9 @@ const valueProps = [
 ];
 
 const industries = [
-    { name: 'HVAC', accent: '#38bdf8' },
-    { name: 'Roofing', accent: '#ea580c' },
-    { name: 'Landscaping', accent: '#22c55e' },
+    { name: 'HVAC' },
+    { name: 'Roofing' },
+    { name: 'Landscaping' },
 ];
 
 const infraSpec = [
@@ -68,7 +68,7 @@ const Home: React.FC = () => {
                 description="Edge-deployed web infrastructure for HVAC, roofing, and landscaping businesses that need premium design and stronger lead quality."
             />
 
-            <div className="pt-32 sm:pt-36 pb-24 px-6 md:px-10 xl:px-20">
+            <div className="page-shell">
  {/*  HERO  */}
                 <section className="-mx-6 md:-mx-10 xl:-mx-20 min-h-[78vh] relative overflow-hidden flex items-center px-6 md:px-10 xl:px-20">
                     <div
@@ -215,7 +215,6 @@ const Home: React.FC = () => {
                                     industry: 'HVAC',
                                     name: 'Climate Control Systems',
                                     region: 'Southern Ontario',
-                                    color: '#38bdf8',
                                     lighthouseScore: 98,
                                     loadTime: '0.38s',
                                     stack: 'React 18 · Vite · CF Workers',
@@ -225,7 +224,6 @@ const Home: React.FC = () => {
                                     industry: 'Roofing',
                                     name: 'Summit Roofing Co.',
                                     region: 'Kitchener-Waterloo',
-                                    color: '#ea580c',
                                     lighthouseScore: 97,
                                     loadTime: '0.41s',
                                     stack: 'React 18 · Vite · CF Workers',
@@ -235,7 +233,6 @@ const Home: React.FC = () => {
                                     industry: 'Landscaping',
                                     name: 'Ironwood Landscapes',
                                     region: 'Greater Toronto Area',
-                                    color: '#22c55e',
                                     lighthouseScore: 99,
                                     loadTime: '0.35s',
                                     stack: 'React 18 · Vite · CF Workers',
@@ -245,8 +242,8 @@ const Home: React.FC = () => {
                                 <div key={deploy.name} className="axiom-bento-card p-5 sm:p-6 flex flex-col gap-4">
                                     {/* Industry indicator */}
                                     <div className="flex items-center gap-3">
-                                        <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: deploy.color, boxShadow: `0 0 10px ${deploy.color}40` }}></div>
-                                        <p className="big-figure-label" style={{ color: deploy.color }}>{deploy.industry}</p>
+                                        <div className="w-2.5 h-2.5 rounded-full shrink-0 bg-axiom-accent shadow-[0_0_10px_rgba(228,87,46,0.35)]"></div>
+                                        <p className="big-figure-label text-axiom-accent">{deploy.industry}</p>
                                     </div>
 
                                     {/* Name + Region */}
@@ -428,7 +425,7 @@ const Home: React.FC = () => {
                         <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 md:grid md:grid-cols-3 md:overflow-visible scrollbar-hide">
                             {industries.map((ind) => (
                                 <div key={ind.name} className="min-w-[85%] snap-center md:min-w-0 axiom-bento-card p-6 text-center">
-                                    <div className="w-3 h-3 rounded-full mx-auto mb-4" style={{ backgroundColor: ind.accent, boxShadow: `0 0 12px ${ind.accent}40` }}></div>
+                                    <div className="w-3 h-3 rounded-full mx-auto mb-4 bg-axiom-accent shadow-[0_0_12px_rgba(228,87,46,0.35)]"></div>
                                     <p className="text-[16px] font-semibold text-axiom-text-main font-grotesk">{ind.name}</p>
                                     <p className="big-figure-label text-axiom-text-mute mt-2">Professional Tier</p>
                                 </div>

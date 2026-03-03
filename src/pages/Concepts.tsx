@@ -11,7 +11,6 @@ const demos = [
         problem: 'Unqualified calls burning dispatch hours — your techs are rolling trucks for $89 tune-ups instead of $4,000 compressor replacements.',
         solution: 'An intake system that asks the right questions upfront, filters out the tire-kickers, and routes real emergency calls straight to dispatch.',
         url: 'https://hvac.getaxiom.ca',
-        accent: '#38bdf8',
         features: ['Emergency Dispatch Banner', 'Service Plan Builder', 'Split-Screen Hero', 'Emergency Dispatch Filter'],
         blueprint: [
             { label: 'Objective', text: "Capture emergency 'No-AC' calls during 35°C+ heatwaves in Southern Ontario." },
@@ -27,7 +26,6 @@ const demos = [
         problem: 'Every time a big storm rolls through, your site grinds to a halt from the traffic spike — and those leads go to whoever loads first.',
         solution: 'Edge-deployed infrastructure that handles traffic spikes without flinching. Your site loads in under a second, even when half the county is searching for roof repair.',
         url: 'https://roofing.getaxiom.ca',
-        accent: '#ea580c',
         features: ['Material Comparison Tool', 'Storm Damage Checklist', 'Insurance Claim Helper', 'Before/After Gallery'],
     },
     {
@@ -38,14 +36,13 @@ const demos = [
         problem: 'Competing for $50K+ design projects with a website that looks like a $500 template.',
         solution: 'A portfolio-grade digital experience that positions you as the premium choice before the first phone call.',
         url: 'https://landscaping.getaxiom.ca',
-        accent: '#22c55e',
         features: ['Before/After Slider', 'Seasonal Project Timeline', 'Full-Screen Gallery', 'Design Consultation Booking'],
     }
 ];
 
 const ConceptsPage: React.FC = () => {
     return (
-        <div className="pt-32 sm:pt-36 pb-24 px-5 sm:px-6">
+        <div className="page-shell">
             <SEO
                 title="Concepts | Axiom Infrastructure"
                 description="Explore Axiom Professional demo concepts for HVAC, roofing, and landscaping businesses."
@@ -67,15 +64,15 @@ const ConceptsPage: React.FC = () => {
                 {demos.map((demo) => (
                     <article
                         key={demo.title}
-                        className="min-w-[85%] snap-center lg:min-w-0 axiom-bento flex flex-col overflow-hidden group hover:border-[#2a2a2a] transition-colors"
+                        className="min-w-[85%] snap-center lg:min-w-0 axiom-bento flex flex-col overflow-hidden group hover:border-axiom-border/80 transition-colors"
                     >
                         {/* Accent top bar */}
-                        <div className="h-[3px] w-full" style={{ backgroundColor: demo.accent }}></div>
+                        <div className="h-[3px] w-full bg-axiom-accent"></div>
 
                         <div className="p-6 sm:p-8 flex flex-col gap-5 flex-1">
                             {/* Title block */}
                             <div className="flex flex-col gap-2">
-                                <p className="big-figure-label" style={{ color: demo.accent }}>
+                                <p className="big-figure-label text-axiom-accent">
                                     {demo.subtitle}
                                 </p>
                                 <h2 className="text-[22px] sm:text-[24px] font-semibold tracking-tight">{demo.title}</h2>
@@ -86,7 +83,7 @@ const ConceptsPage: React.FC = () => {
                             {/* Problem → Solution */}
                             <div className="axiom-bento-card overflow-hidden">
                                 <div className="p-4 flex gap-3 items-start border-b border-axiom-border">
-                                    <div className="w-1 self-stretch rounded-full shrink-0 bg-red-500/30"></div>
+                                    <div className="w-1 self-stretch rounded-full shrink-0 bg-axiom-border"></div>
                                     <div>
                                         <p className="big-figure-label text-axiom-text-mute/70 mb-1">Problem</p>
                                         <p className="text-[13px] text-axiom-text-mute leading-[1.7]">{demo.problem}</p>
@@ -105,7 +102,7 @@ const ConceptsPage: React.FC = () => {
                             <div className="grid grid-cols-2 gap-2">
                                 {demo.features.map((f) => (
                                     <div key={f} className="flex items-center gap-2">
-                                        <div className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: demo.accent }}></div>
+                                        <div className="w-1 h-1 rounded-full shrink-0 bg-axiom-accent"></div>
                                         <span className="text-[12px] text-axiom-text-mute">{f}</span>
                                     </div>
                                 ))}
@@ -114,7 +111,7 @@ const ConceptsPage: React.FC = () => {
                             {/* Blueprint Deep-Dive (HVAC only) */}
                             {(demo as any).blueprint && (
                                 <div className="axiom-bento-card p-5 flex flex-col gap-3">
-                                    <p className="big-figure-label" style={{ color: demo.accent }}>Project Deep-Dive</p>
+                                    <p className="big-figure-label text-axiom-accent">Project Deep-Dive</p>
                                     {(demo as any).blueprint.map((item: { label: string; text: string }) => (
                                         <div key={item.label} className="flex gap-3 items-start">
                                             <span className="big-figure-label text-axiom-text-mute shrink-0 w-16 mt-0.5">{item.label}</span>
