@@ -84,11 +84,11 @@ export default function Campaigns() {
         const normalizedNiche = normalizeText(niche);
         const normalizedCity = normalizeText(city);
 
-        setLogs(prev => [...prev, `[ðŸš€] Starting ENGINE V2 Scrape: ${normalizedNiche} in ${normalizedCity} (Radius: ${radius}km, Depth: ${maxDepth})`]);
+        setLogs(prev => [...prev, `[🚀] Starting ENGINE V2 Scrape: ${normalizedNiche} in ${normalizedCity} (Radius: ${radius}km, Depth: ${maxDepth})`]);
 
         if (streamTimeoutRef.current) clearTimeout(streamTimeoutRef.current);
         streamTimeoutRef.current = setTimeout(() => {
-            setLogs(prev => [...prev, '[â³] System Warming Up... (Backend engine is booting, this can take up to 60s)']);
+            setLogs(prev => [...prev, '[⏳] System Warming Up... (Backend engine is booting, this can take up to 60s)']);
         }, 50000);
 
         try {
@@ -147,7 +147,7 @@ export default function Campaigns() {
             }
         } catch (err: any) {
             if (err.name === 'AbortError') {
-                setLogs(prev => [...prev, '[ðŸ›‘] Stream terminated by user navigation.']);
+                setLogs(prev => [...prev, '[🛑] Stream terminated by user navigation.']);
             } else {
                 setLogs(prev => [...prev, `[!!!] ERROR: ${err.message || 'Server request failed.'}`]);
             }
@@ -252,9 +252,9 @@ export default function Campaigns() {
                         {logs.map((log, i) => (
                             <div key={i} className="break-words">
                                 {log.startsWith("[!!!]") ? <span className="text-red-500 font-bold">{log}</span> :
-                                    log.startsWith("[âœ…]") ? <span className="text-emerald-400 font-bold">{log}</span> :
-                                        log.startsWith("[âœ”]") ? <span className="text-axiom-text-mute">{log}</span> :
-                                            log.startsWith("[ðŸ’¾]") ? <span className="text-cyan-400">{log}</span> :
+                                    log.startsWith("[✅]") ? <span className="text-emerald-400 font-bold">{log}</span> :
+                                        log.startsWith("[✔]") ? <span className="text-axiom-text-mute">{log}</span> :
+                                            log.startsWith("[💾]") ? <span className="text-cyan-400">{log}</span> :
                                                 log}
                             </div>
                         ))}
@@ -280,7 +280,7 @@ export default function Campaigns() {
                     <div key={c.id} className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between group border-b border-axiom-border last:border-0 hover:bg-white/[0.02] transition-colors">
                         <div className="flex flex-col gap-1">
                             <div className="flex items-center gap-3">
-                                <h3 className="text-[16px] font-semibold text-axiom-text-main">{c.city} â€¢ <span className="opacity-80 font-normal capitalize">{c.niche}</span></h3>
+                                <h3 className="text-[16px] font-semibold text-axiom-text-main">{c.city} • <span className="opacity-80 font-normal capitalize">{c.niche}</span></h3>
                                 <span className="text-[9px] font-mono bg-accent/10 text-accent px-1.5 py-0.5 rounded-sm">{c.radius_km}km</span>
                             </div>
                             <p className="text-[12px] text-axiom-text-mute/60 font-mono tracking-wider">{new Date(c.created_at).toLocaleString()}</p>

@@ -170,7 +170,7 @@ const LeadDetail: React.FC = () => {
                     <p className="text-[13px] text-axiom-text-mute font-mono tracking-widest mt-2">{lead.address}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Link to="/leads" className="text-[11px] font-mono text-axiom-text-mute hover:text-axiom-text-main uppercase tracking-widest transition-colors">â† Back to Pipeline</Link>
+                    <Link to="/leads" className="text-[11px] font-mono text-axiom-text-mute hover:text-axiom-text-main uppercase tracking-widest transition-colors">← Back to Pipeline</Link>
                 </div>
             </div>
 
@@ -213,7 +213,7 @@ const LeadDetail: React.FC = () => {
                                 <h3 className="text-[10px] font-mono text-axiom-text-main/50 uppercase tracking-widest mb-4">Outreach Ammunition</h3>
                                 <ul className="flex flex-col gap-3">
                                     {bullets.map((b: string, i: number) => (
-                                        <li key={i} className="text-[14px] text-axiom-text-mute flex items-start gap-3"><span className="text-axiom-text-mute/30 font-mono mt-0.5 text-[10px] shrink-0">â†’</span>{b}</li>
+                                        <li key={i} className="text-[14px] text-axiom-text-mute flex items-start gap-3"><span className="text-axiom-text-mute/30 font-mono mt-0.5 text-[10px] shrink-0">→</span>{b}</li>
                                     ))}
                                 </ul>
                             </div>
@@ -292,7 +292,7 @@ const LeadDetail: React.FC = () => {
                         <div className="flex flex-wrap gap-2">
                             {tags.map((tag) => (
                                 <button key={tag.id} type="button" onClick={() => removeTag(tag)} className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest border border-axiom-border text-axiom-text-mute hover:text-red-300 hover:border-red-500/30 rounded-sm">
-                                    {tag.name} Ã—
+                                    {tag.name} ×
                                 </button>
                             ))}
                             {tags.length === 0 ? parseTagsCsv(lead.tags_csv).map((name) => (
@@ -306,7 +306,7 @@ const LeadDetail: React.FC = () => {
                         <h2 className="text-[11px] font-mono text-axiom-text-mute uppercase tracking-widest mb-4 border-b border-axiom-border pb-3">Notes History</h2>
                         <div className="flex gap-2 mb-3">
                             <textarea value={newNote} onChange={e => setNewNote(e.target.value)} rows={2} placeholder="Add timestamped note entry..." className="bg-axiom-elevated border border-axiom-border text-axiom-text-main text-[12px] p-2 rounded-[2px] outline-none font-sans flex-1 resize-none" />
-                            <button disabled={addingNote} type="button" onClick={addNote} className="px-3 py-2 border border-axiom-border text-axiom-text-mute hover:text-axiom-text-main text-[10px] font-mono uppercase tracking-widest rounded-sm disabled:opacity-50">{addingNote ? 'Addingâ€¦' : 'Add'}</button>
+                            <button disabled={addingNote} type="button" onClick={addNote} className="px-3 py-2 border border-axiom-border text-axiom-text-mute hover:text-axiom-text-main text-[10px] font-mono uppercase tracking-widest rounded-sm disabled:opacity-50">{addingNote ? 'Adding…' : 'Add'}</button>
                         </div>
                         <div className="space-y-2 max-h-64 overflow-auto">
                             {notesHistory.map((n) => (

@@ -64,10 +64,10 @@ const InquiryDetail: React.FC = () => {
             <div className="flex justify-between items-end mb-10 border-b border-axiom-border pb-6">
                 <div>
                     <h1 className="text-3xl font-semibold text-axiom-text-main tracking-tight">{inquiry.business_name}</h1>
-                    <p className="text-[13px] text-axiom-text-mute font-mono uppercase tracking-widest mt-2">{inquiry.primary_goal} â€¢ {new Date(inquiry.created_at).toLocaleString()}</p>
+                    <p className="text-[13px] text-axiom-text-mute font-mono uppercase tracking-widest mt-2">{inquiry.primary_goal} • {new Date(inquiry.created_at).toLocaleString()}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Link to="/admin/inquiries" className="text-[11px] font-mono text-axiom-text-mute hover:text-axiom-text-main uppercase tracking-widest transition-colors">â† Back to Inquiries</Link>
+                    <Link to="/admin/inquiries" className="text-[11px] font-mono text-axiom-text-mute hover:text-axiom-text-main uppercase tracking-widest transition-colors">← Back to Inquiries</Link>
                 </div>
             </div>
 

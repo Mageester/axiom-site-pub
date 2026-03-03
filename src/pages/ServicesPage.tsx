@@ -54,15 +54,15 @@ const tiers = [
 const faqs = [
     {
         q: 'How long does a typical build take?',
-        a: 'Starter builds ship in 2 weeks. Professional builds take 3â€“4 weeks. Enterprise builds are 4â€“6 weeks depending on scope. We work in focused sprints with weekly check-ins â€” you\'re never left guessing.'
+        a: 'Starter builds ship in 2 weeks. Professional builds take 3–4 weeks. Enterprise builds are 4–6 weeks depending on scope. We work in focused sprints with weekly check-ins — you\'re never left guessing.'
     },
     {
         q: 'Do I need to handle my own hosting?',
-        a: 'No. Every Axiom build is deployed to Cloudflare\'s global edge network â€” the same infrastructure used by Fortune 500 companies. Hosting, SSL, and CDN are included and managed for you.'
+        a: 'No. Every Axiom build is deployed to Cloudflare\'s global edge network — the same infrastructure used by Fortune 500 companies. Hosting, SSL, and CDN are included and managed for you.'
     },
     {
         q: 'What if I need changes after launch?',
-        a: 'Enterprise builds include 30 days of post-launch adjustments at no extra cost. After that, we offer retainer plans for ongoing optimization. You always own your code â€” no lock-in.'
+        a: 'Enterprise builds include 30 days of post-launch adjustments at no extra cost. After that, we offer retainer plans for ongoing optimization. You always own your code — no lock-in.'
     }
 ];
 
@@ -92,7 +92,7 @@ const ServicesPage: React.FC = () => {
             <section className="max-w-[1100px] mx-auto mb-10 sm:mb-12">
                 <div className="axiom-bento border-[var(--accent)]/15 p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row items-center gap-5 sm:gap-6 text-center sm:text-left">
                     <div className="w-14 h-14 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 flex items-center justify-center text-[24px] shrink-0">
-                        â€¢
+                        •
                     </div>
                     <div className="flex flex-col gap-1">
                         <h3 className="text-[17px] sm:text-[18px] font-semibold tracking-tight">Performance Guarantee</h3>
@@ -229,7 +229,7 @@ const ServicesPage: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-5 mb-8">
                         <div className="axiom-bento p-5 sm:p-6 flex flex-col gap-2">
                             <p className="big-figure-label text-axiom-text-mute">Avg. HVAC Lead Value</p>
-                            <p className="text-[24px] sm:text-[28px] font-bold tracking-tight font-grotesk">$1,500 â€“ $15,000</p>
+                            <p className="text-[24px] sm:text-[28px] font-bold tracking-tight font-grotesk">$1,500 – $15,000</p>
                             <p className="text-[13px] text-axiom-text-mute leading-[1.7]">Emergency installs, full system replacements, and commercial maintenance contracts.</p>
                         </div>
                         <div className="bg-axiom-elevated border border-axiom-border rounded-md p-5 sm:p-6 flex flex-col gap-2">

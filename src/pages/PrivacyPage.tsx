@@ -26,7 +26,7 @@ const PrivacyPage: React.FC = () => {
                 </ul>
 
                 <h2 className="text-[20px] font-semibold text-axiom-text-main mb-4 mt-8">3. Transfer Of Data</h2>
-                <p className="mb-6">Your information, including Personal Data, may be transferred to â€” and maintained on â€” computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from your jurisdiction.</p>
+                <p className="mb-6">Your information, including Personal Data, may be transferred to — and maintained on — computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from your jurisdiction.</p>
 
                 <h2 className="text-[20px] font-semibold text-axiom-text-main mb-4 mt-8">4. Security Of Data</h2>
                 <p className="mb-6">The security of your data is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Data, we cannot guarantee its absolute security.</p>

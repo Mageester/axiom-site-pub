@@ -1,20 +1,20 @@
 ﻿import * as React from "react"
 import { cn } from "../../lib/utils"
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   AXIOM CARD SYSTEM
-   Three surface tiers for visual depth layering.
+/*
+  AXIOM CARD SYSTEM
+  Three surface tiers for visual depth layering.
 
-   Variants:
-     default   â†’ .panel         (#121212, inset glow)
-     inset     â†’ .panel-inset   (#0e0f11, no glow)
-     elevated  â†’ .panel-elevated (#171717, shadow)
+  Variants:
+    default   -> .panel         (#121212, inset glow)
+    inset     -> .panel-inset   (#0e0f11, no glow)
+    elevated  -> .panel-elevated (#171717, shadow)
 
-   Usage:
-     <Card>...</Card>
-     <Card variant="inset" padding="sm">...</Card>
-     <Card variant="elevated" padding="lg">...</Card>
-   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  Usage:
+    <Card>...</Card>
+    <Card variant="inset" padding="sm">...</Card>
+    <Card variant="elevated" padding="lg">...</Card>
+*/
 
 type CardVariant = "default" | "inset" | "elevated"
 type CardPadding = "none" | "sm" | "md" | "lg"
@@ -46,7 +46,7 @@ function Card({ className, variant = "default", padding = "none", ...props }: Ca
   )
 }
 
-/* â”€â”€ Sub-components for structured content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Sub-components for structured content */
 
 function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (

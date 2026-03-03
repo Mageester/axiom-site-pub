@@ -8,13 +8,13 @@ const demos = [
         subtitle: 'Apex Climate Systems',
         desc: 'When the first heatwave hits and your phones blow up, this system filters the tire-kickers so your techs only roll trucks for high-ticket emergency installs.',
         roi: 'Double your emergency dispatch rate during peak weather events.',
-        problem: 'Unqualified calls burning dispatch hours â€” your techs are rolling trucks for $89 tune-ups instead of $4,000 compressor replacements.',
+        problem: 'Unqualified calls burning dispatch hours — your techs are rolling trucks for $89 tune-ups instead of $4,000 compressor replacements.',
         solution: 'An intake system that asks the right questions upfront, filters out the tire-kickers, and routes real emergency calls straight to dispatch.',
         url: 'https://hvac.getaxiom.ca',
         accent: '#38bdf8',
         features: ['Emergency Dispatch Banner', 'Service Plan Builder', 'Split-Screen Hero', 'Emergency Dispatch Filter'],
         blueprint: [
-            { label: 'Objective', text: "Capture emergency 'No-AC' calls during 35Â°C+ heatwaves in Southern Ontario." },
+            { label: 'Objective', text: "Capture emergency 'No-AC' calls during 35°C+ heatwaves in Southern Ontario." },
             { label: 'Result', text: '0.3s load time achieved on 3G networks in rural Ontario field testing.' },
             { label: 'Outcome', text: '22% increase in high-ticket emergency installs in Month 1 post-launch.' },
         ],
@@ -24,7 +24,7 @@ const demos = [
         subtitle: 'Summit Roofing Co.',
         desc: "When hail storms hit and every roof in town leaks, your site loads instantly while your competitors' sites crash. You get the calls. They get voicemail.",
         roi: "Capture storm-season leads while competitors' sites go down.",
-        problem: 'Every time a big storm rolls through, your site grinds to a halt from the traffic spike â€” and those leads go to whoever loads first.',
+        problem: 'Every time a big storm rolls through, your site grinds to a halt from the traffic spike — and those leads go to whoever loads first.',
         solution: 'Edge-deployed infrastructure that handles traffic spikes without flinching. Your site loads in under a second, even when half the county is searching for roof repair.',
         url: 'https://roofing.getaxiom.ca',
         accent: '#ea580c',
@@ -83,7 +83,7 @@ const ConceptsPage: React.FC = () => {
 
                             <p className="text-[14px] text-axiom-text-mute leading-[1.75]">{demo.desc}</p>
 
-                            {/* Problem â†’ Solution */}
+                            {/* Problem → Solution */}
                             <div className="axiom-bento-card overflow-hidden">
                                 <div className="p-4 flex gap-3 items-start border-b border-axiom-border">
                                     <div className="w-1 self-stretch rounded-full shrink-0 bg-red-500/30"></div>

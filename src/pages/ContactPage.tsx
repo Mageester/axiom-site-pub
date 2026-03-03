@@ -164,7 +164,7 @@ const ContactPage: React.FC = () => {
                         <p className="text-[14px] sm:text-[15px] text-axiom-text-mute leading-[1.75]">
                             I don't run a volume agency. I partner with a handful of serious contractors to build infrastructure that dominates local markets. Fill out the survey, and I will personally review your current setup.
                         </p>
-                        <p className="big-figure-label text-[var(--text-tertiary)] mt-1">â€” Aidan Â· Axiom Infrastructure</p>
+                        <p className="big-figure-label text-[var(--text-tertiary)] mt-1">— Aidan · Axiom Infrastructure</p>
                     </div>
                 </div>
             </section>
@@ -230,7 +230,7 @@ const ContactPage: React.FC = () => {
                                 <input type="url" placeholder="https://" value={form.current_website} onChange={(e) => setField('current_website', e.target.value)} className="input-field" />
                             </div>
                             <button type="button" onClick={handleNextStep} className="btn-primary w-full">
-                                See If You Qualify (2â€‘Minute Survey)
+                                See If You Qualify (2‑Minute Survey)
                             </button>
                             <p className="text-[11px] font-mono text-center text-[var(--accent)] uppercase tracking-widest">Only 2 of 4 Partner Slots Remaining for This Month.</p>
 

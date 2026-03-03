@@ -238,7 +238,7 @@ const Leads: React.FC = () => {
                     <button type="button" onClick={() => setShowDuplicates(v => !v)} className={`px-3 py-2 text-[10px] font-mono uppercase tracking-widest border rounded-sm ${showDuplicates ? 'border-accent/40 text-accent bg-accent/10' : 'border-axiom-border text-axiom-text-mute'}`}>
                         {showDuplicates ? 'Hiding Duplicates' : 'Show Duplicates'}
                     </button>
-                    <Link to="/campaigns" className="text-[11px] font-mono text-axiom-text-mute hover:text-axiom-text-main uppercase tracking-widest transition-colors">â† Back to Campaigns</Link>
+                    <Link to="/campaigns" className="text-[11px] font-mono text-axiom-text-mute hover:text-axiom-text-main uppercase tracking-widest transition-colors">← Back to Campaigns</Link>
                 </div>
             </div>
 
@@ -332,11 +332,11 @@ const Leads: React.FC = () => {
                                                 {lead.duplicate_of_lead_id ? <span className="px-2 py-0.5 text-[9px] font-mono uppercase tracking-widest border border-axiom-border text-axiom-text-mute rounded-sm">Duplicate of {String(lead.duplicate_of_lead_id).slice(0, 8)}</span> : null}
                                             </div>
                                             <div className="text-[11px] text-axiom-text-mute mt-1 font-normal break-words max-w-[360px] leading-tight">
-                                                {[lead.address, lead.phone].filter(Boolean).join(' â€¢ ')}
+                                                {[lead.address, lead.phone].filter(Boolean).join(' • ')}
                                             </div>
                                             <div className="text-[10px] text-axiom-text-mute/70 font-mono mt-1 break-words">
                                                 {lead.detected_email ? lead.detected_email : 'No email'}
-                                                {lead.last_note_preview ? ` â€¢ Note: ${String(lead.last_note_preview).slice(0, 40)}` : ''}
+                                                {lead.last_note_preview ? ` • Note: ${String(lead.last_note_preview).slice(0, 40)}` : ''}
                                             </div>
                                             {leadTags.length > 0 ? (
                                                 <div className="mt-2 flex flex-wrap gap-1">

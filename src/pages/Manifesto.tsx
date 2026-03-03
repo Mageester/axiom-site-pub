@@ -42,7 +42,7 @@ const Manifesto: React.FC = () => {
                 description="Why cheap websites fail during peak season and how the math of downtime costs HVAC, roofing, and landscaping firms six figures a year."
             />
 
-            {/* â”€â”€â”€â”€ MANIFESTO HEADER â”€â”€â”€â”€ */}
+            {/* ---- MANIFESTO HEADER ---- */}
             <header className="max-w-[720px] mx-auto text-center flex flex-col items-center gap-5 mb-16 sm:mb-20">
                 <p className="eyebrow-center">Infrastructure Whitepaper</p>
 
@@ -55,10 +55,10 @@ const Manifesto: React.FC = () => {
                 </p>
             </header>
 
-            {/* â”€â”€â”€â”€ ARTICLE BODY â”€â”€â”€â”€ */}
+            {/* ---- ARTICLE BODY ---- */}
             <article className="max-w-[720px] mx-auto flex flex-col gap-0 leading-[1.6]">
 
-                {/* â”€â”€ SECTION 1: THE PROBLEM â”€â”€ */}
+                {/* ---- SECTION 1: THE PROBLEM ---- */}
                 <section className="mb-6 sm:mb-8">
                     <h2 className="axiom-command-heading mb-5 sm:mb-6">INFRASTRUCTURE COMMAND</h2>
 
@@ -70,11 +70,11 @@ const Manifesto: React.FC = () => {
                             Your $200/month marketing agency built your site on a shared hosting plan. It handles 50 visitors fine. But when 500 people hit it at once? It chokes. It slows. It crashes.
                         </p>
                         <p>
-                            Those emergency calls â€” each worth $3,000 to $15,000 â€” go to whoever loads first. That's not you. That's the guy down the road with the faster site.
+                            Those emergency calls — each worth $3,000 to $15,000 — go to whoever loads first. That's not you. That's the guy down the road with the faster site.
                         </p>
                     </div>
 
-                    {/* Pull quote â€” breaks reading rhythm */}
+                    {/* Pull quote — breaks reading rhythm */}
                     <div className="pull-quote">
                         <p>The calls don't wait. They go to whoever loads first.</p>
                     </div>
@@ -85,7 +85,7 @@ const Manifesto: React.FC = () => {
 
                 <div className="axiom-chapter-divider"></div>
 
-                {/* â”€â”€ SECTION 2: THE MATH â”€â”€ */}
+                {/* ---- SECTION 2: THE MATH ---- */}
                 <section className="my-10 sm:my-14">
                     <h2 className="axiom-command-heading mb-5 sm:mb-6">MANDATORY PRECISION</h2>
 
@@ -198,7 +198,7 @@ const Manifesto: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    {/* Thesis line â€” breaks rhythm */}
+                    {/* Thesis line — breaks rhythm */}
                     <p className="thesis text-[#ef4444]/90">
                         That's not a marketing budget. That's a leak in your business.
                     </p>
@@ -209,7 +209,7 @@ const Manifesto: React.FC = () => {
 
                 <div className="axiom-chapter-divider"></div>
 
-                {/* â”€â”€ SECTION 3: THE FIX â”€â”€ */}
+                {/* ---- SECTION 3: THE FIX ---- */}
                 <section className="my-10 sm:my-14">
                     <h2 className="axiom-command-heading mb-5 sm:mb-6">ELIMINATING ROI FRICTION</h2>
 
@@ -225,7 +225,7 @@ const Manifesto: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Stat bar â€” hard proof, breaks reading rhythm */}
+                    {/* Stat bar — hard proof, breaks reading rhythm */}
                     <div className="stat-bar grid-cols-3 mt-10">
                         {[
                             { label: 'Edge Load Time', value: '0.4s', color: 'text-emerald-400' },
@@ -239,7 +239,7 @@ const Manifesto: React.FC = () => {
                         ))}
                     </div>
 
-                    {/* Pull quote â€” victory statement */}
+                    {/* Pull quote — victory statement */}
                     <div className="pull-quote" style={{ borderColor: '#34d399' }}>
                         <p>One emergency install during peak season pays for your entire year of infrastructure.</p>
                     </div>
@@ -250,13 +250,13 @@ const Manifesto: React.FC = () => {
 
                 <div className="axiom-chapter-divider"></div>
 
-                {/* â”€â”€ SECTION 3.5: THE EVIDENCE â”€â”€ */}
+                {/* ---- SECTION 3.5: THE EVIDENCE ---- */}
                 <section className="my-10 sm:my-14">
                     <h2 className="axiom-command-heading mb-5 sm:mb-6">THE ARCHITECTURE OF GROWTH</h2>
 
                     <div className="prose-editorial !leading-[1.6] max-w-[720px]">
                         <p>
-                            We don't show mockups. Every Axiom concept architecture is a live, measurable deployment on Cloudflare's global edge. Here's what we've built for contractors in HVAC, roofing, and landscaping â€” purpose-engineered to capture revenue under pressure.
+                            We don't show mockups. Every Axiom concept architecture is a live, measurable deployment on Cloudflare's global edge. Here's what we've built for contractors in HVAC, roofing, and landscaping — purpose-engineered to capture revenue under pressure.
                         </p>
                     </div>
 
@@ -274,7 +274,7 @@ const Manifesto: React.FC = () => {
                         ))}
                     </div>
 
-                    {/* Competitive risk â€” tighten the screw */}
+                    {/* Competitive risk — tighten the screw */}
                     <div className="pull-quote" style={{ borderColor: 'var(--accent)' }}>
                         <p>While you're reading this, the contractor down the road might be deploying with us. We take 4 partners per month. That's it.</p>
                     </div>
@@ -284,14 +284,14 @@ const Manifesto: React.FC = () => {
                             to="/concepts"
                             className="btn-secondary"
                         >
-                            View Live Deployments â†’
+                            View Live Deployments →
                         </Link>
                     </div>
                 </section>
 
                 <div className="axiom-chapter-divider"></div>
 
-                {/* â”€â”€ SECTION 4: CTA â”€â”€ */}
+                {/* ---- SECTION 4: CTA ---- */}
                 <section className="inline-cta mt-10 sm:mt-14">
                     <h2 className="axiom-command-heading mb-5 text-center">MACHINED SCALABILITY</h2>
                     <h2 className="text-[24px] sm:text-[32px] md:text-[36px] font-semibold tracking-tight">

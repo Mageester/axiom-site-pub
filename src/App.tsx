@@ -273,7 +273,7 @@ const App: React.FC = () => {
                             </div>
                         </div>
                         <div className="axiom-bento">
-                            <p className="text-[11px] font-mono text-axiom-text-mute uppercase tracking-widest">Â© {new Date().getFullYear()} Axiom Infrastructure</p>
+                            <p className="text-[11px] font-mono text-axiom-text-mute uppercase tracking-widest">© {new Date().getFullYear()} Axiom Infrastructure</p>
                             <div className="flex items-center gap-2 mt-3">
                                 <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
                                 <span className="text-[10px] font-mono text-axiom-text-mute uppercase tracking-widest">All systems operational</span>
