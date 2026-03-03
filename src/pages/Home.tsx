@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 
@@ -42,6 +42,25 @@ const infraSpec = [
 ];
 
 const Home: React.FC = () => {
+    const heroBgRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        let ticking = false;
+        const onScroll = () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                if (heroBgRef.current) {
+                    const y = Math.min(window.scrollY * 0.12, 88);
+                    heroBgRef.current.style.transform = `translate3d(0, ${y}px, 0) scale(1.08)`;
+                }
+                ticking = false;
+            });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
     return (
         <>
             <SEO
@@ -51,39 +70,43 @@ const Home: React.FC = () => {
 
             <div className="pt-32 sm:pt-36 pb-24 px-6 md:px-10 xl:px-20">
                 {/* â”€â”€â”€â”€ HERO â”€â”€â”€â”€ */}
-                <section className="max-w-[1100px] mx-auto">
-                    <div className="axiom-bento p-8 sm:p-10 md:p-16 relative overflow-hidden">
-                        {/* Subtle gradient glow */}
-                        <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(184,115,51,0.08)_0%,transparent_70%)] pointer-events-none"></div>
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(9,10,11,0.2)_0%,rgba(9,10,11,0.78)_80%,rgba(9,10,11,0.92)_100%)] pointer-events-none"></div>
+                <section className="-mx-6 md:-mx-10 xl:-mx-20 min-h-[78vh] relative overflow-hidden flex items-center px-6 md:px-10 xl:px-20">
+                    <div
+                        ref={heroBgRef}
+                        className="absolute inset-0 bg-cover bg-center will-change-transform"
+                        style={{ backgroundImage: "url('/roofing-concept.webp')", transform: 'translate3d(0,0,0) scale(1.08)' }}
+                    ></div>
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(9,10,11,0.28)_0%,rgba(9,10,11,0.72)_56%,rgba(9,10,11,0.95)_100%)]"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/20 to-black/72"></div>
 
-                        <div className="relative z-10 max-w-3xl flex flex-col gap-5 sm:gap-6">
-                            <p className="eyebrow">Professional Tier Infrastructure</p>
+                    <div className="relative z-10 max-w-[1100px] mx-auto w-full">
+                        <div className="max-w-3xl flex flex-col gap-5 sm:gap-6">
+                            <p className="font-axiomMono text-[11px] uppercase tracking-[0.28em] text-axiom-text-mute">SYSTEM STATUS: INFRASTRUCTURE MACHINE ONLINE</p>
 
-                            <h1 className="hero-headline hero-fade-in">
-                                Command your market with a revenueâ€‘generating website.
+                            <h1 className="hero-headline hero-fade-in text-axiom-text-main">
+                                Command your market with engineered web infrastructure.
                             </h1>
 
-                            <p className="hero-subheading hero-fade-in">
-                                We engineer blazingâ€‘fast, conversionâ€‘focused web infrastructure for service businesses that want to outclass competitors and stay online during storms.
+                            <p className="hero-subheading hero-fade-in max-w-2xl text-axiom-text-main/90">
+                                Capture higher-value calls during demand spikes with a fast, conversion-tuned platform designed for contractors closing $7,500+ jobs.
                             </p>
 
                             <div className="flex flex-col gap-4 pt-2">
-                                <div className="flex flex-col sm:flex-row gap-3">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                                    <Link
+                                        to="/contact"
+                                        className="btn-primary hero-primary-cta w-full sm:w-auto"
+                                    >
+                                        Book Strategy Call
+                                    </Link>
                                     <Link
                                         to="/manifesto"
                                         className="btn-secondary w-full sm:w-auto"
                                     >
                                         Read the $100K Leak Report
                                     </Link>
-                                    <Link
-                                        to="/contact"
-                                        className="btn-primary w-full sm:w-auto"
-                                    >
-                                        Book Strategy Call
-                                    </Link>
-                                    <Link to="/manifesto" className="text-axiom-text-main/80 text-[14px] inline-flex items-center gap-1 hover:text-white transition-colors">
-                                        See the numbers <span aria-hidden>→</span>
+                                    <Link to="/manifesto" className="text-axiom-text-main/85 text-[15px] inline-flex items-center gap-1 hover:text-white transition-colors">
+                                        See the numbers <span aria-hidden>{'->'}</span>
                                     </Link>
                                 </div>
                                 <p className="text-[12px] text-[var(--text-secondary)] font-grotesk">

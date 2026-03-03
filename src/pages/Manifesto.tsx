@@ -8,6 +8,10 @@ const Manifesto: React.FC = () => {
     const avgTicket = 5000;
     const annualLeak = lostCalls * avgTicket * 12;
     const [displayAnnualLeak, setDisplayAnnualLeak] = useState(annualLeak);
+    const displayMonthlyLeak = Math.round(displayAnnualLeak / 12);
+    const infrastructureInvestment = 7500;
+    const paybackMonths = displayMonthlyLeak > 0 ? infrastructureInvestment / displayMonthlyLeak : 0;
+    const outputTone = displayAnnualLeak >= 0 ? 'text-axiom-accent' : 'text-[#d27474]';
 
     useEffect(() => {
         const handleScroll = () => {
@@ -56,9 +60,9 @@ const Manifesto: React.FC = () => {
 
                 {/* ── SECTION 1: THE PROBLEM ── */}
                 <section className="mb-6 sm:mb-8">
-                    <p className="eyebrow mb-5 sm:mb-6">INFRASTRUCTURE COMMAND</p>
+                    <h2 className="axiom-command-heading mb-5 sm:mb-6">INFRASTRUCTURE COMMAND</h2>
 
-                    <div className="prose-editorial !leading-[1.6] max-w-[68ch]">
+                    <div className="prose-editorial !leading-[1.6] max-w-[720px]">
                         <p>
                             Every contractor knows the feeling. It's July. The first real heatwave hits. Every phone in town is ringing. Homeowners are searching "AC repair near me" at 2 AM.
                         </p>
@@ -74,80 +78,142 @@ const Manifesto: React.FC = () => {
                     <div className="pull-quote">
                         <p>The calls don't wait. They go to whoever loads first.</p>
                     </div>
+                    <div className="axiom-mono-callout">
+                        AXIOM // In peak season, speed wins the call before your crew ever picks up the phone.
+                    </div>
                 </section>
 
-                <div className="section-rule"></div>
+                <div className="axiom-chapter-divider"></div>
 
                 {/* ── SECTION 2: THE MATH ── */}
                 <section className="my-10 sm:my-14">
-                    <p className="eyebrow mb-5 sm:mb-6" style={{ color: 'var(--accent)' }}>MANDATORY PRECISION</p>
+                    <h2 className="axiom-command-heading mb-5 sm:mb-6">MANDATORY PRECISION</h2>
 
                     <p className="lead mb-8 sm:mb-10">
                         Adjust the slider below to see the math your web designer never showed you.
                     </p>
 
                     {/* Calculator Panel */}
-                    <div className="axiom-glass terminal-grid p-5 sm:p-8 md:p-10 flex flex-col gap-8">
-                        {/* Slider */}
-                        <div className="flex flex-col gap-4">
-                            <div className="flex justify-between items-end">
-                                <label htmlFor="lost-calls-slider" className="font-axiomMono text-[14px] sm:text-[15px] font-semibold text-[var(--text-heading)] tracking-tight">
-                                    Lost Emergency Calls per Month
-                                </label>
-                                <span className="font-axiomMono text-[24px] sm:text-[28px] font-bold text-[var(--accent)] tabular-nums">{lostCalls}</span>
-                            </div>
-                            <input
-                                id="lost-calls-slider"
-                                type="range"
-                                min="1"
-                                max="10"
-                                value={lostCalls}
-                                onChange={(e) => setLostCalls(Number(e.target.value))}
-                                className="w-full h-2 bg-[#1a1d25] rounded-full appearance-none cursor-pointer accent-[#E4572E]"
-                            />
-                            <p className="text-[12px] text-[var(--text-secondary)]">Due to downtime or slow competitor load speeds.</p>
-                        </div>
+                    <div className="axiom-bento relative overflow-hidden p-0 bg-axiom-surface border border-axiom-border">
+                        <div
+                            className="pointer-events-none absolute inset-0 opacity-30"
+                            style={{
+                                backgroundImage:
+                                    'linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
+                                backgroundSize: '28px 28px',
+                            }}
+                        />
+                        <div className="h-px w-full bg-axiom-accent" />
+                        <div className="relative axiom-glass border-0 rounded-none p-5 sm:p-8 md:p-10">
+                            <p className="font-axiomMono text-axiom-text-mute text-[11px] uppercase tracking-[0.2em] mb-4">ROI TERMINAL</p>
+                            <h3 className="hero-headline text-[30px] sm:text-[36px] mb-6">The $120k Dashboard</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                                <div className="space-y-5">
+                                    <div>
+                                        <div className="flex items-center justify-between mb-2">
+                                            <label htmlFor="lost-calls-slider" className="font-axiomMono text-[12px] uppercase tracking-[0.12em] text-axiom-text-mute">
+                                                Lost Emergency Calls / Month
+                                            </label>
+                                            <button
+                                                type="button"
+                                                title="Estimated high-intent calls lost from slow load speeds and downtime."
+                                                className="font-axiomMono text-[11px] text-axiom-text-mute border border-axiom-border rounded-full w-5 h-5"
+                                            >
+                                                ?
+                                            </button>
+                                        </div>
+                                        <div className="flex justify-between items-end mb-2">
+                                            <span className="font-axiomMono text-[12px] text-axiom-text-mute">Current estimate</span>
+                                            <span className="font-axiomMono text-[26px] leading-none text-axiom-accent tabular-nums">{lostCalls}</span>
+                                        </div>
+                                        <input
+                                            id="lost-calls-slider"
+                                            type="range"
+                                            min="1"
+                                            max="10"
+                                            value={lostCalls}
+                                            onChange={(e) => setLostCalls(Number(e.target.value))}
+                                            className="w-full h-2 rounded-full cursor-pointer accent-[#E4572E]"
+                                        />
+                                        <div
+                                            aria-hidden="true"
+                                            className="h-[10px] rounded mt-2 border border-axiom-border/60"
+                                            style={{
+                                                backgroundImage: 'repeating-linear-gradient(to right, rgba(228,87,46,0.45), rgba(228,87,46,0.45) 1px, transparent 1px, transparent 10%)',
+                                            }}
+                                        />
+                                    </div>
 
-                        {/* Calculation breakdown */}
-                        <div className="flex flex-col gap-3 py-6 border-y border-[var(--border-subtle)]">
-                            <div className="flex justify-between items-center">
-                                <span className="text-[14px] text-[var(--text-secondary)]">Average HVAC Ticket</span>
-                                <span className="font-axiomMono text-[15px] sm:text-[16px] font-medium text-[var(--text-heading)] tabular-nums">${avgTicket.toLocaleString()}</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-[14px] text-[var(--text-secondary)]">Months per Year</span>
-                                <span className="font-axiomMono text-[15px] sm:text-[16px] font-medium text-[var(--text-heading)] tabular-nums">12</span>
-                            </div>
-                            <div className="flex justify-between items-center pt-2">
-                                <span className="text-[14px] font-medium text-[var(--text-secondary)]">Calculation</span>
-                                <span className="font-axiomMono text-[14px] font-medium text-[var(--text-secondary)] tabular-nums">
-                                    {lostCalls} × ${avgTicket.toLocaleString()} × 12
-                                </span>
-                            </div>
-                        </div>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <label className="space-y-2">
+                                            <span className="flex items-center gap-2 font-axiomMono text-[11px] uppercase tracking-[0.12em] text-axiom-text-mute">
+                                                Avg Ticket
+                                                <button
+                                                    type="button"
+                                                    title="Financial baseline used by the model."
+                                                    className="font-axiomMono text-[10px] text-axiom-text-mute border border-axiom-border rounded-full w-4 h-4 leading-none"
+                                                >
+                                                    ?
+                                                </button>
+                                            </span>
+                                            <input
+                                                type="number"
+                                                value={avgTicket}
+                                                readOnly
+                                                className="w-full bg-axiom-base/60 border border-axiom-border rounded-lg px-3 py-2 font-axiomMono text-axiom-text-main focus:outline-none focus:border-axiom-accent/70"
+                                            />
+                                        </label>
+                                        <label className="space-y-2">
+                                            <span className="font-axiomMono text-[11px] uppercase tracking-[0.12em] text-axiom-text-mute">Months / Year</span>
+                                            <input
+                                                type="number"
+                                                value={12}
+                                                readOnly
+                                                className="w-full bg-axiom-base/60 border border-axiom-border rounded-lg px-3 py-2 font-axiomMono text-axiom-text-main focus:outline-none focus:border-axiom-accent/70"
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
 
-                        {/* Big figure — dramatic emphasis */}
-                        <div className="flex flex-col items-center text-center gap-3 pt-2">
-                            <p className="big-figure-label text-[#ef4444]">Total Annual Revenue Leak</p>
-                            <p className="font-axiomMono text-[32px] sm:text-[40px] md:text-[48px] font-bold text-[#ef4444] tabular-nums">
-                                ${displayAnnualLeak.toLocaleString()}
-                            </p>
+                                <div className="space-y-4">
+                                    <div className="axiom-bento-card p-4">
+                                        <p className="font-axiomMono text-[11px] uppercase tracking-[0.12em] text-axiom-text-mute mb-2">Annual ROI Leak</p>
+                                        <p className={`font-axiomMono text-[30px] leading-none tabular-nums ${outputTone}`}>
+                                            ${displayAnnualLeak.toLocaleString()}
+                                        </p>
+                                    </div>
+                                    <div className="axiom-bento-card p-4">
+                                        <p className="font-axiomMono text-[11px] uppercase tracking-[0.12em] text-axiom-text-mute mb-2">Monthly Recovery Potential</p>
+                                        <p className="font-axiomMono text-[24px] leading-none tabular-nums text-axiom-text-main">
+                                            ${displayMonthlyLeak.toLocaleString()}
+                                        </p>
+                                    </div>
+                                    <div className="axiom-bento-card p-4">
+                                        <p className="font-axiomMono text-[11px] uppercase tracking-[0.12em] text-axiom-text-mute mb-2">Payback Period</p>
+                                        <p className="font-axiomMono text-[24px] leading-none tabular-nums text-axiom-text-main">
+                                            {paybackMonths.toFixed(1)} months
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                     {/* Thesis line — breaks rhythm */}
                     <p className="thesis text-[#ef4444]/90">
                         That's not a marketing budget. That's a leak in your business.
                     </p>
+                    <div className="axiom-mono-callout">
+                        AXIOM // Lost calls are not random. They are predictable infrastructure failure expressed as revenue loss.
+                    </div>
                 </section>
 
-                <div className="section-rule"></div>
+                <div className="axiom-chapter-divider"></div>
 
                 {/* ── SECTION 3: THE FIX ── */}
                 <section className="my-10 sm:my-14">
-                    <p className="eyebrow mb-5 sm:mb-6" style={{ color: '#34d399' }}>ELIMINATING ROI FRICTION</p>
+                    <h2 className="axiom-command-heading mb-5 sm:mb-6">ELIMINATING ROI FRICTION</h2>
 
-                    <div className="prose-editorial !leading-[1.6] max-w-[68ch]">
+                    <div className="prose-editorial !leading-[1.6] max-w-[720px]">
                         <p>
                             Axiom deploys your site on the same global edge network used by Shopify, Discord, and Cloudflare itself. Your pages are served from 300+ data centres worldwide.
                         </p>
@@ -177,15 +243,18 @@ const Manifesto: React.FC = () => {
                     <div className="pull-quote" style={{ borderColor: '#34d399' }}>
                         <p>One emergency install during peak season pays for your entire year of infrastructure.</p>
                     </div>
+                    <div className="axiom-mono-callout">
+                        AXIOM // Infrastructure that stays online under pressure compounds margin while competitors stall.
+                    </div>
                 </section>
 
-                <div className="section-rule"></div>
+                <div className="axiom-chapter-divider"></div>
 
                 {/* ── SECTION 3.5: THE EVIDENCE ── */}
                 <section className="my-10 sm:my-14">
-                    <p className="eyebrow mb-5 sm:mb-6">THE ARCHITECTURE OF GROWTH</p>
+                    <h2 className="axiom-command-heading mb-5 sm:mb-6">THE ARCHITECTURE OF GROWTH</h2>
 
-                    <div className="prose-editorial !leading-[1.6] max-w-[68ch]">
+                    <div className="prose-editorial !leading-[1.6] max-w-[720px]">
                         <p>
                             We don't show mockups. Every Axiom concept architecture is a live, measurable deployment on Cloudflare's global edge. Here's what we've built for contractors in HVAC, roofing, and landscaping — purpose-engineered to capture revenue under pressure.
                         </p>
@@ -220,11 +289,11 @@ const Manifesto: React.FC = () => {
                     </div>
                 </section>
 
-                <div className="section-rule"></div>
+                <div className="axiom-chapter-divider"></div>
 
                 {/* ── SECTION 4: CTA ── */}
                 <section className="inline-cta mt-10 sm:mt-14">
-                    <p className="eyebrow-center mb-5">MACHINED SCALABILITY</p>
+                    <h2 className="axiom-command-heading mb-5 text-center">MACHINED SCALABILITY</h2>
                     <h2 className="text-[24px] sm:text-[32px] md:text-[36px] font-semibold tracking-tight">
                         Plug the leak.
                     </h2>
@@ -259,3 +328,4 @@ const Manifesto: React.FC = () => {
 };
 
 export default Manifesto;
+

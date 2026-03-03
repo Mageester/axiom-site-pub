@@ -36,7 +36,7 @@ export default {
             },
             fontFamily: {
                 axiomSans: ['Inter', 'Satoshi', 'sans-serif'],
-                axiomMono: ['IBM Plex Mono', 'Space Mono', 'monospace'],
+                axiomMono: ['IBM Plex Mono', 'monospace'],
                 grotesk: ['Space Grotesk', 'sans-serif'],
                 inter: ['Inter', 'sans-serif'],
             },
@@ -80,7 +80,7 @@ export default {
                 'panel': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.02)',
                 'panel-hover': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.04), 0 4px 16px -8px rgba(0, 0, 0, 0.4)',
                 'glow-subtle': '0 0 24px rgba(255, 255, 255, 0.04)',
-                'glow-accent': '0 0 24px rgba(184, 115, 51, 0.15)',
+                'glow-accent': '0 0 24px rgba(228, 87, 46, 0.2)',
             },
         },
     },
