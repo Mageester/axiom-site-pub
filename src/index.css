@@ -161,7 +161,7 @@
     z-index: 0;
   }
 
-  .axiom-grain > * {
+  .axiom-grain>* {
     position: relative;
     z-index: 1;
   }
@@ -214,6 +214,7 @@
   }
 
   @media (min-width: 640px) {
+
     .axiom-container,
     .section {
       padding-inline: 24px;
@@ -304,6 +305,13 @@
   .btn-primary,
   .btn-secondary,
   .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
     min-height: 44px;
     padding-inline: 20px;
     font-size: 0.9375rem;
@@ -883,6 +891,7 @@ html {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -893,6 +902,7 @@ html {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -980,11 +990,10 @@ body::before {
 }
 
 @media (max-width: 767px) {
+
   .axiom-shell-section,
   .section {
     padding-left: 24px !important;
     padding-right: 24px !important;
   }
 }
-
-
